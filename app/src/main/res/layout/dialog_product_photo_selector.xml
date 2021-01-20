@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:paddingBottom="80dp"
+    >
+
+    <TextView
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Where do you want"/>
+    <TextView
+        android:textColor="@android:color/black"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="your image from?"/>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:id="@+id/img_upload_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center_horizontal">
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            >
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/solid_white_circle"
+                android:padding="11dp"
+                android:src="@drawable/ic_photo_gallery" />
+            <TextView
+                android:textColor="@color/midd_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gallery"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/launch_camera"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            >
+            <ImageView
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/solid_white_circle"
+                android:padding="18dp"
+                android:src="@drawable/ic_cam" />
+            <TextView
+                android:textColor="@color/blue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Camera"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="100dp"
+            android:layout_height="90dp"
+            >
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/solid_white_circle"
+                android:padding="11dp"
+                android:src="@drawable/ic_phone_image_gallery" />
+            <TextView
+                android:textColor="@color/midd_grey"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Phone"/>
+        </LinearLayout>
+
+        >
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    >
+
+    <RelativeLayout
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:padding="10dp"
+            android:layout_marginTop="40dp"
+            android:id="@+id/success_img"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_success_tick"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <TextView
+            android:id="@+id/success_main_hdr"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/success_img"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your order has been sent successfully"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/success_sub_hdr"
+            android:textSize="14sp"
+            android:layout_below="@+id/success_main_hdr"
+            android:text="Once it is accepted you will receive a notification!"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <View
+            android:id="@+id/success_border_hr"
+            android:layout_marginTop="20dp"
+            android:layout_below="@id/success_sub_hdr"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey_ddd"/>
+
+        <TextView
+            android:id="@+id/order_no_hdr"
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:layout_below="@+id/success_border_hr"
+            android:text="Your Tab number is"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/order_no"
+            android:textColor="@color/blue"
+            android:textStyle="bold"
+            android:textSize="25sp"
+            android:layout_below="@+id/order_no_hdr"
+            android:text="#99985"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="20dp"
+            android:layout_below="@+id/order_no"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+         <!--   <Button
+                android:id="@+id/view_order_btn"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Fuatilia oda yako"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />-->
+
+            <TextView
+                android:id="@+id/go_back_txt"
+                android:textColor="@color/blue"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Go Back to menu"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</androidx.core.widget.NestedScrollView>

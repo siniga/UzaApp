@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <ImageView
+        android:scaleType="center"
+        android:src="@drawable/bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_transparent"></LinearLayout>
+   <!--
+    <ImageView
+        android:id="@+id/view_1"
+        android:layout_centerInParent="true"
+        android:background="@drawable/solid_circle"
+        android:layout_width="80dp"
+        android:layout_height="80dp" />-->
+    <TextView
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/view_2"
+        android:layout_centerInParent="true"
+        android:text="Welcome to tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:layout_below="@id/view_2"
+        android:id="@+id/view_3"
+        android:layout_centerInParent="true"
+        android:text="Table No 2334"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ProgressBar
+     android:background="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/view_3"
+        android:id="@+id/view_4"
+        android:layout_centerInParent="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp" />
+
+    <TextView
+        android:layout_marginTop="80dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
+        android:layout_below="@id/view_4"
+        android:id="@+id/view_5"
+        android:layout_centerInParent="true"
+        android:text="Cheers!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+
+
+</RelativeLayout>

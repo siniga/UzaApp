@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="15dp"
+    android:background="#e6e7f0"
+    >
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_gravity="center"
+            android:src="@drawable/ic_attach_money_grey_24dp"
+            android:layout_width="27dp"
+            android:layout_height="27dp" />
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Payment"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:padding="15dp"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:elevation="1dp"
+        android:background="@drawable/bottom_sheet_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_marginTop="50px"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_attach_money_grey_24dp"/>
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textColor="#cccccc"
+            android:textSize="70sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"/>
+
+
+        <TextView
+            android:textColor="#666666"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Amount"/>
+
+
+
+        <LinearLayout
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_weight="0.5"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="30dp"
+                android:layout_centerInParent="true"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:text="Amount Paid"/>
+            <EditText
+                android:inputType="number"
+                android:layout_weight="0.9"
+                android:layout_marginLeft="20dp"
+                android:textColor="@android:color/black"
+                android:layout_marginTop="30dp"
+                android:layout_centerInParent="true"
+                android:layout_width="1dp"
+                android:layout_height="wrap_content"
+                android:hint="Amount Paid"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="@dimen/padding_10"
+            android:paddingBottom="30dp"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:layout_weight="1"
+                android:layout_width="1dp"
+                android:textSize="12sp"
+                android:layout_height="35dp"
+                android:text="1 k"/>
+            <Button
+                android:layout_weight="1"
+                android:layout_width="1dp"
+                android:textSize="12sp"
+                android:layout_height="35dp"
+                android:text="5 k"/>
+            <Button
+                android:layout_weight="1"
+                android:layout_width="1dp"
+                android:textSize="12sp"
+                android:layout_height="35dp"
+                android:text="10 k"/>
+            <Button
+                android:layout_weight="1"
+                android:layout_width="1dp"
+                android:textSize="12sp"
+                android:layout_height="35dp"
+                android:text="20 k"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_marginTop="50dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/continue_btn"
+            android:background="@drawable/round_corners_primary"
+            android:textColor="@color/white"
+            android:text="Continue"
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

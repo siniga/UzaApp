@@ -1,0 +1,30 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/action_home"
+        android:enabled="true"
+        android:checkable="true"
+        android:icon="@drawable/ic_cart_bag"
+        android:title="Home"
+        app:showAsAction="always" />
+
+    <item
+        android:checkable="true"
+        android:id="@+id/action_report"
+        android:enabled="true"
+        android:icon="@drawable/ic_report"
+        android:title="Reports"
+        app:showAsAction="always" />
+    <item
+        android:checkable="true"
+        android:checked="true"
+        android:id="@+id/action_transaction"
+        android:enabled="true"
+        android:icon="@drawable/ic_transaction"
+        android:title="transactions"
+        app:showAsAction="always" />
+
+
+</menu>

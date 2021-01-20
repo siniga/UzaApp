@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="2dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginBottom="5dp"
+    android:padding="@dimen/padding_10"
+    android:background="@drawable/round_corners_white"
+    android:orientation="vertical"
+ >
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:visibility="gone"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/ic_calendar"/>
+
+        <TextView
+            android:gravity="center"
+            android:textStyle="bold"
+            android:id="@+id/header_name"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:text="DATE"
+            android:textColor="@color/midd_grey"
+            android:textSize="23sp" />
+    </LinearLayout>
+
+
+    <View
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/light_grey" />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="10dp"
+        android:id="@+id/transaction_item_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>
+
+
+
