@@ -7,18 +7,14 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.NewProductFragment;
-import com.agnet.uza.fragments.ProductsFragment;
-import com.google.android.gms.vision.text.Line;
+import com.agnet.uza.fragments.products.NewProductFragment;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 
 public class ProductPhotoSelectorDialog extends DialogFragment implements View.OnClickListener {
     private static final int picId = 123;

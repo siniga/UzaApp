@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.ProductsFragment;
+import com.agnet.uza.fragments.products.ProductsFragment;
 import com.agnet.uza.models.Sku;
 
 import java.util.Collections;

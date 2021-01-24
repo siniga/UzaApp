@@ -11,7 +11,6 @@ import android.widget.Button;
 
 import com.agnet.uza.R;
 import com.agnet.uza.helpers.DatabaseHandler;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -22,8 +21,6 @@ public class TrackOrderFragment extends Fragment {
     private FragmentActivity _c;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
-    private DatabaseHandler _dbHandler;
-    private ShimmerFrameLayout _shimmerFrameLayout;
     private NotificationManagerCompat _notificationManager;
     private Button _submitUserDetailsBtn;
 

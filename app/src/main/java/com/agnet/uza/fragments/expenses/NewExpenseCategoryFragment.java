@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.expenses;
 
 
 import android.annotation.SuppressLint;
@@ -15,23 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CategoryAdapter;
-import com.agnet.uza.adapters.StaffsAdapter;
+import com.agnet.uza.adapters.ExpensesAdapter;
+import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
-import com.agnet.uza.models.User;
+import com.agnet.uza.models.Expense;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StaffFragment extends Fragment   implements View.OnClickListener{
+public class NewExpenseCategoryFragment extends Fragment   implements View.OnClickListener{
 
     private FragmentActivity _c;
     private Gson _gson;
-    private LinearLayoutManager _staffLayoutManager;
-    private RecyclerView _staffList;
+    private LinearLayoutManager _expensesLayoutManager;
+    private RecyclerView _expensesList;
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
 
@@ -39,11 +38,10 @@ public class StaffFragment extends Fragment   implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_staffs, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_category_expenses, container, false);
         _c = getActivity();
 
         //binding
-        _staffList = view.findViewById(R.id.staff_list);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
@@ -53,29 +51,19 @@ public class StaffFragment extends Fragment   implements View.OnClickListener{
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
-
-        // list setup
-        //category list
-        _staffList.setHasFixedSize(true);
-        _staffLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
-        _staffList.setLayoutManager(_staffLayoutManager);
-
-
-        getLocalCategory();
         return view;
 
     }
 
-    public void getLocalCategory() {
+    public void getLocalStores() {
 
-        List<User> staffs = new ArrayList<>();
-        staffs.add(new User(1,"0734774474","James Adili"));
-        staffs.add(new User(1,"0734774474","Laila Mosa"));
-        staffs.add(new User(1,"0734774474","Suma Chipotle"));
-        staffs.add(new User(1,"0734774474","Marium Salim"));
-
-        StaffsAdapter adapter = new StaffsAdapter(_c, staffs);
-        _staffList.setAdapter(adapter);
+        List<Expense> expenses = new ArrayList<>();
+        expenses.add(new Expense(1,"Umeme","23,333",2));
+        expenses.add(new Expense(1,"Umeme","10,000",2));
+        expenses.add(new Expense(1,"Umeme","14,000",2));
+        expenses.add(new Expense(1,"Umeme","3,000",2));
+        ExpensesAdapter adapter = new ExpensesAdapter(_c, expenses);
+        _expensesList.setAdapter(adapter);
     }
 
 

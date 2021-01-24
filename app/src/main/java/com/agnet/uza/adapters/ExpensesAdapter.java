@@ -12,12 +12,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.NewExpenseFragment;
-import com.agnet.uza.fragments.NewStoreFragment;
+import com.agnet.uza.fragments.expenses.NewExpenseFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Expense;
-import com.agnet.uza.models.Store;
 
 import java.util.Collections;
 import java.util.List;

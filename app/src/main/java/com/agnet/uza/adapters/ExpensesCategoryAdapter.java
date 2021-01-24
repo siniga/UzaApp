@@ -2,7 +2,6 @@ package com.agnet.uza.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.ExpensesFragment;
-import com.agnet.uza.fragments.NewStoreFragment;
+import com.agnet.uza.fragments.expenses.ExpensesFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Expense;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created by alicephares on 8/5/16.

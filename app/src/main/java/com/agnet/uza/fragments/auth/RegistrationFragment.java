@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.auth;
 
 
 import android.annotation.SuppressLint;
@@ -16,7 +16,8 @@ import com.agnet.uza.R;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Date;
+import com.agnet.uza.models.Store;
+import com.agnet.uza.models.Street;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -84,12 +85,12 @@ public class RegistrationFragment extends Fragment {
 
                 if (!checkEmptyFields()) {
 
-                    _dbHandler.createOrUpdateUser(_phone, _name);
+                    _dbHandler.createUser(_phone, _name);
                     _dbHandler.createStreet(_address);
 
                     //get street last id and store it into business table to show its address
                     int lastId = _dbHandler.getLastId("streets");
-                    _dbHandler.createBusiness(_name, lastId);
+                    _dbHandler.createBusiness(new Store(0,_name, new Street(lastId,"")));
 
                     //get business and user last id to connect user to their businesses
                     int userId = _dbHandler.getLastId("users");

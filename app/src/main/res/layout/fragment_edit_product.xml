@@ -8,18 +8,7 @@
     android:orientation="vertical"
     android:padding="15dp">
 
-    <LinearLayout
-        android:visibility="gone"
-       android:id="@+id/img_wrapper"
-        android:layout_width="match_parent"
-        android:layout_height="120dp">
-        <ImageView
-            android:id="@+id/img_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
     <RelativeLayout
-        android:layout_below="@+id/img_wrapper"
         android:id="@+id/btns_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -33,26 +22,14 @@
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:elevation="2dp"
-            android:visibility="gone"
             android:background="@color/white"
             android:drawableRight="@drawable/ic_done_green_24dp"/>
-
-
-        <Button
-            android:id="@+id/save_btn_wrapper"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@color/white"
-            android:text="Save"
-            android:drawableRight="@drawable/ic_done_green_24dp"></Button>
 
 
     </RelativeLayout>
 
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btns_wrapper"
@@ -81,6 +58,14 @@
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Cost"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -126,14 +111,6 @@
                     android:hint="Selling Price"
                     android:inputType="number"
                     android:padding="10dp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Cost"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
 
                 <EditText
                     android:id="@+id/cost_price"
@@ -195,28 +172,27 @@
                     android:layout_height="55dp"
                     >
 
-                    <Spinner
-                        android:id="@+id/category"
+                    <TextView
+                        android:layout_weight="1"
+                        android:id="@+id/edit_category"
                         android:layout_width="1dp"
                         android:layout_height="55dp"
-                        android:layout_weight="1"
                         android:hint="Category"
                         android:padding="10dp" />
 
 
                     <Button
-                        android:id="@+id/new_cateogory"
+                        android:id="@+id/change_category"
                         android:paddingLeft="10dp"
                         android:textSize="13sp"
                         android:textColor="@color/blue"
                         android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
                         android:background="@drawable/round_corners_with_stroke_grey_light"
                         android:textAllCaps="false"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.4"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:text="new"/>
-
+                        android:text="change"/>
                 </LinearLayout>
 
                 <TextView
@@ -234,7 +210,6 @@
                     android:background="@drawable/round_corners_with_stroke_grey_light"
                     android:hint="SKU"
                     android:padding="10dp" />
-
 
             </LinearLayout>
 
@@ -256,7 +231,6 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
@@ -265,15 +239,12 @@
                     android:textSize="12sp" />
 
                 <LinearLayout
-                    android:visibility="gone"
-                    android:id="@+id/select_img_btn_wrapper"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
                     android:gravity="center_vertical">
 
                     <ImageButton
-                        android:id="@+id/select_img_btn"
                         android:layout_width="60dp"
                         android:layout_height="match_parent"
                         android:src="@drawable/ic_add_black_24dp"
@@ -317,6 +288,7 @@
                         android:layout_marginLeft="20dp"
                         android:text="Scan product barcode" />
                 </LinearLayout>
+
 
 
             </LinearLayout>

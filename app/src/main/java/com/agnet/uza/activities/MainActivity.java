@@ -2,31 +2,21 @@ package com.agnet.uza.activities;
 
 import android.os.Bundle;
 
-import com.agnet.uza.adapters.CartAdapter;
-import com.agnet.uza.adapters.CategoryAdapter;
 import com.agnet.uza.adapters.ProductAdapter;
-import com.agnet.uza.dialogs.ActionBottomDialogFragment;
 import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.fragments.LoginFragment;
+import com.agnet.uza.fragments.auth.LoginFragment;
 import com.agnet.uza.fragments.MenuFragment;
-import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.fragments.ReportFragment;
 import com.agnet.uza.fragments.TransactionFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Cart;
-import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,12 +24,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {

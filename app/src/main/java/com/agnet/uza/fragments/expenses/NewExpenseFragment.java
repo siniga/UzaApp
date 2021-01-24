@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.expenses;
 
 
 import android.annotation.SuppressLint;
@@ -15,39 +15,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CategoryAdapter;
-import com.agnet.uza.adapters.StaffsAdapter;
-import com.agnet.uza.helpers.DatabaseHandler;
+import com.agnet.uza.adapters.ExpensesAdapter;
+import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
-import com.agnet.uza.models.User;
+import com.agnet.uza.models.Expense;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryCategoryFragment extends Fragment   implements View.OnClickListener{
+public class NewExpenseFragment extends Fragment   implements View.OnClickListener{
 
     private FragmentActivity _c;
     private Gson _gson;
-    private LinearLayoutManager _categoryLayoutManager;
-    private RecyclerView _categoryList;
+    private LinearLayoutManager _expensesLayoutManager;
+    private RecyclerView _expensesList;
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
-    private DatabaseHandler _dbHandler;
 
     @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_new_expenses, container, false);
         _c = getActivity();
 
-        _dbHandler = new DatabaseHandler(_c);
-
         //binding
-        _categoryList = view.findViewById(R.id.staff_list);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
@@ -57,24 +51,8 @@ public class InventoryCategoryFragment extends Fragment   implements View.OnClic
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
-
-        // list setup
-        //category list
-        _categoryList.setHasFixedSize(true);
-        _categoryLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
-        _categoryList.setLayoutManager(_categoryLayoutManager);
-
-
-        getLocalCategory();
         return view;
 
-    }
-
-    public void getLocalCategory() {
-
-        List<Category> categories = _dbHandler.getCategories();
-        CategoryAdapter adapter = new CategoryAdapter(_c, categories);
-        _categoryList.setAdapter(adapter);
     }
 
 

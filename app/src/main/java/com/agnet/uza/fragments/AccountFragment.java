@@ -15,7 +15,6 @@ import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.helpers.DatabaseHandler;
-import com.facebook.shimmer.ShimmerFrameLayout;
 
 import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.Fragment;
@@ -27,7 +26,6 @@ public class AccountFragment extends Fragment {
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private DatabaseHandler _dbHandler;
-    private ShimmerFrameLayout _shimmerFrameLayout;
     private NotificationManagerCompat _notificationManager;
     private Button _submitUserDetailsBtn;
 

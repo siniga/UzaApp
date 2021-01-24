@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.auth;
 
 
 import android.annotation.SuppressLint;
@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agnet.uza.R;
+import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.GenericTextWatcher;

@@ -12,12 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.NewStaffFragment;
-import com.agnet.uza.fragments.NewStoreFragment;
+import com.agnet.uza.fragments.stores.EditStoreFragment;
+import com.agnet.uza.fragments.stores.NewStoreFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Store;
-import com.agnet.uza.models.User;
 
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +81,10 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new FragmentHelper(c).replaceWithbackStack(new NewStoreFragment(),"NewStoreFragment", R.id.fragment_placeholder);
+                _editor.putInt("SELECTED_STORE", currentStore.getId());
+                _editor.commit();
+
+                new FragmentHelper(c).replace(new EditStoreFragment(),"EditStoreFragment", R.id.fragment_placeholder);
 
             }
         });

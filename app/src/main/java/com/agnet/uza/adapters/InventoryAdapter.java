@@ -11,26 +11,22 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.CustomDialogDeleteProduct;
 import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.fragments.NewProductFragment;
+import com.agnet.uza.fragments.products.EditProductFragment;
+import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Product;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,7 +118,7 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryAdapter.View
                 _editor.putInt("SELECTED_PRODUCT_ID", currentProduct.getId());
                 _editor.commit();
 
-                new FragmentHelper(c).replaceWithbackStack(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+                new FragmentHelper(c).replace(new EditProductFragment(), "EditProductFragment", R.id.fragment_placeholder);
 
             }
         });

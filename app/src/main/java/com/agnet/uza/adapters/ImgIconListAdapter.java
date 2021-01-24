@@ -9,21 +9,22 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.agnet.uza.R;
 import com.agnet.uza.models.Cart;
+import com.agnet.uza.models.ImgIcon;
 
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
  * Created by alicephares on 8/5/16.
  */
-public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
+public class ImgIconListAdapter extends RecyclerView.Adapter<ImgIconListAdapter.ViewHolder> {
 
-    private List<Cart> cart = Collections.emptyList();
+    private List<ImgIcon> imgIcons = Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private int locateId;
@@ -35,8 +36,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CartAdapter(Context c, List<Cart> cart) {
-        this.cart = cart;
+    public ImgIconListAdapter(Context c, List<ImgIcon> imgIcons) {
+        this.imgIcons = imgIcons;
         this.inflator = LayoutInflater.from(c);
         this.c = c;
 
@@ -49,7 +50,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
         // create a new view
-        View v = inflator.inflate(R.layout.card_cart, parent, false);
+        View v = inflator.inflate(R.layout.card_img_icon_list, parent, false);
         // set the view's size, margins, padding and layout parameters
 
         ViewHolder vh = new ViewHolder(c, v);
@@ -62,11 +63,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
-        final Cart currentCart = cart.get(position);
-
-        holder.mName.setText(currentCart.getName());
-        holder.mQnty.setText(""+currentCart.getTotalQnty());
-        holder.mPrice.setText(currentCart.getTotalPrice());
+        final ImgIcon imgIcon = imgIcons.get(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -89,7 +86,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return cart.size();
+        return imgIcons.size();
     }
 
 

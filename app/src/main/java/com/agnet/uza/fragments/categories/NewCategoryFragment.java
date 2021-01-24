@@ -1,16 +1,13 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.categories;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -25,13 +22,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
+import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Discount;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class NewCategoryFragment extends Fragment implements View.OnClickListener {
@@ -67,7 +61,6 @@ public class NewCategoryFragment extends Fragment implements View.OnClickListene
         _saveProduct = view.findViewById(R.id.save_category_btn);
 
         _dbHandler = new DatabaseHandler(_c);
-
 
         //set items
         _homeToolbar.setVisibility(View.GONE);

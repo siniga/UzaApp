@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:padding="20dp"
->
+    >
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/staff_list"
@@ -15,7 +15,7 @@
         android:layout_marginTop="20dp" />
 
     <LinearLayout
-        android:id="@+id/new_staff_btn"
+        android:visibility="gone"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"

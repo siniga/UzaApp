@@ -2,30 +2,27 @@ package com.agnet.uza.fragments;
 
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.activities.ScannerActivity;
+import com.agnet.uza.fragments.expenses.ExpensesCategoryFragment;
+import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.staffs.StaffFragment;
+import com.agnet.uza.fragments.stores.StoresFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.helpers.GenericTextWatcher;
-import com.agnet.uza.models.Order;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
 
 
 public class MenuFragment extends Fragment implements View.OnClickListener {
@@ -35,6 +32,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
     private CardView _inventoryBtn,_newSaleBtn,_ordersBtn,_staffsBtn,_storesBtn, _expensesBtn;
     private Toolbar _homeToolbar,_toolbar;
     private BottomNavigationView _bottomNavigation;
+    private FloatingActionButton _fab;
 
 
     @SuppressLint("RestrictedApi")
@@ -54,6 +52,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         _staffsBtn = view.findViewById(R.id.staffs_btn);
         _storesBtn = view.findViewById(R.id.store_btn);
         _expensesBtn = view.findViewById(R.id.expenses_btn);
+        _fab = _c.findViewById(R.id.fab);
 
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
@@ -64,7 +63,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
-
+        _fab.setVisibility(View.GONE);
         _toolbar.setTitle("Main Menu");
 
         //event

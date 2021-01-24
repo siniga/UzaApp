@@ -10,7 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.ProductsFragment;
+import com.agnet.uza.fragments.products.ProductsFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Outlet;
 

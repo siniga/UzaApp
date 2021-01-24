@@ -2,7 +2,6 @@ package com.agnet.uza.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.fragments.NewStaffFragment;
-import com.agnet.uza.fragments.ProductsFragment;
+import com.agnet.uza.fragments.staffs.NewStaffFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.User;

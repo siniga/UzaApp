@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.products;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -21,6 +21,7 @@ import com.agnet.uza.adapters.CategoryProductAdapter;
 import com.agnet.uza.adapters.ProductAdapter;
 import com.agnet.uza.adapters.UnitAdapter;
 import com.agnet.uza.application.mSingleton;
+import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.AppManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.StatusBarHelper;
@@ -38,7 +39,6 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.StringRequest;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -73,7 +73,6 @@ public class ProductsFragment extends Fragment {
     private List<Category> _categories;
     private DatabaseHandler _dbHandler;
     private LinearLayout _errorMsg;
-    private ShimmerFrameLayout _shimmerFrameLayout;
     private BottomNavigationView _bottomNavigation;
     private String _categoryName;
     private TextView _categoryNameVIew;
@@ -109,8 +108,6 @@ public class ProductsFragment extends Fragment {
             //receive data from other activities and fragments
             _categoryName = _preferences.getString("CATEGORY_NAME", null);
 
-            _shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
-
             _errorMsg = view.findViewById(R.id.error_msg);
 
             _categoryNameVIew = view.findViewById(R.id.category_name);
@@ -138,7 +135,7 @@ public class ProductsFragment extends Fragment {
         _unitAdapter = new UnitAdapter(_c, getUnits(), ProductsFragment.this);
         _unitList.setAdapter(_unitAdapter);
 
-        getProducts();
+       // getProducts();
         new StatusBarHelper(_c).setStatusBarColor(R.color.colorPrimary);
         addEditTxtChangeListener();
 
@@ -196,7 +193,7 @@ public class ProductsFragment extends Fragment {
     }
 
 
-    public void getProducts() {
+   /* public void getProducts() {
 
         _shimmerFrameLayout.stopShimmerAnimation();
         _shimmerFrameLayout.setVisibility(View.GONE);
@@ -213,7 +210,7 @@ public class ProductsFragment extends Fragment {
         _productList.setAdapter(_productAdapter);
 
 
-    }
+    }*/
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -240,14 +237,12 @@ public class ProductsFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        _shimmerFrameLayout.stopShimmerAnimation();
+
     }
 
 
     public void getProductsByCategory(int id) {
 
-        _shimmerFrameLayout.setVisibility(View.VISIBLE);
-        _shimmerFrameLayout.startShimmerAnimation();
         _errorMsg.setVisibility(View.GONE);
 
         Endpoint.setUrl("mobile/products/" + id);
@@ -257,8 +252,7 @@ public class ProductsFragment extends Fragment {
                     @Override
                     public void onResponse(String response) {
 
-                        _shimmerFrameLayout.stopShimmerAnimation();
-                        _shimmerFrameLayout.setVisibility(View.GONE);
+
 
                         if (!AppManager.isNullOrEmpty(response)) {
 
@@ -303,8 +297,6 @@ public class ProductsFragment extends Fragment {
 
                         }
 
-                        _shimmerFrameLayout.stopShimmerAnimation();
-                        _shimmerFrameLayout.setVisibility(View.GONE);
 
 
                     }

@@ -4,11 +4,52 @@
     android:id="@+id/cart_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:elevation="@dimen/padding_10"
-    android:orientation="vertical">
+    android:background="#d8d8d8"
+    android:orientation="vertical"
+    android:padding="15dp"
+    android:elevation="@dimen/padding_10">
+
+
+    <RelativeLayout
+        android:background="@drawable/round_corners"
+        android:paddingLeft="15dp"
+        android:id="@+id/btns_wrapper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_staffs"/>
+
+        <TextView
+            android:layout_marginLeft="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:textSize="11sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add a new store here"/>
+
+        <Button
+            android:id="@+id/save_staff_btn"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@color/white"
+            android:text="Save"
+            android:drawableRight="@drawable/ic_done_green_24dp"></Button>
+
+
+    </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/btns_wrapper"
+        android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -51,33 +92,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Phone"
+                android:text="Location"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"/>
 
             <EditText
-                android:id="@+id/selling_price"
+                android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Phone Number"
-                android:inputType="number"
+                android:hint="Phone"
                 android:padding="10dp" />
 
 
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                >
-                <Button
-                    android:id="@+id/save_product_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/colorPrimary"
-                    android:text="Save"
-                    android:textColor="@color/white" />
-            </LinearLayout>
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

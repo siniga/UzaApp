@@ -12,8 +12,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.agnet.uza.models.Store;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
+import com.agnet.uza.models.Sku;
+import com.agnet.uza.models.Street;
+import com.agnet.uza.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 15;
+    private static final int DATABASE_VERSION = 17;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -40,6 +44,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_SKU = "skus";
     private static final String TABLE_PRODUCT_UNIT = "product_units";
     private static final String TABLE_PRODUCT_SKU = "product_skus";
+
 
     //user table
     private static final String KEY_PHONE = "phone";
@@ -68,7 +73,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //sku
     private static final String KEY_SKU_ID = "sku_id";
-    private static final String KEY_UNIT_ID  = "unit_id";
+    private static final String KEY_UNIT_ID = "unit_id";
 
 
     public DatabaseHandler(Context context) {
@@ -100,7 +105,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_USER_ID + " TEXT,"
                 + KEY_BUSINESS_ID + " INTEGER " + ")";
 
-        String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY+ "("
+        String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
                 + KEY_BUSINESS_ID + " INTEGER " + ")";
@@ -117,25 +122,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_CATEGORY_ID + " INTEGER DEFAULT 0 " + ")";
 
 
-        String CREATE_SKU_TABLE = "CREATE TABLE " + TABLE_SKU+ "("
+        String CREATE_SKU_TABLE = "CREATE TABLE " + TABLE_SKU + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT" + ")";
 
-        String CREATE_UNIT_TABLE = "CREATE TABLE " + TABLE_UNIT+ "("
+        String CREATE_UNIT_TABLE = "CREATE TABLE " + TABLE_UNIT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
                 + KEY_CATEGORY_ID + " INTEGER" + ")";
 
-        String CREATE_PRODUCT_SKU_TABLE = "CREATE TABLE " + TABLE_PRODUCT_SKU+ "("
+        String CREATE_PRODUCT_SKU_TABLE = "CREATE TABLE " + TABLE_PRODUCT_SKU + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_SKU_ID + " INTEGER,"
                 + KEY_PRODUCT_ID + " INTEGER" + ")";
 
-        String CREATE_PRODUCT_UNIT_TABLE = "CREATE TABLE " + TABLE_PRODUCT_UNIT+ "("
+        String CREATE_PRODUCT_UNIT_TABLE = "CREATE TABLE " + TABLE_PRODUCT_UNIT + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_UNIT_ID + " INTEGER,"
                 + KEY_PRODUCT_ID + " INTEGER" + ")";
-
 
 
         db.execSQL(CREATE_USER_TABLE);
@@ -166,7 +170,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNIT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_UNIT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_SKU);
-
 
 
         // Create tables again
@@ -273,22 +276,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin user crude
      ********************************************/
-    public void createOrUpdateUser(String phone, String name) {
+    public void createUser(String phone, String name) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
         values.put(KEY_PHONE, phone);
         values.put(KEY_NAME, name);
+        values.put(KEY_PIN, 0);
 
-        //if user table is empty, create user
-        //otherwise update user number to indicate that number has been changed
-        if (isTableEmpty(TABLE_USER)) {
-            db.insert(TABLE_USER, null, values);
-        } else {
-            db.update(TABLE_USER, values, null, null);
-        }
+        db.insert(TABLE_USER, null, values);
+        db.close(); // Closing database connection
+    }
 
+
+    public void UpdateUser(String phone, String name) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_PHONE, phone);
+        values.put(KEY_NAME, name);
+        values.put(KEY_PIN, 0);
+
+        db.update(TABLE_USER, values, null, null);
 
         db.close(); // Closing database connection
     }
@@ -347,6 +358,32 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_USER +"  ORDER BY id DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User(
+
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME))
+                );
+
+                users.add(user);
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return users;
+    }
+
     /*******************************************
      Begin street crude
      ********************************************/
@@ -365,12 +402,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin business crude
      ********************************************/
-    public void createBusiness(String name, int streetId) {
+    public void createBusiness(Store business) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, name);
-        values.put(KEY_STREET_ID, streetId);
+        values.put(KEY_NAME, business.getName());
+        values.put(KEY_STREET_ID, business.getStreet().getId());
         db.insert(TABLE_BUSINESS, null, values);
 
 
@@ -385,9 +422,69 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_BUSINESS_ID, businessId);
         db.insert(TABLE_USER_BUSINESS, null, values);
 
-
         db.close(); // Closing database connection
     }
+
+    public List<Store> getStores() {
+        List<Store> businesses= new ArrayList<>();
+
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS+ " JOIN "+TABLE_STREET+" ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+              Store  business = new Store(
+
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        new Street(0,"street")
+                );
+
+                businesses.add(business);
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return businesses;
+    }
+
+    public Store getSelectedStore(int storeId){
+
+        Store business = null;
+
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS+ " JOIN "+TABLE_STREET+" ON streets.id = businesses.street_id  WHERE businesses.id = "+storeId+" ORDER BY businesses.id DESC ";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+                 business = new Store(
+                        cursor.getInt(cursor.getColumnIndex("id")),
+                        cursor.getString(cursor.getColumnIndex("name")),
+                        new Street(0, cursor.getString(cursor.getColumnIndex("street")))
+                );
+        }
+
+        database.close();
+
+        return  business;
+
+    }
+
+    public int deleteStore(int id) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_BUSINESS, "id=?", new String[]{String.valueOf(id)});
+
+        return 1;
+    }
+
+
+
+
+
     /*******************************************
      Begin category crude
      ********************************************/
@@ -403,10 +500,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close(); // Closing database connection
     }
 
-    public List<Category> getCategories(){
+    public List<Category> getCategories() {
         List<Category> categories = new ArrayList<>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_CATEGORY +" ORDER BY "+KEY_ID+" DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_CATEGORY + " ORDER BY " + KEY_ID + " DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -431,8 +528,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /*******************************************
-    Begin product crude
-    ********************************************/
+     Begin product crude
+     ********************************************/
     public void createProduct(Product product) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -475,8 +572,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Toast.makeText(c, ""+productId +" "+categoryId, Toast.LENGTH_SHORT).show();
-        ContentValues values = new ContentValues();;
+        Toast.makeText(c, "" + productId + " " + categoryId, Toast.LENGTH_SHORT).show();
+        ContentValues values = new ContentValues();
+        ;
         values.put(KEY_CATEGORY_ID, categoryId);
 
         db.update(TABLE_PRODUCT, values, "id = ?", new String[]{String.valueOf(productId)});
@@ -487,7 +585,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Product> getProducts() {
         List<Product> products = new ArrayList<>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCT +" ORDER BY "+KEY_ID+" DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_PRODUCT + " ORDER BY " + KEY_ID + " DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -499,7 +597,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_PRICE)), cursor.getString(cursor.getColumnIndex(KEY_COST)),
                         cursor.getString(cursor.getColumnIndex(KEY_BARCODE)), cursor.getInt(cursor.getColumnIndex(KEY_DISCOUNT)),
                         cursor.getInt(cursor.getColumnIndex(KEY_STOCK)), cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)),""
+                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)), "",""
                 );
 
                 products.add(product);
@@ -513,10 +611,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public Product getProductById(int id) {
-        Product product =  null;
+        Product product = null;
 
-        String selectQuery = "SELECT products.*, categories.name as category FROM " + TABLE_PRODUCT +" INNER JOIN "+TABLE_CATEGORY+" " +
-                " ON categories.id = products.category_id WHERE products.id = "+id;
+        String selectQuery = "SELECT " + "products.*, categories.name as category, skus.name as sku FROM " + TABLE_PRODUCT
+                        + " LEFT JOIN " + TABLE_CATEGORY + " ON categories.id = products.category_id "
+                        + " LEFT JOIN " + TABLE_PRODUCT_SKU + " ON products.id = product_skus.product_id "
+                        + " LEFT JOIN " + TABLE_SKU + " ON skus.id = product_skus.sku_id WHERE products.id = " + id;
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -527,19 +627,80 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                     cursor.getString(cursor.getColumnIndex(KEY_PRICE)), cursor.getString(cursor.getColumnIndex(KEY_COST)),
                     cursor.getString(cursor.getColumnIndex(KEY_BARCODE)), cursor.getInt(cursor.getColumnIndex(KEY_DISCOUNT)),
                     cursor.getInt(cursor.getColumnIndex(KEY_STOCK)), cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
-                    cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)), cursor.getString(cursor.getColumnIndex("category")));
+                    cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)), cursor.getString(cursor.getColumnIndex("category")),
+                    cursor.getString(cursor.getColumnIndex("sku")));
         }
 
         database.close();
 
         return product;
     }
-    public int deleteProduct(int id){
+
+    public int deleteProduct(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_PRODUCT, "id=?", new String[] { String.valueOf(id)} );
+        database.delete(TABLE_PRODUCT, "id=?", new String[]{String.valueOf(id)});
 
         return 1;
     }
+
+    /*******************************************
+     Begin product crude
+     ********************************************/
+    public void createSku(Sku sku) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, sku.getName());
+        db.insert(TABLE_SKU, null, values);
+
+        db.close(); // Closing database connection
+    }
+
+    public void attachSkuToProduct(int skuId, int productId) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SKU_ID, skuId);
+        values.put(KEY_PRODUCT_ID, productId);
+
+        db.insert(TABLE_PRODUCT_SKU, null, values);
+        db.close();
+    }
+
+    public  void reAttachSkuToProduct(int skuId, int oldSkuId, int productId){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Log.d("SKU_TEST", ""+skuId +" "+productId);
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_SKU_ID, skuId);
+        values.put(KEY_PRODUCT_ID, productId);
+
+        String[] args = new String[]{""+oldSkuId, ""+productId};
+        db.update(TABLE_PRODUCT_SKU, values, "sku_id=? AND product_id=?", args);
+
+        db.close();
+    }
+
+    public int getSkuIdByName(String name){
+
+        int id = 0;
+
+        String selectQuery = "SELECT  id FROM " + TABLE_SKU +" WHERE name = '" + name + "'";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+           id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+        }
+
+        database.close();
+
+        return id;
+    }
+
+
     /*******************************************
      view database on the app
      ********************************************/

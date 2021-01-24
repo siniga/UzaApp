@@ -3,7 +3,6 @@ package com.agnet.uza.adapters;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,23 +11,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.NewProductFragment;
-import com.agnet.uza.fragments.ProductsFragment;
+import com.agnet.uza.fragments.products.EditProductFragment;
+import com.agnet.uza.fragments.products.NewProductFragment;
+import com.agnet.uza.fragments.products.ProductsFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.bumptech.glide.Glide;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
@@ -106,7 +101,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
                 _dbHandler.updateProductCategoryId(productId, currentCategory.getId());
 
-                new FragmentHelper(c).replace(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+                new FragmentHelper(c).replace(new EditProductFragment(), "EditProductFragment", R.id.fragment_placeholder);
 
             }
         });

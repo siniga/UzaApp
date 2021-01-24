@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.auth;
 
 
 import android.annotation.SuppressLint;
@@ -9,11 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
+import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.GenericTextWatcher;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

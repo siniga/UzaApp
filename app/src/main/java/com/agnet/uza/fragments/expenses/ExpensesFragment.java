@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.expenses;
 
 
 import android.annotation.SuppressLint;
@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesAdapter;
-import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Expense;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -24,7 +23,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewExpenseFragment extends Fragment   implements View.OnClickListener{
+public class ExpensesFragment extends Fragment {
 
     private FragmentActivity _c;
     private Gson _gson;
@@ -33,25 +32,50 @@ public class NewExpenseFragment extends Fragment   implements View.OnClickListen
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
 
+
     @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_expenses, container, false);
+        View view = inflater.inflate(R.layout.fragment_expenses, container, false);
         _c = getActivity();
 
         //binding
+        _expensesList = view.findViewById(R.id.expenses_list);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
+
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
+
+        // list setup
+        //category list
+        _expensesList.setHasFixedSize(true);
+        _expensesLayoutManager= new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
+        _expensesList.setLayoutManager( _expensesLayoutManager );
+
+
+
+        getLocalStores();
+
         return view;
 
+    }
+
+    public void getLocalStores() {
+
+        List<Expense> expenses = new ArrayList<>();
+        expenses.add(new Expense(1,"Umeme","23,333",2));
+        expenses.add(new Expense(1,"Umeme","10,000",2));
+        expenses.add(new Expense(1,"Umeme","14,000",2));
+        expenses.add(new Expense(1,"Umeme","3,000",2));
+        ExpensesAdapter adapter = new ExpensesAdapter(_c, expenses);
+        _expensesList.setAdapter(adapter);
     }
 
 
@@ -68,20 +92,5 @@ public class NewExpenseFragment extends Fragment   implements View.OnClickListen
     public void onPause() {
         super.onPause();
 
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
-                break;
-            case R.id.view_user_login:
-//                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
-                break;
-            default:
-                break;
-        }
     }
 }

@@ -7,47 +7,32 @@
     android:background="#d8d8d8"
     android:orientation="vertical"
     android:padding="15dp"
-    android:elevation="@dimen/padding_10">
+    android:elevation="@dimen/padding_10"
+>
 
 
     <RelativeLayout
-        android:background="@drawable/round_corners"
-        android:paddingLeft="15dp"
         android:id="@+id/btns_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
-
-        <ImageView
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_store"/>
-
-        <TextView
-            android:layout_marginLeft="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:textSize="11sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add a new store here"/>
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
 
         <Button
-            android:id="@+id/save_store_btn"
+            android:text="Update"
+            android:id="@+id/update_store_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
+            android:elevation="2dp"
             android:background="@color/white"
-            android:text="Save"
-            android:drawableRight="@drawable/ic_done_green_24dp"></Button>
+            android:drawableRight="@drawable/ic_done_green_24dp"/>
 
 
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/btns_wrapper"
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
@@ -105,7 +90,20 @@
                 android:padding="10dp" />
 
 
-
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
+                <Button
+                    android:drawableRight="@drawable/ic_delete"
+                    android:id="@+id/delete_store_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/white"
+                    android:text="Delete Store"
+                    android:textColor="@color/midd_grey" />
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName;
 public class Product {
 
     private  int id, discount, stock, categoryId;
-    private String name, price, cost, imgUrl, barcode, category;
+    private String name, price, cost, imgUrl, barcode, category, sku;
 
 
-    public Product(int id, String name, String price, String cost, String barcode, int discount, int stock, String imgUrl, int categoryId, String category) {
+    public Product(int id, String name, String price, String cost, String barcode, int discount, int stock, String imgUrl, int categoryId, String category, String sku) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -19,6 +19,7 @@ public class Product {
         this.stock = stock;
         this.barcode = barcode;
         this.category = category;
+        this.sku = sku;
     }
 
 
@@ -60,6 +61,10 @@ public class Product {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getSku() {
+        return sku;
     }
 }
 

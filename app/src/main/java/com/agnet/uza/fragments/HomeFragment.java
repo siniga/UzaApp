@@ -1,6 +1,7 @@
 package com.agnet.uza.fragments;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,18 +29,26 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.activities.ScannerActivity;
 import com.agnet.uza.adapters.ProductAdapter;
+import com.agnet.uza.fragments.categories.CategoryFragment;
+import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Product;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.MultiplePermissionsReport;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.pusher.client.channel.Channel;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationManagerCompat;
@@ -56,7 +66,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences.Editor _editor;
     private TextView _errorMsg;
     private DatabaseHandler _dbHandler;
-    private ShimmerFrameLayout _shimmerFrameLayout;
     private Channel _channel;
     private String _mPhone;
     private Handler _mHandler;
@@ -91,7 +100,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _c = getActivity();
 
         //binding
-        _shimmerFrameLayout = view.findViewById(R.id.shimmer_view_container);
         _errorMsg = view.findViewById(R.id.error_msg);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _categoryBtn = view.findViewById(R.id.category_btn);
@@ -147,6 +155,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         getPopularProducts();
         addEditTxtChangeListener();
         ((MainActivity) _c).setHomeIconBottomNav();
+
+
+        if(_preferences.getInt("CAMERA_FLAG", 0) == 1){
+            new FragmentHelper(_c).replaceWithbackStack(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+            _editor.remove("CAMERA_FLAG");
+            _editor.commit();
+
+            Toast.makeText(_c, "here now", Toast.LENGTH_SHORT).show();
+        }
+
 
         return view;
 
@@ -204,6 +222,55 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        _c.finish();
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
+
+    public void requestPermissions(){
+        Dexter.withActivity(_c)
+                .withPermissions(
+                        Manifest.permission.READ_CALENDAR,
+                        Manifest.permission.RECORD_AUDIO)
+//                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            // do you work now
+                        }
+
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // permission is denied permenantly, navigate user to app settings
+                        }
+                    }
+
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
+    }
     public static void showKeyboard(EditText editText) {
         editText.post(new Runnable() {
             @Override
