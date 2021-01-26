@@ -5,53 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d8d8d8"
+    android:elevation="@dimen/padding_10"
     android:orientation="vertical"
-    android:padding="15dp"
-    android:elevation="@dimen/padding_10">
+    android:padding="15dp">
 
 
     <RelativeLayout
-        android:background="@drawable/round_corners"
         android:paddingLeft="15dp"
         android:id="@+id/btns_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_marginTop="5dp"
+        android:background="@color/white">
 
         <ImageView
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:src="@drawable/ic_staffs"/>
-
-        <TextView
-            android:layout_marginLeft="30dp"
             android:layout_alignParentLeft="true"
             android:layout_centerInParent="true"
-            android:textSize="14sp"
+            android:src="@drawable/ic_staffs" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add a new staff here"/>
+            android:layout_alignParentLeft="true"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
+            android:text="Edit a staff here"
+            android:textSize="14sp" />
 
         <Button
-            android:id="@+id/save_staff_btn"
+            android:id="@+id/update_staff_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
             android:background="@color/white"
-            android:text="Save"
-            android:drawableRight="@drawable/ic_done_green_24dp"></Button>
+            android:drawableRight="@drawable/ic_done_green_24dp"
+            android:elevation="2dp"
+            android:text="Update" />
 
 
     </RelativeLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="25dp"
-        android:layout_below="@id/btns_wrapper"
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/btns_wrapper"
+        android:layout_marginTop="25dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -64,21 +65,21 @@
             android:padding="20dp">
 
             <TextView
-                android:textSize="16sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Personal Details"
                 android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:textSize="12sp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="Name"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/name"
@@ -92,9 +93,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Location"
+                android:inputType="number"
+                android:text="Phone"
                 android:textColor="@android:color/black"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
 
             <EditText
                 android:id="@+id/phone"
@@ -104,8 +106,20 @@
                 android:hint="Phone"
                 android:padding="10dp" />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp">
 
-
+                <Button
+                    android:id="@+id/delete_staff_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:backgroundTint="@color/white"
+                    android:drawableRight="@drawable/ic_delete"
+                    android:text="Delete Staff"
+                    android:textColor="@color/midd_grey" />
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>

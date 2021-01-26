@@ -16,6 +16,7 @@ import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Category;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
     private RecyclerView _categoryList;
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
+    private FloatingActionButton _fab;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -48,6 +50,7 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
+        _fab = _c.findViewById(R.id.fab);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -60,6 +63,8 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
         _categoryList.setHasFixedSize(true);
         _categoryLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _categoryList.setLayoutManager(_categoryLayoutManager);
+
+
 
 
         getLocalCategory();

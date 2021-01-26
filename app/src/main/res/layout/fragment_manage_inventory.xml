@@ -11,13 +11,14 @@
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tab_layout"
-        app:tabTextColor="@color/white"
+        app:tabTextColor="@color/blue"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tool_bar"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:elevation="6dp"
-        android:minHeight="?attr/actionBarSize"
+        android:minHeight="3dp"
+        app:tabIndicatorColor="@color/blue"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <androidx.viewpager.widget.ViewPager

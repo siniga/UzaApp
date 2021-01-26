@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +12,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,24 +25,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
-import com.agnet.uza.fragments.categories.NewCategoryFragment;
-import com.agnet.uza.fragments.inventories.InventoryCategoryFragment;
+import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
 import com.agnet.uza.fragments.inventories.InventoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
 import com.agnet.uza.models.Sku;
 import com.google.gson.Gson;
-
-import java.util.List;
 
 
 public class EditProductFragment extends Fragment implements View.OnClickListener {
@@ -188,7 +179,7 @@ public class EditProductFragment extends Fragment implements View.OnClickListene
             case R.id.change_category:
                 _editor.putInt("SELECTED_PRODUCT_ID", _product.getId());
                 _editor.commit();
-                new FragmentHelper(_c).replaceWithbackStack(new InventoryCategoryFragment(), "InventoryCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new ManageCategoryFragment(), "InventoryCategoryFragment", R.id.fragment_placeholder);
                 break;
             case R.id.qr_code_scanner_btn_wrapper:
             case R.id.qr_code_scanner_btn:

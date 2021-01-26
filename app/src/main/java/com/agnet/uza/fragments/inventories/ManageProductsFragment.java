@@ -36,6 +36,7 @@ import com.agnet.uza.adapters.ProductAdapter;
 import com.agnet.uza.adapters.UnitAdapter;
 import com.agnet.uza.application.mSingleton;
 import com.agnet.uza.fragments.HomeFragment;
+import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.AppManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
@@ -54,7 +55,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class InventoryProductsFragment extends Fragment {
+public class ManageProductsFragment extends Fragment {
 
     private FragmentActivity _c;
     private Toolbar _toolbar, _homeToolbar;
@@ -62,10 +63,12 @@ public class InventoryProductsFragment extends Fragment {
     private LinearLayoutManager _productLayoutManager;
     private List<Product> _products;
     private InventoryAdapter _productAdapter;
-    private FloatingActionButton _fab;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private DatabaseHandler _dbHandler;
+    private LinearLayout _newProductBtn;
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -83,6 +86,7 @@ public class InventoryProductsFragment extends Fragment {
         _toolbar = _c.findViewById(R.id.toolbar);
         _productList = view.findViewById(R.id.product_list);
         _dbHandler = new DatabaseHandler(_c);
+        _newProductBtn = view.findViewById(R.id.new_product_btn);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -95,6 +99,10 @@ public class InventoryProductsFragment extends Fragment {
 
         _toolbar.setTitle("Manage Inventory");
 
+
+        _newProductBtn.setOnClickListener(view1 -> {
+            new FragmentHelper(_c).replace(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+        });
 
         //methods
         getroducts();

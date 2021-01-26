@@ -16,19 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.CategoryAdapter;
-import com.agnet.uza.adapters.StaffsAdapter;
 import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class InventoryCategoryFragment extends Fragment   implements View.OnClickListener{
+public class SelectCategoryFragment extends Fragment   implements View.OnClickListener{
 
     private FragmentActivity _c;
     private Gson _gson;
@@ -42,7 +39,7 @@ public class InventoryCategoryFragment extends Fragment   implements View.OnClic
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_inventory_category, container, false);
+        View view = inflater.inflate(R.layout.fragment_select_category, container, false);
         _c = getActivity();
 
         _dbHandler = new DatabaseHandler(_c);

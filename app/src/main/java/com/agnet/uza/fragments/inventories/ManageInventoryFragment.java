@@ -9,20 +9,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.InventoryTabsAdapter;
-import com.agnet.uza.helpers.DatabaseHandler;
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import com.agnet.uza.R;
+import com.agnet.uza.activities.MainActivity;
+import com.agnet.uza.adapters.InventoryTabsAdapter;
+import com.agnet.uza.helpers.DatabaseHandler;
+import com.google.android.material.tabs.TabLayout;
 
-public class InventoryFragment extends Fragment {
+
+public class ManageInventoryFragment extends Fragment {
 
 
     private FragmentActivity _c;

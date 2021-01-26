@@ -290,16 +290,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public void UpdateUser(String phone, String name) {
+    public void updateUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(KEY_PHONE, phone);
-        values.put(KEY_NAME, name);
+        values.put(KEY_PHONE, user.getPhone());
+        values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
 
-        db.update(TABLE_USER, values, null, null);
+        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
 
         db.close(); // Closing database connection
     }
@@ -384,6 +384,41 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return users;
     }
 
+
+    public User getUser(int userId) {
+
+        User user = null;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_USER +" WHERE id = "+userId+" ORDER BY id DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                user = new User(
+
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME))
+                );
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return user;
+    }
+
+
+    public int deleteUser(int id) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_USER, "id=?", new String[]{String.valueOf(id)});
+
+        return 1;
+    }
+
+
     /*******************************************
      Begin street crude
      ********************************************/
@@ -397,6 +432,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         db.close(); // Closing database connection
     }
+
 
 
     /*******************************************
@@ -480,10 +516,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return 1;
     }
-
-
-
-
 
     /*******************************************
      Begin category crude

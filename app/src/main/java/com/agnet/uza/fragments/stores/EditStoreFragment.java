@@ -118,43 +118,6 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         });
     }
 
-
-
-    private void getCategories() {
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1, "Categories", "", 1));
-        categories.add(new Category(2, "Trousers", "", 1));
-        categories.add(new Category(3, "Pants", "", 1));
-        categories.add(new Category(4, "Sneakers", "", 1));
-        categories.add(new Category(5, "Official Shoes", "", 1));
-        categories.add(new Category(6, "Ties", "", 1));
-
-        // Creating adapter for spinner
-        ArrayAdapter<Category> dataAdapter = new ArrayAdapter<Category>(_c, android.R.layout.simple_spinner_item, categories);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-//        _spinnerCategory.setAdapter(dataAdapter);
-    }
-
-    private void getDiscounts() {
-        List<Discount> discounts = new ArrayList<>();
-        discounts.add(new Discount("Discounts", 0));
-        discounts.add(new Discount("Black friday", 13));
-        discounts.add(new Discount("Pasaka offer", 15));
-
-        // Creating adapter for spinner
-        ArrayAdapter<Discount> dataAdapter = new ArrayAdapter<Discount>(_c, android.R.layout.simple_spinner_item, discounts);
-
-        // Drop down layout style - list view with radio button
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // attaching data adapter to spinner
-//        _spinnerDiscount.setAdapter(dataAdapter);
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
