@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.fragments.products.EditProductFragment;
@@ -76,22 +78,20 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         final Category currentCategory = categories.get(position);
 
         holder.mName.setText(currentCategory.getName());
-        holder.mWrapper.setOnClickListener(new View.OnClickListener() {
+       /* holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                _editor.putString("CATEGORY_NAME",currentCategory.getName());
-                _editor.commit();
 
                 new FragmentHelper(c).replaceWithbackStack(new ProductsFragment(), "ProductsFragment", R.id.fragment_placeholder);
 
             }
-        });
+        });*/
 
         //since only one radio button is allowed to be selected,
         // this condition un-checks previous selections
         holder.mRadioSelected.setChecked(lastSelectedPosition == position);
-        holder.mRadioSelected.setOnClickListener(new View.OnClickListener() {
+        holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 lastSelectedPosition = position;
@@ -100,6 +100,11 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 int productId = _preferences.getInt("SELECTED_PRODUCT_ID", 0);
 
                 _dbHandler.updateProductCategoryId(productId, currentCategory.getId());
+
+                Toast.makeText(c, "jehe", Toast.LENGTH_SHORT).show();
+
+                _editor.putString("CATEGORY_NAME",currentCategory.getName());
+                _editor.commit();
 
                 new FragmentHelper(c).replace(new EditProductFragment(), "EditProductFragment", R.id.fragment_placeholder);
 
@@ -156,7 +161,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout mWrapper;
+        public RelativeLayout mWrapper;
         public TextView mName;
         public ImageView mImg;
         public LinearLayout mTransparentView;

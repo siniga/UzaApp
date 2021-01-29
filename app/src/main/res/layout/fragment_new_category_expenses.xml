@@ -54,7 +54,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
-                    android:id="@+id/save_product_btn"
+                    android:id="@+id/save_expenses_btn"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@color/colorPrimary"

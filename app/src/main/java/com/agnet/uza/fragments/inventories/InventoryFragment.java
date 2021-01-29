@@ -5,16 +5,21 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.InventoryTabsAdapter;
+import com.agnet.uza.fragments.MenuFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
+import com.agnet.uza.helpers.FragmentHelper;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -30,6 +35,7 @@ public class InventoryFragment extends Fragment {
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private DatabaseHandler _dbHandler;
+    private  ViewPager _viewPager;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -47,7 +53,6 @@ public class InventoryFragment extends Fragment {
         _toolbar = _c.findViewById(R.id.toolbar);
         _dbHandler = new DatabaseHandler(_c);
 
-
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
@@ -55,8 +60,38 @@ public class InventoryFragment extends Fragment {
 
 
         initializeTabLayout(view);
+
+        if (_preferences.getInt("INVENTORY_PAGE_TYPE", 0) == 1) {
+            _viewPager.setCurrentItem(1);
+            _editor.remove("INVENTORY_PAGE_TYPE");
+            _editor.commit();
+
+        }
+
         return view;
 
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        new FragmentHelper(_c).replace(new MenuFragment(), "MenuFragment", R.id.fragment_placeholder);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     private void initializeTabLayout(View view) {
@@ -67,16 +102,18 @@ public class InventoryFragment extends Fragment {
         tabLayout.addTab(tabLayout.newTab().setText("Categories"));
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        final ViewPager viewPager = view.findViewById(R.id.view_pager);
+      _viewPager = view.findViewById(R.id.view_pager);
+
 
         InventoryTabsAdapter tabsAdapter = new InventoryTabsAdapter(_c.getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(tabsAdapter);
+        _viewPager.setAdapter(tabsAdapter);
 
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        _viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
+                _viewPager.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -89,7 +126,9 @@ public class InventoryFragment extends Fragment {
 
             }
         });
+
     }
+
 
 
     @SuppressLint("RestrictedApi")

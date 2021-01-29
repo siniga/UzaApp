@@ -9,9 +9,9 @@ import com.agnet.uza.fragments.inventories.ManageProductsFragment;
 
 public class InventoryTabsAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
-    public InventoryTabsAdapter(FragmentManager fm, int NoofTabs){
+    public InventoryTabsAdapter(FragmentManager fm, int NoOfTabs){
         super(fm);
-        this.mNumOfTabs = NoofTabs;
+        this.mNumOfTabs = NoOfTabs;
     }
     @Override
     public int getCount() {

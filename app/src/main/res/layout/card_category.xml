@@ -9,6 +9,7 @@
     android:layout_marginBottom="5dp"
     android:background="@drawable/round_corners_white"
     android:clipToPadding="true"
+    android:id="@+id/category_wrapper"
     android:orientation="horizontal">
 
     <RelativeLayout
@@ -48,14 +49,13 @@
         android:visibility="gone">
 
         <LinearLayout
-            android:id="@+id/category_wrapper"
             android:layout_width="100dp"
             android:layout_height="90dp"
             android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/category_img"
+
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:scaleType="center" />

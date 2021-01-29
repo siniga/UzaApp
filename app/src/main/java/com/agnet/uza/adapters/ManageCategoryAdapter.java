@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
+import com.agnet.uza.fragments.categories.EditCategoryFragment;
 import com.agnet.uza.fragments.products.EditProductFragment;
 import com.agnet.uza.fragments.products.ProductsFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
@@ -79,10 +80,12 @@ public class ManageCategoryAdapter extends RecyclerView.Adapter<ManageCategoryAd
             @Override
             public void onClick(View v) {
 
+                _editor.putInt("NEW_CATEGORY_FLAG",1);
                 _editor.putInt("SELECTED_CATEGORY_ID",currentCategory.getId());
+                _editor.putString("SELECTED_CATEGORY_NAME", currentCategory.getName());
                 _editor.commit();
 
-
+                new FragmentHelper(c).replaceWithbackStack(new EditCategoryFragment(),"EditCategoryFragment",R.id.fragment_placeholder);
             }
         });
 

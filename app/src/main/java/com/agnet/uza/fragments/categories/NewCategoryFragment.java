@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -22,6 +24,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
+import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
 import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
@@ -68,6 +72,11 @@ public class NewCategoryFragment extends Fragment implements View.OnClickListene
 
         _saveProduct.setOnClickListener(this);
 
+        //set page flag so that when user go back to inventory fragment
+        //they can be redirected to category tab
+        _editor.putInt("INVENTORY_PAGE_TYPE", 1);
+        _editor.commit();
+
         return view;
 
     }
@@ -88,23 +97,57 @@ public class NewCategoryFragment extends Fragment implements View.OnClickListene
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                        new FragmentHelper(_c).replace(new InventoryFragment(), "InventoryFragment", R.id.fragment_placeholder);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_category_btn:
-                FragmentManager manager = getActivity().getSupportFragmentManager();
+              /*  FragmentManager manager = getActivity().getSupportFragmentManager();
                 FragmentTransaction trans = manager.beginTransaction();
                 trans.remove(new NewProductFragment());
                 trans.commit();
-                manager.popBackStack();
+                manager.popBackStack();*/
+                if (_preferences.getInt("NEW_CATEGORY_FLAG", 0) == 0) {
+                    if (!_categoryName.getText().toString().isEmpty()) {
 
-                if(_categoryName.getText().toString().isEmpty()){
-                    new FragmentHelper(_c).replace(new NewProductFragment(),"NewProductFragment",R.id.fragment_placeholder);
-                }else{
-                    _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0));
-                    new FragmentHelper(_c).replace(new NewProductFragment(),"NewProductFragment",R.id.fragment_placeholder);
+                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0));
+
+                    }
+
+                    new FragmentHelper(_c).replace(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+
+                } else {
+
+                    if (!_categoryName.getText().toString().isEmpty()) {
+                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0));
+                    }
+                 //   trans.remove(new InventoryFragment());
+                    new FragmentHelper(_c).replace(new InventoryFragment(), "InventoryFragment", R.id.fragment_placeholder);
                 }
+
+                _editor.remove("NEW_CATEGORY_FLAG");
+                _editor.commit();
 
                 break;
         }

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -17,8 +19,10 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesAdapter;
 import com.agnet.uza.fragments.ReceiptFragment;
+import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Expense;
+import com.agnet.uza.models.ExpensesCategory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -33,6 +37,9 @@ public class NewExpenseCategoryFragment extends Fragment   implements View.OnCli
     private RecyclerView _expensesList;
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
+    private EditText _name;
+    private Button _saveExpensesBtn;
+    private DatabaseHandler _dbHandler;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -41,29 +48,26 @@ public class NewExpenseCategoryFragment extends Fragment   implements View.OnCli
         View view = inflater.inflate(R.layout.fragment_new_category_expenses, container, false);
         _c = getActivity();
 
+        //initialization
+        _dbHandler = new DatabaseHandler(_c);
+
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
+        _name = view.findViewById(R.id.name);
+        _saveExpensesBtn = view.findViewById(R.id.save_expenses_btn);
+
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
+        _saveExpensesBtn.setOnClickListener(this);
+
         return view;
 
-    }
-
-    public void getLocalStores() {
-
-        List<Expense> expenses = new ArrayList<>();
-        expenses.add(new Expense(1,"Umeme","23,333",2));
-        expenses.add(new Expense(1,"Umeme","10,000",2));
-        expenses.add(new Expense(1,"Umeme","14,000",2));
-        expenses.add(new Expense(1,"Umeme","3,000",2));
-        ExpensesAdapter adapter = new ExpensesAdapter(_c, expenses);
-        _expensesList.setAdapter(adapter);
     }
 
 
@@ -86,11 +90,9 @@ public class NewExpenseCategoryFragment extends Fragment   implements View.OnCli
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
-                break;
-            case R.id.view_user_login:
-//                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+            case R.id.save_expenses_btn:
+                _dbHandler.createExpensesCategory(new ExpensesCategory(0, _name.getText().toString(),""));
+                new FragmentHelper(_c).replace(new ExpensesCategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
                 break;
             default:
                 break;

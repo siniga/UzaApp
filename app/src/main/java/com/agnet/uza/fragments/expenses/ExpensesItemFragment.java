@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExpensesFragment extends Fragment {
+public class ExpensesItemFragment extends Fragment {
 
     private FragmentActivity _c;
     private Gson _gson;

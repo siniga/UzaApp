@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 
+import com.agnet.uza.models.ExpensesCategory;
 import com.agnet.uza.models.Store;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
@@ -27,7 +28,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 17;
+    private static final int DATABASE_VERSION = 18;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -44,6 +45,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_SKU = "skus";
     private static final String TABLE_PRODUCT_UNIT = "product_units";
     private static final String TABLE_PRODUCT_SKU = "product_skus";
+    private static final String TABLE_EXPENSES_CATEGORY = "expenses_categories";
+    private static final String TABLE_EXPENSES_ITEM = "daily_expenses";
 
 
     //user table
@@ -74,6 +77,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     //sku
     private static final String KEY_SKU_ID = "sku_id";
     private static final String KEY_UNIT_ID = "unit_id";
+
+    //expense
+    private static final String KEY_AMOUNT = "amount";
+    private static final String KEY_EXPENSES_CATEGORY_ID = "expenses_categories_id";
 
 
     public DatabaseHandler(Context context) {
@@ -141,6 +148,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_UNIT_ID + " INTEGER,"
                 + KEY_PRODUCT_ID + " INTEGER" + ")";
 
+        String CREATE_EXPENSES_CATEGORY_TABLE = "CREATE TABLE " + TABLE_EXPENSES_CATEGORY + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_NAME + " TEXT,"
+                + KEY_AMOUNT + " TEXT " + ")";
+
+        String CREATE_EXPENSES_ITEM_TABLE = "CREATE TABLE " + TABLE_EXPENSES_ITEM + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_NAME + " TEXT,"
+                + KEY_AMOUNT + " TEXT,"
+                + KEY_EXPENSES_CATEGORY_ID + " TEXT " + ")";
+
 
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_STREET_TABLE);
@@ -152,6 +170,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_UNIT_TABLE);
         db.execSQL(CREATE_PRODUCT_SKU_TABLE);
         db.execSQL(CREATE_PRODUCT_UNIT_TABLE);
+        db.execSQL(CREATE_EXPENSES_CATEGORY_TABLE);
+        db.execSQL(CREATE_EXPENSES_ITEM_TABLE);
 
 
     }
@@ -361,7 +381,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<User> getUsers() {
         List<User> users = new ArrayList<>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_USER +"  ORDER BY id DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + "  ORDER BY id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -389,7 +409,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         User user = null;
 
-        String selectQuery = "SELECT  * FROM " + TABLE_USER +" WHERE id = "+userId+" ORDER BY id DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE id = " + userId + " ORDER BY id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -434,7 +454,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-
     /*******************************************
      Begin business crude
      ********************************************/
@@ -462,19 +481,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public List<Store> getStores() {
-        List<Store> businesses= new ArrayList<>();
+        List<Store> businesses = new ArrayList<>();
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS+ " JOIN "+TABLE_STREET+" ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS + " JOIN " + TABLE_STREET + " ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-              Store  business = new Store(
+                Store business = new Store(
 
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        new Street(0,"street")
+                        new Street(0, "street")
                 );
 
                 businesses.add(business);
@@ -487,26 +506,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return businesses;
     }
 
-    public Store getSelectedStore(int storeId){
+    public Store getSelectedStore(int storeId) {
 
         Store business = null;
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS+ " JOIN "+TABLE_STREET+" ON streets.id = businesses.street_id  WHERE businesses.id = "+storeId+" ORDER BY businesses.id DESC ";
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS + " JOIN " + TABLE_STREET + " ON streets.id = businesses.street_id  WHERE businesses.id = " + storeId + " ORDER BY businesses.id DESC ";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
 
-                 business = new Store(
-                        cursor.getInt(cursor.getColumnIndex("id")),
-                        cursor.getString(cursor.getColumnIndex("name")),
-                        new Street(0, cursor.getString(cursor.getColumnIndex("street")))
-                );
+            business = new Store(
+                    cursor.getInt(cursor.getColumnIndex("id")),
+                    cursor.getString(cursor.getColumnIndex("name")),
+                    new Street(0, cursor.getString(cursor.getColumnIndex("street")))
+            );
         }
 
         database.close();
 
-        return  business;
+        return business;
 
     }
 
@@ -527,6 +546,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, category.getName());
 
         db.insert(TABLE_CATEGORY, null, values);
+
+
+        db.close(); // Closing database connection
+    }
+
+    public void updateCategory(Category category) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, category.getName());
+
+        values.put(KEY_NAME, category.getName());
+
+        db.update(TABLE_CATEGORY, values, "id = ?", new String[]{String.valueOf(category.getId())});
 
 
         db.close(); // Closing database connection
@@ -557,6 +591,36 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         database.close();
 
         return categories;
+    }
+
+    public Category getCategory() {
+        Category category = null;
+
+        String selectQuery = "SELECT  * FROM " + TABLE_CATEGORY + " ORDER BY " + KEY_ID + " DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+
+            category = new Category(
+                    cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                    cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                    "",
+                    0
+            );
+
+        }
+
+        database.close();
+
+        return category;
+    }
+
+    public int deleteCategory(int id) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_CATEGORY, "id=?", new String[]{String.valueOf(id)});
+
+        return 1;
     }
 
     /*******************************************
@@ -629,7 +693,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_PRICE)), cursor.getString(cursor.getColumnIndex(KEY_COST)),
                         cursor.getString(cursor.getColumnIndex(KEY_BARCODE)), cursor.getInt(cursor.getColumnIndex(KEY_DISCOUNT)),
                         cursor.getInt(cursor.getColumnIndex(KEY_STOCK)), cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)), "",""
+                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_ID)), "", ""
                 );
 
                 products.add(product);
@@ -646,9 +710,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Product product = null;
 
         String selectQuery = "SELECT " + "products.*, categories.name as category, skus.name as sku FROM " + TABLE_PRODUCT
-                        + " LEFT JOIN " + TABLE_CATEGORY + " ON categories.id = products.category_id "
-                        + " LEFT JOIN " + TABLE_PRODUCT_SKU + " ON products.id = product_skus.product_id "
-                        + " LEFT JOIN " + TABLE_SKU + " ON skus.id = product_skus.sku_id WHERE products.id = " + id;
+                + " LEFT JOIN " + TABLE_CATEGORY + " ON categories.id = products.category_id "
+                + " LEFT JOIN " + TABLE_PRODUCT_SKU + " ON products.id = product_skus.product_id "
+                + " LEFT JOIN " + TABLE_SKU + " ON skus.id = product_skus.sku_id WHERE products.id = " + id;
 
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
@@ -700,37 +764,81 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    public  void reAttachSkuToProduct(int skuId, int oldSkuId, int productId){
+    public void reAttachSkuToProduct(int skuId, int oldSkuId, int productId) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Log.d("SKU_TEST", ""+skuId +" "+productId);
+        Log.d("SKU_TEST", "" + skuId + " " + productId);
 
         ContentValues values = new ContentValues();
         values.put(KEY_SKU_ID, skuId);
         values.put(KEY_PRODUCT_ID, productId);
 
-        String[] args = new String[]{""+oldSkuId, ""+productId};
+        String[] args = new String[]{"" + oldSkuId, "" + productId};
         db.update(TABLE_PRODUCT_SKU, values, "sku_id=? AND product_id=?", args);
 
         db.close();
     }
 
-    public int getSkuIdByName(String name){
+    public int getSkuIdByName(String name) {
 
         int id = 0;
 
-        String selectQuery = "SELECT  id FROM " + TABLE_SKU +" WHERE name = '" + name + "'";
+        String selectQuery = "SELECT  id FROM " + TABLE_SKU + " WHERE name = '" + name + "'";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
-           id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
+            id = cursor.getInt(cursor.getColumnIndex(KEY_ID));
         }
 
         database.close();
 
         return id;
     }
+
+
+    /*******************************************
+     Begin expenses category crude
+     ********************************************/
+    public void createExpensesCategory(ExpensesCategory category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, category.getName());
+        values.put(KEY_AMOUNT, category.getAmount());
+
+        db.insert(TABLE_EXPENSES_CATEGORY, null, values);
+
+        db.close(); // Closing database connection
+    }
+
+    public List<ExpensesCategory> getExpensesCategories() {
+        List<ExpensesCategory> categories = new ArrayList<>();
+
+        String selectQuery = "SELECT  * FROM " + TABLE_EXPENSES_CATEGORY + " ORDER BY " + KEY_ID + " DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ExpensesCategory category = new ExpensesCategory(
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        ""
+                );
+
+
+                categories.add(category);
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return categories;
+    }
+
+
 
 
     /*******************************************

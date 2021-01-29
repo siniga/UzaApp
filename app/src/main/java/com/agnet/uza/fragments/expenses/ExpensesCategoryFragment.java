@@ -19,8 +19,10 @@ import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesCategoryAdapter;
 import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.fragments.expenses.NewExpenseCategoryFragment;
+import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Expense;
+import com.agnet.uza.models.ExpensesCategory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -36,6 +38,7 @@ public class ExpensesCategoryFragment extends Fragment   implements View.OnClick
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
     private LinearLayout _newBtn;
+    private DatabaseHandler _dbHandler;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -44,12 +47,16 @@ public class ExpensesCategoryFragment extends Fragment   implements View.OnClick
         View view = inflater.inflate(R.layout.fragment_expenses_category, container, false);
         _c = getActivity();
 
+        //initialization
+        _dbHandler = new DatabaseHandler(_c);
+
         //binding
         _expensesList = view.findViewById(R.id.expenses_list);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _newBtn = view.findViewById(R.id.new_expense_category_btn);
+
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -80,11 +87,8 @@ public class ExpensesCategoryFragment extends Fragment   implements View.OnClick
 
     public void getLocalStores() {
 
-        List<Expense> expenses = new ArrayList<>();
-        expenses.add(new Expense(1,"Umeme","23,333",2));
-        expenses.add(new Expense(1,"Mafuta","10,000",2));
-        expenses.add(new Expense(1,"Usafiri","14,000",2));
-        expenses.add(new Expense(1,"Maji","3,000",2));
+        List<ExpensesCategory> expenses = _dbHandler.getExpensesCategories();
+
         ExpensesCategoryAdapter adapter = new ExpensesCategoryAdapter(_c, expenses);
         _expensesList.setAdapter(adapter);
     }

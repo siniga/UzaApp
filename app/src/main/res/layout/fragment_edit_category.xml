@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cart_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#d8d8d8"
-    android:orientation="vertical"
     android:padding="15dp"
->
-
+    android:background="#d8d8d8"
+    android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/btns_wrapper"
@@ -19,7 +17,7 @@
 
         <Button
             android:text="Update"
-            android:id="@+id/update_store_btn"
+            android:id="@+id/update_category_btn"
             android:layout_width="100dp"
             android:layout_height="50dp"
             android:layout_alignParentRight="true"
@@ -29,11 +27,9 @@
 
 
     </RelativeLayout>
-
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/btns_wrapper"
         android:id="@+id/scroll_view"
+        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -52,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Personal Details"
+                android:text="Category Details"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
 
@@ -64,28 +60,13 @@
                 android:text="Name"
                 android:textColor="@android:color/black" />
 
+
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/category_name"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Name"
-                android:padding="10dp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Location"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"/>
-
-            <EditText
-                android:id="@+id/location"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Location"
+                android:hint="Category Name"
                 android:padding="10dp" />
 
 
@@ -96,11 +77,11 @@
                 >
                 <Button
                     android:drawableRight="@drawable/ic_delete"
-                    android:id="@+id/delete_store_btn"
+                    android:id="@+id/delete_category_btn"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@color/white"
-                    android:text="Delete Store"
+                    android:text="Delete Category"
                     android:textColor="@color/midd_grey" />
             </LinearLayout>
         </LinearLayout>
@@ -108,4 +89,4 @@
     </androidx.core.widget.NestedScrollView>
 
 
-</RelativeLayout>
+</LinearLayout>

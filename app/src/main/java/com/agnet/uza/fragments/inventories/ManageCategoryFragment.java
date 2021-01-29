@@ -2,12 +2,17 @@ package com.agnet.uza.fragments.inventories;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -42,6 +47,8 @@ public class ManageCategoryFragment extends Fragment implements View.OnClickList
     private BottomNavigationView _bottomNavigation;
     private DatabaseHandler _dbHandler;
     private LinearLayout _newCategoryBtn;
+    private SharedPreferences _preferences;
+    private SharedPreferences.Editor _editor;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -50,6 +57,10 @@ public class ManageCategoryFragment extends Fragment implements View.OnClickList
         View view = inflater.inflate(R.layout.fragment_manage_category, container, false);
         _c = getActivity();
 
+
+        //initialize
+        _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
+        _editor = _preferences.edit();
         _dbHandler = new DatabaseHandler(_c);
 
         //binding
@@ -64,31 +75,23 @@ public class ManageCategoryFragment extends Fragment implements View.OnClickList
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
-
         // list setup
         //category list
         _categoryList.setHasFixedSize(true);
         _categoryLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _categoryList.setLayoutManager(_categoryLayoutManager);
 
-        _newCategoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FragmentHelper(_c).replaceWithbackStack(new NewCategoryFragment(),"NewCategoryFragment", R.id.fragment_placeholder);
-            }
-        });
+        List<Category> categories = _dbHandler.getCategories();
+        ManageCategoryAdapter adapter = new ManageCategoryAdapter(_c, categories);
+        _categoryList.setAdapter(adapter);
 
-        getLocalCategory();
+        _newCategoryBtn.setOnClickListener(this);
+
         return view;
 
     }
 
-    public void getLocalCategory() {
 
-        List<Category> categories = _dbHandler.getCategories();
-        ManageCategoryAdapter adapter = new ManageCategoryAdapter(_c, categories);
-        _categoryList.setAdapter(adapter);
-    }
 
 
     @Override
@@ -110,11 +113,10 @@ public class ManageCategoryFragment extends Fragment implements View.OnClickList
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
-                break;
-            case R.id.view_user_login:
-//                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+            case R.id.new_category_btn:
+                _editor.putInt("NEW_CATEGORY_FLAG",1);
+                _editor.commit();
+                new FragmentHelper(_c).replace(new NewCategoryFragment(), "NewCategoryFragment", R.id.fragment_placeholder);
                 break;
             default:
                 break;

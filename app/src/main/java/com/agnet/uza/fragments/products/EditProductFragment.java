@@ -32,6 +32,7 @@ import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
 import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
 import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.inventories.SelectCategoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Product;
@@ -179,7 +180,7 @@ public class EditProductFragment extends Fragment implements View.OnClickListene
             case R.id.change_category:
                 _editor.putInt("SELECTED_PRODUCT_ID", _product.getId());
                 _editor.commit();
-                new FragmentHelper(_c).replaceWithbackStack(new ManageCategoryFragment(), "InventoryCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new SelectCategoryFragment(), "SelectCategoryFragment", R.id.fragment_placeholder);
                 break;
             case R.id.qr_code_scanner_btn_wrapper:
             case R.id.qr_code_scanner_btn:

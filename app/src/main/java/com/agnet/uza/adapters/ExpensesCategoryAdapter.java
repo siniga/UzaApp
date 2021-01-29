@@ -12,10 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.expenses.ExpensesFragment;
+import com.agnet.uza.fragments.expenses.ExpensesItemFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Expense;
+import com.agnet.uza.models.ExpensesCategory;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ import java.util.List;
  */
 public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCategoryAdapter.ViewHolder> {
 
-    private List<Expense> expenses= Collections.emptyList();
+    private List<ExpensesCategory> expenses= Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private int locateId;
@@ -42,7 +43,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ExpensesCategoryAdapter(Context c, List<Expense> expenses) {
+    public ExpensesCategoryAdapter(Context c, List<ExpensesCategory> expenses) {
         this.expenses = expenses;
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
@@ -73,7 +74,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
-        final Expense currentExpense = expenses.get(position);
+        final ExpensesCategory currentExpense = expenses.get(position);
 
 
         holder.mName.setText(currentExpense.getName());
@@ -84,7 +85,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new FragmentHelper(c).replaceWithbackStack(new ExpensesFragment(),"ExpensesFragment", R.id.fragment_placeholder);
+                new FragmentHelper(c).replaceWithbackStack(new ExpensesItemFragment(),"ExpensesFragment", R.id.fragment_placeholder);
 
             }
         });
