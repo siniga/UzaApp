@@ -21,20 +21,18 @@ import com.agnet.uza.adapters.CategoryProductAdapter;
 import com.agnet.uza.adapters.ProductAdapter;
 import com.agnet.uza.adapters.UnitAdapter;
 import com.agnet.uza.application.mSingleton;
-import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.AppManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.StatusBarHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
-import com.agnet.uza.models.ResponseData;
+import com.agnet.uza.models.Response;
 import com.agnet.uza.models.Unit;
 import com.agnet.uza.service.Endpoint;
 import com.android.volley.Cache;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
@@ -241,6 +239,7 @@ public class ProductsFragment extends Fragment {
     }
 
 
+/*
     public void getProductsByCategory(int id) {
 
         _errorMsg.setVisibility(View.GONE);
@@ -248,7 +247,7 @@ public class ProductsFragment extends Fragment {
         Endpoint.setUrl("mobile/products/" + id);
         String url = Endpoint.getUrl();
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
+                new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
@@ -256,22 +255,26 @@ public class ProductsFragment extends Fragment {
 
                         if (!AppManager.isNullOrEmpty(response)) {
 
-                            ResponseData res = _gson.fromJson(response, ResponseData.class);
+                            Response res = _gson.fromJson(response, Response.class);
 
                             List<Product> products = res.getProducts();
 
                             if (products.size() != 0) {
 
                                 _errorMsg.setVisibility(View.GONE);
-                              /*  ProductAdapter productAdapter = new ProductAdapter(_c, products, ProductsFragment.this);
-                                _productList.setAdapter(productAdapter);*/
+                              */
+/*  ProductAdapter productAdapter = new ProductAdapter(_c, products, ProductsFragment.this);
+                                _productList.setAdapter(productAdapter);*//*
+
                                 // productAdapter.filterList(products);
 
                             } else {
 
                                 _errorMsg.setVisibility(View.VISIBLE);
-                            /*   _productAdapter = new ProductAdapter(_c, products, ProductsFragment.this);
-                                _productList.setAdapter(_productAdapter);*/
+                            */
+/*   _productAdapter = new ProductAdapter(_c, products, ProductsFragment.this);
+                                _productList.setAdapter(_productAdapter);*//*
+
 
                             }
 
@@ -281,7 +284,7 @@ public class ProductsFragment extends Fragment {
                         }
                     }
                 },
-                new Response.ErrorListener() {
+                new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
@@ -303,7 +306,7 @@ public class ProductsFragment extends Fragment {
                 }
         ) {
             @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
+            protected com.android.volley.Response parseNetworkResponse(NetworkResponse response) {
                 try {
                     Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
                     if (cacheEntry == null) {
@@ -329,9 +332,9 @@ public class ProductsFragment extends Fragment {
                     cacheEntry.responseHeaders = response.headers;
                     final String jsonString = new String(response.data,
                             HttpHeaderParser.parseCharset(response.headers));
-                    return Response.success(jsonString, cacheEntry);
+                    return com.android.volley.Response.success(jsonString, cacheEntry);
                 } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
+                    return com.android.volley.Response.error(new ParseError(e));
                 }
             }
 
@@ -369,6 +372,7 @@ public class ProductsFragment extends Fragment {
             }
         });
     }
+*/
 
 
 }

@@ -24,8 +24,8 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
+import com.agnet.uza.models.Address;
 import com.agnet.uza.models.Business;
-import com.agnet.uza.models.Street;
 
 
 public class EditStoreFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -38,6 +38,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
     private EditText _name, _location;
     private Button _saveStore, _deleteStore;
     private DatabaseHandler _dbHandler;
+    private int _selectedBusinessId;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -63,10 +64,13 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
-        _toolbar.setTitle("Edit "+_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getName());
 
-        _name.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getName());
-        //_location.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getStreet().getName());
+        _selectedBusinessId = _preferences.getInt("SELECTED_STORE_ID",0);
+
+
+        Business business = _dbHandler.getSelectedBusiness(_selectedBusinessId);
+        _toolbar.setTitle("Edit "+business.getName());
+        _name.setText(business.getName());
 
         //events
         _saveStore.setOnClickListener(this);
@@ -127,17 +131,18 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.update_store_btn:
-                _dbHandler.createStreet(_location.getText().toString());
+                String addressName = _location.getText().toString();
+                _dbHandler.createAddress(new Address(0,addressName, "","",0));
 
                 //get street last id and store it into business table to show its address
-                int lastId = _dbHandler.getLastId("streets");
-                _dbHandler.updateStore(new Business(_preferences.getInt("SELECTED_STORE_ID",0),_name.getText().toString(), lastId));
+                int lastId = _dbHandler.getLastId("addresses");
+                _dbHandler.updateBusiness(new Business(_selectedBusinessId,_name.getText().toString(), lastId));
 
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 
                 break;
             case R.id.delete_store_btn:
-                _dbHandler.deleteStore(_preferences.getInt("SELECTED_STORE_ID",0));
+                _dbHandler.deleteBusiness(_selectedBusinessId);
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
                 Toast.makeText(_c, "Item is deleted!", Toast.LENGTH_SHORT).show();
                 break;

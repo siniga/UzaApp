@@ -76,7 +76,7 @@ public class StoresFragment extends Fragment   implements View.OnClickListener{
 
     public void getLocalStores() {
 
-        List<Business> stores = _dbHandler.getStores();
+        List<Business> stores = _dbHandler.getBusinesses();
 
         StoresAdapter adapter = new StoresAdapter(_c, stores);
         _storeList.setAdapter(adapter);

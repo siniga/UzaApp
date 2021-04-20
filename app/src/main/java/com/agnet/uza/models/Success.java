@@ -1,11 +1,13 @@
 package com.agnet.uza.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
-public class ResponseData {
+public class Success {
     private User user;
 
-    private List<Street> streets;
+    private List<Address> addresses;
 
     private List<Outlet> outlets;
 
@@ -19,15 +21,18 @@ public class ResponseData {
 
     private List<Partner> partners;
 
-    private int code;
-
     private String token;
 
     private Business business;
 
+    @SerializedName("address")
+    private Address address;
 
-    public ResponseData(List streets, List products, List outlets, List categories, List skus, List<History> orders, List<Partner> partners, User user, int code, String token, Business business) {
-        this.streets = streets;
+
+    public Success(List streets, List products, List outlets, List categories, List skus, List<History> orders,
+                   List<Partner> partners, User user, String token, Business business, Address address) {
+
+        this.addresses = streets;
         this.products = products;
         this.outlets = outlets;
         this.categories = categories;
@@ -35,9 +40,9 @@ public class ResponseData {
         this.orders = orders;
         this.partners = partners;
         this.user = user;
-        this.code = code;
         this.token = token;
         this.business = business;
+        this.address = address;
     }
 
     public User getUser() {
@@ -48,8 +53,8 @@ public class ResponseData {
         return partners;
     }
 
-    public List<Street> getStreets() {
-        return streets;
+    public List<Address> getAddresses() {
+        return addresses;
     }
 
     public List<Product> getProducts() {
@@ -72,10 +77,6 @@ public class ResponseData {
         return orders;
     }
 
-    public int getCode() {
-        return code;
-    }
-
     public String getToken() {
         return token;
     }
@@ -83,4 +84,9 @@ public class ResponseData {
     public Business getBusiness() {
         return business;
     }
+
+    public Address getAddress() {
+        return address;
+    }
+
 }

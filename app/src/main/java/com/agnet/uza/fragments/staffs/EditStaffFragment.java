@@ -130,7 +130,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener{
                     return;
                 }
 
-                _dbHandler.updateUser(new User(_userId,_phone.getText().toString(),_name.getText().toString()));
+                _dbHandler.updateUser(new User(_userId,_phone.getText().toString(),_name.getText().toString(),0));
                 new FragmentHelper(_c).replace(new StaffFragment(),"StaffFragment",R.id.fragment_placeholder);
 
                 break;

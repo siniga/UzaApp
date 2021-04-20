@@ -74,13 +74,12 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
         //get a position of a current saleItem
         final Category currentCategory = categories.get(position);
 
-
         holder.mName.setText(currentCategory.getName());
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                ((ProductsFragment) fragment).getProductsByCategory(currentCategory.getServerId());
+               // ((ProductsFragment) fragment).getProductsByCategory(currentCategory.getServerId());
 
                 index = position;
                 notifyDataSetChanged();
@@ -90,7 +89,6 @@ public class CategoryProductAdapter extends RecyclerView.Adapter<CategoryProduct
 
             }
         });
-
 
         if (index == -1) {
             index = _preferences.getInt("CATEGORY_POSITION", 0);

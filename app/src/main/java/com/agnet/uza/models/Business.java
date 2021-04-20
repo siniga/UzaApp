@@ -7,12 +7,12 @@ public class Business {
     private String name;
 
     @SerializedName("address_id")
-    private int streetId;
+    private int addressId;
 
-    public Business(int id, String name, int streetId) {
+    public Business(int id, String name, int addressId) {
         this.id = id;
         this.name = name;
-        this.streetId = streetId;
+        this.addressId =  addressId;
     }
 
     public int getId() {
@@ -24,7 +24,7 @@ public class Business {
         return name;
     }
 
-    public int getStreetId() {
-        return streetId;
+    public int getAddressId() {
+        return addressId;
     }
 }

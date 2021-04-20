@@ -25,10 +25,10 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
+import com.agnet.uza.models.Address;
 import com.agnet.uza.models.Business;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Discount;
-import com.agnet.uza.models.Street;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,15 +165,19 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
         switch (view.getId()) {
             case R.id.save_store_btn:
 
-                if(_name.getText().toString().isEmpty() || _location.getText().toString().isEmpty()){
+                String addressName = _location.getText().toString();
+                String businessName = _name.getText().toString();
+
+                if(businessName.isEmpty() || addressName.isEmpty()){
                     Toast.makeText(_c, "Fields should not be empty!", Toast.LENGTH_LONG).show();
                     return;
                 }
-                _dbHandler.createStreet(_location.getText().toString());
+
+                _dbHandler.createAddress(new Address(0,addressName,"","",0));
 
                 //get street last id and store it into business table to show its address
-                int lastId = _dbHandler.getLastId("streets");
-                _dbHandler.createStore(new Business(0,_name.getText().toString(), lastId));
+                int lastId = _dbHandler.getLastId("addresses");
+                _dbHandler.createBusiness(new Business(0,_name.getText().toString(), lastId));
 
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 

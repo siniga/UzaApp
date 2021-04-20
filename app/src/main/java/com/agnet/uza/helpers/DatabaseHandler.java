@@ -19,7 +19,7 @@ import com.agnet.uza.models.Business;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
 import com.agnet.uza.models.Sku;
-import com.agnet.uza.models.Street;
+import com.agnet.uza.models.Address;
 import com.agnet.uza.models.User;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 30;
+    private static final int DATABASE_VERSION = 33;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -38,9 +38,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     // table names
     private static final String TABLE_USER = "users";
-    private static final String TABLE_STREET = "streets";
+    private static final String TABLE_ADDRESS = "addresses";
     private static final String TABLE_BUSINESS = "businesses";
-    private static final String TABLE_USER_BUSINESS = "user_business";
     private static final String TABLE_CATEGORY = "categories";
     private static final String TABLE_PRODUCT = "products";
     private static final String TABLE_UNIT = "units";
@@ -51,22 +50,23 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_EXPENSES_ITEM = "expense_items";
     private static final String TABLE_ORDER = "orders";
     private static final String TABLE_CART = "carts";
-    private static final String TABLE_STOCK_TEMP = "stock_temps";
-
 
     //user table
     private static final String KEY_PHONE = "phone";
     private static final String KEY_PIN = "pin";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_SYNC_STATUS = "sync_status";
+    private static final String KEY_SERVER_ID = "server_id";
 
-    //streets table
+    //address table
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
-    private static final String KEY_STREET_ID = "street_id";
+    private static final String KEY_CITY = "city";
+    private static final String KEY_COUNTRY = "country";
 
     //business
     private static final String KEY_BUSINESS_ID = "business_id";
+    private static final String KEY_ADDRESS_ID = "address_id";
 
     //
     private static final String KEY_CATEGORY_ID = "category_id";
@@ -114,21 +114,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT,"
                 + KEY_PIN + " INTEGER,"
                 + KEY_PHONE + " TEXT,"
-                + KEY_SYNC_STATUS + " INTEGER " + ")";
+                + KEY_SYNC_STATUS+ " INTEGER " + ")";
 
-        String CREATE_STREET_TABLE = "CREATE TABLE " + TABLE_STREET + "("
+        String CREATE_ADDRESS_TABLE = "CREATE TABLE " + TABLE_ADDRESS+ "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_NAME + " TEXT " + ")";
+                + KEY_NAME + " TEXT,"
+                + KEY_CITY + " TEXT,"
+                + KEY_COUNTRY + " TEXT,"
+                + KEY_SYNC_STATUS + " INTEGER " + ")";
 
         String CREATE_BUSINESS_TABLE = "CREATE TABLE " + TABLE_BUSINESS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
-                + KEY_STREET_ID + " INTEGER " + ")";
-
-        String CREATE_USER_BUSINESS = "CREATE TABLE " + TABLE_USER_BUSINESS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_USER_ID + " TEXT,"
-                + KEY_BUSINESS_ID + " INTEGER " + ")";
+                + KEY_ADDRESS_ID + " INTEGER " + ")";
 
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -192,16 +190,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_QUANTITY + " TEXT,"
                 + KEY_ORDER_ID + " INTEGER " + ")";
 
-        String CREATE_STOCK_TEMP_TABLE = "CREATE TABLE " + TABLE_STOCK_TEMP + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_STOCK + " INTEGER,"
-                + KEY_PRODUCT_ID + " INTEGER " + ")";
-
 
         db.execSQL(CREATE_USER_TABLE);
-        db.execSQL(CREATE_STREET_TABLE);
+        db.execSQL(CREATE_ADDRESS_TABLE);
         db.execSQL(CREATE_BUSINESS_TABLE);
-        db.execSQL(CREATE_USER_BUSINESS);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_PRODUCT_TABLE);
         db.execSQL(CREATE_SKU_TABLE);
@@ -212,7 +204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_EXPENSES_ITEM_TABLE);
         db.execSQL(CREATE_ORDER_TABLE);
         db.execSQL(CREATE_CART_TABLE);
-        db.execSQL(CREATE_STOCK_TEMP_TABLE);
+
 
 
     }
@@ -222,9 +214,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STREET);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_ADDRESS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USER_BUSINESS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_SKU);
@@ -235,8 +226,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES_ITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STOCK_TEMP);
-
 
         // Create tables again
         onCreate(db);
@@ -438,7 +427,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
-                        cursor.getString(cursor.getColumnIndex(KEY_NAME))
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
                 );
 
                 users.add(user);
@@ -466,7 +456,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
-                        cursor.getString(cursor.getColumnIndex(KEY_NAME))
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
                 );
 
             } while (cursor.moveToNext());
@@ -489,12 +480,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin street crude
      ********************************************/
-    public void createStreet(String name) {
+    public void createAddress(Address address) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, name);
-        db.insert(TABLE_STREET, null, values);
+        values.put(KEY_NAME, address.getName());
+        values.put(KEY_CITY, address.getCity());
+        values.put(KEY_COUNTRY, address.getCountry());
+        values.put(KEY_SYNC_STATUS, address.getSyncStatus());
+
+        db.insert(TABLE_ADDRESS, null, values);
 
 
         db.close(); // Closing database connection
@@ -504,44 +499,34 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin business crude
      ********************************************/
-    public void createStore(Business business) {
+    public void createBusiness(Business business) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, business.getName());
-        values.put(KEY_STREET_ID, business.getStreetId());
+        values.put(KEY_ADDRESS_ID, business.getAddressId());
         db.insert(TABLE_BUSINESS, null, values);
 
 
         db.close(); // Closing database connection
     }
 
-    public void updateStore(Business store) {
+    public void updateBusiness(Business business) {
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, store.getName());
-        values.put(KEY_STREET_ID, store.getStreetId());
-        db.update(TABLE_BUSINESS, values, "id = ?", new String[]{String.valueOf(store.getId())});
+        values.put(KEY_NAME, business.getName());
+        values.put(KEY_ADDRESS_ID, business.getAddressId());
+        db.update(TABLE_BUSINESS, values, "id = ?", new String[]{String.valueOf(business.getId())});
         db.close(); // Closing database connection
     }
 
-    public void createUserBusiness(int userId, int businessId) {
-        SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues values = new ContentValues();
-        values.put(KEY_USER_ID, userId);
-        values.put(KEY_BUSINESS_ID, businessId);
-        db.insert(TABLE_USER_BUSINESS, null, values);
-
-        db.close(); // Closing database connection
-    }
-
-    public List<Business> getStores() {
+    public List<Business> getBusinesses() {
         List<Business> businesses = new ArrayList<>();
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS + " JOIN " + TABLE_STREET + " ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -564,11 +549,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return businesses;
     }
 
-    public Business getSelectedStore(int storeId) {
+    public Business getSelectedBusiness(int storeId) {
 
         Business business = null;
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS + " JOIN " + TABLE_STREET + " ON streets.id = businesses.street_id  WHERE businesses.id = " + storeId + " ORDER BY businesses.id DESC ";
+        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON streets.id = businesses.street_id  WHERE businesses.id = " + storeId + " ORDER BY businesses.id DESC ";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -587,7 +572,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-    public int deleteStore(int id) {
+    public int deleteBusiness(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
         database.delete(TABLE_BUSINESS, "id=?", new String[]{String.valueOf(id)});
 

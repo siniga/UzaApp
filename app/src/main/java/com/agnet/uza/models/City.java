@@ -1,12 +1,12 @@
 package com.agnet.uza.models;
 
-public class Street {
+public class City {
 
     int id;
     String  name;
 
 
-    public Street(int id, String name){
+    public City(int id, String name){
         this.id = id;
         this.name = name;
     }

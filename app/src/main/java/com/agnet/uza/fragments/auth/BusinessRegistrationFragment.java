@@ -27,18 +27,19 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.agnet.uza.R;
 import com.agnet.uza.application.mSingleton;
+import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
+import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.BusinessType;
-import com.agnet.uza.models.ResponseData;
+import com.agnet.uza.models.Response;
 import com.agnet.uza.models.Business;
-import com.agnet.uza.models.Street;
+import com.agnet.uza.models.Address;
+import com.agnet.uza.models.Success;
+import com.agnet.uza.models.User;
 import com.agnet.uza.service.Endpoint;
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
@@ -67,7 +68,10 @@ public class BusinessRegistrationFragment extends Fragment {
     private int _typeId;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
-    private  String _token;
+    private String _TOKEN;
+    private User _user;
+    private int _USER_ID;
+    private String TAG = "RESPONSE_TAG";
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -91,12 +95,6 @@ public class BusinessRegistrationFragment extends Fragment {
         _transparentLoader = view.findViewById(R.id.transparent_loader);
         _registerBtn = view.findViewById(R.id.register_btn);
 
-        if(_preferences.getString("USER_TOKEN", null) != null){
-            _token = _preferences.getString("USER_TOKEN", null);
-
-            Log.d("HEREGETE",_token);
-        }
-
         _registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,7 +104,14 @@ public class BusinessRegistrationFragment extends Fragment {
                 _city = _cityInput.getText().toString();
                 _country = _countryInput.getText().toString();
 
-                registerBusinessOnline();
+                if (!checkEmptyFields()) {
+                    if (checkConnection()) {
+                        saveBusinessOnline();
+                    } else {
+                        saveBusinessTolocal();
+                    }
+                }
+
             }
         });
 
@@ -123,6 +128,14 @@ public class BusinessRegistrationFragment extends Fragment {
             }
         });
 
+        if (_preferences.getString("USER_TOKEN", null) != null) {
+            _TOKEN = _preferences.getString("USER_TOKEN", null);
+        }
+
+        if (_preferences.getInt("USER_ID", 0) != 0) {
+            _USER_ID = _preferences.getInt("USER_ID", 0);
+        }
+
         getCustomerType();
 
         return view;
@@ -130,6 +143,7 @@ public class BusinessRegistrationFragment extends Fragment {
     }
 
     private void getCustomerType() {
+
         _businessType = new ArrayList<>();
         _businessType.add(new BusinessType(1, "Urembo"));
         _businessType.add(new BusinessType(2, "Bar"));
@@ -150,69 +164,92 @@ public class BusinessRegistrationFragment extends Fragment {
         _businessTypesSpinner.setAdapter(dataAdapter);
     }
 
-    /*private void saveUseTolocal() {
-        _dbHandler.createUser(_phone, _name, 0);
-    }*/
+    private boolean checkEmptyFields() {
+        if (_name.isEmpty()) {
+            Toast.makeText(_c, "Ingiza jina la biashara!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (_street.isEmpty()) {
+            Toast.makeText(_c, "Ingiza jina la mtaa!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (_city.isEmpty()) {
+            Toast.makeText(_c, "Ingiza jina la mji!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (_country.isEmpty()) {
+            Toast.makeText(_c, "Ingiza jina la nchi!", Toast.LENGTH_LONG).show();
+            return true;
+        }
 
-    private void registerBusinessOnline() {
+        return false;
+    }
+
+    private void saveBusinessTolocal() {
+        _dbHandler.createAddress(new Address(0, _street, _city, _country, 0));
+        int lastId = _dbHandler.getLastId("addresses");
+
+        _dbHandler.createBusiness(new Business(0, _name, lastId));
+    }
+
+    private void saveBusinessOnline() {
 
         _progressBar.setVisibility(View.VISIBLE);
         _transparentLoader.setVisibility(View.VISIBLE);
 
         Endpoint.setUrl("business");
         String url = Endpoint.getUrl();
-        Toast.makeText(_c, "" + _name + " " + _street + " " + _city + " " + _country + " " + _typeName + " " + _typeId, Toast.LENGTH_SHORT).show();
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        ResponseData res = _gson.fromJson(response, ResponseData.class);
+                response -> {
+                    Response res = _gson.fromJson(response, Response.class);
 
-//                        Log.d("RESPONSE", _gson.toJson(business));
+                    Log.d(TAG, response);
 
-                        if (res.getCode() == 201) {
+                    if (res.getCode() == 201) {
+                        Success success = res.getSuccess();
 
-                            Business business = res.getBusiness();
-                            _dbHandler.createStore(new Business(0,business.getName(), business.getStreetId()));
+                        Address address = success.getAddress();
+                        Business business = success.getBusiness();
 
-                        } else {
+                        _dbHandler.createAddress(new Address(0, address.getName(), address.getCity(), address.getCountry(), 1));
 
-                            _dbHandler.createStreet(_street);
+                        int lastId = _dbHandler.getLastId("addresses");
+                        _dbHandler.createBusiness(new Business(0, business.getName(), lastId));
 
-                            //get street last id and store it into business table to show its address
-                            int lastId = _dbHandler.getLastId("streets");
-                            _dbHandler.createStore(new Business(0,_name, lastId));
-                        }
-                        _progressBar.setVisibility(View.GONE);
-                        _transparentLoader.setVisibility(View.GONE);
+                    } else {
 
+                        _dbHandler.createAddress(new Address(0, _street, _city, _country, 0));
 
+                        int lastId = _dbHandler.getLastId("addresses");
+                        _dbHandler.createBusiness(new Business(0, _name, lastId));
                     }
+
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
+
+                    new FragmentHelper(_c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+
+
 
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                error -> {
 
-                        _progressBar.setVisibility(View.GONE);
-                        _transparentLoader.setVisibility(View.GONE);
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
 
-                        // Log.d("RegistrationFragment", "here" + error.getMessage());
-                        NetworkResponse response = error.networkResponse;
-                        String errorMsg = "";
-                        if (response != null && response.data != null) {
-                            String errorString = new String(response.data);
-                              Log.i("log error", errorString);
-                        }
-
+                    // Log.d("RegistrationFragment", "here" + error.getMessage());
+                    NetworkResponse response = error.networkResponse;
+                    String errorMsg = "";
+                    if (response != null && response.data != null) {
+                        String errorString = new String(response.data);
+                        Log.i("log error", errorString);
                     }
+
                 }
         ) {
 
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "Bearer "+_token);
+                params.put("Authorization", "Bearer " + _TOKEN);
                 return params;
             }
 
@@ -221,9 +258,10 @@ public class BusinessRegistrationFragment extends Fragment {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("name", _name);
                 params.put("address", _street);
-                params.put("city", "Kigali");
+                params.put("city", _city);
                 params.put("country", _country);
-                params.put("typeId", ""+_typeId);
+                params.put("typeId", "" + _typeId);
+                params.put("userId", "" + _USER_ID);
                 return params;
             }
         };

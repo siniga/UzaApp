@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -78,6 +79,16 @@ public class StaffsAdapter extends RecyclerView.Adapter<StaffsAdapter.ViewHolder
 
 
         holder.mName.setText(currentStaff.getName());
+
+        //check snyc status
+        if(currentStaff.getSyncStatus() == 0){
+            holder.mSyncStatusFail.setVisibility(View.VISIBLE);
+            holder.mSyncStatusOk.setVisibility(View.GONE);
+        }else {
+            holder.mSyncStatusFail.setVisibility(View.GONE);
+            holder.mSyncStatusOk.setVisibility(View.VISIBLE);
+        }
+
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,12 +109,15 @@ public class StaffsAdapter extends RecyclerView.Adapter<StaffsAdapter.ViewHolder
         public RelativeLayout mWrapper;
         public TextView mName;
         public View mBorderBtm;
+        public ImageView mSyncStatusOk,mSyncStatusFail;
 
         public ViewHolder(Context context, View view) {
             super(view);
 
             mWrapper = view.findViewById(R.id.wrapper);
             mName = view.findViewById(R.id.name);
+            mSyncStatusOk = view.findViewById(R.id.sync_status_ok);
+            mSyncStatusFail = view.findViewById(R.id.sync_status_failed);
 
 
         }

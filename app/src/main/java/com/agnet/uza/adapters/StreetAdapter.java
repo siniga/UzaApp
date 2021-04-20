@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.models.Street;
+import com.agnet.uza.models.Address;
 
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class StreetAdapter extends RecyclerView.Adapter<StreetAdapter.ViewHolder> {
 
-    private List<Street> streets = Collections.emptyList();
+    private List<Address> addresses = Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private SharedPreferences _preferences;
@@ -35,8 +35,8 @@ public class StreetAdapter extends RecyclerView.Adapter<StreetAdapter.ViewHolder
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public StreetAdapter(Context c, List<Street> streets, HomeFragment fragment) {
-        this.streets = streets;
+    public StreetAdapter(Context c, List<Address> addresses, HomeFragment fragment) {
+        this.addresses = addresses;
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
         this.c = c;
@@ -65,9 +65,9 @@ public class StreetAdapter extends RecyclerView.Adapter<StreetAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
-        final Street currentStreet = streets.get(position);
+        final Address currentAddress = addresses.get(position);
 
-        holder.mName.setText(currentStreet.getName());
+        holder.mName.setText(currentAddress.getName());
 //        holder.mAddress.setText(currentShop.getStreet());
 
         //Log.d("OUTDATA", ""+currentStreet.getId());
@@ -99,7 +99,7 @@ public class StreetAdapter extends RecyclerView.Adapter<StreetAdapter.ViewHolder
         if (index == position) {
 
 
-            Log.d("OUTDATA", "" + currentStreet.getId());
+            Log.d("OUTDATA", "" + currentAddress.getId());
             holder.mName.setBackgroundResource(R.drawable.round_corners_with_stroke_primary);
             holder.mName.setPadding(12,0,12,0);
 
@@ -137,7 +137,7 @@ public class StreetAdapter extends RecyclerView.Adapter<StreetAdapter.ViewHolder
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return streets.size();
+        return addresses.size();
     }
 
 }

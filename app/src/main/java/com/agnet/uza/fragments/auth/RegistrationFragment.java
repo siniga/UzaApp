@@ -24,13 +24,13 @@ import com.agnet.uza.application.mSingleton;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.ResponseData;
+import com.agnet.uza.models.Response;
+import com.agnet.uza.models.Success;
 import com.agnet.uza.models.User;
 import com.agnet.uza.service.Endpoint;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
@@ -58,6 +58,7 @@ public class RegistrationFragment extends Fragment {
     private LinearLayout _transparentLoader;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
+    private String TAG = "RESPONSE_TAG";
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -120,20 +121,6 @@ public class RegistrationFragment extends Fragment {
                         saveUseTolocal();
                     }
                 }
-/*
-
-
-                    //get business and user last id to connect user to their businesses
-                    int userId = _dbHandler.getLastId("users");
-                    int businessId = _dbHandler.getLastId("businesses");
-
-                    _dbHandler.createUserBusiness(userId, businessId);
-
-                    new FragmentHelper(_c).replaceWithbackStack(new CreatePinFragment(), "CreatePinFragment", R.id.fragment_placeholder);
-*//*
-                }
-*/
-
             }
         });
 
@@ -193,36 +180,43 @@ public class RegistrationFragment extends Fragment {
         String url = Endpoint.getUrl();
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
+                new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         _progressBar.setVisibility(View.GONE);
                         _transparentLoader.setVisibility(View.GONE);
 
-                        ResponseData res = _gson.fromJson(response, ResponseData.class);
+                        try {
+                            Response res = _gson.fromJson(response, Response.class);
+                            if (res.getCode() == 201) {
 
-                        if (res.getCode() == 201) {
-                            User user = res.getUser();
-                            String token = res.getToken();
+                                Success success = res.getSuccess();
+                                User user = success.getUser();
+                                String token = success.getToken();
 
-                            Log.d("RESPONSE", token);
+                                _dbHandler.createUser(user.getPhone(), user.getName(), 1);
 
-                            _dbHandler.createUser(user.getPhone(), user.getName(), 1);
+                                //store token
+                                _editor.putInt("USER_ID", user.getId());
+                                _editor.putString("USER_TOKEN", token);
+                                _editor.commit();
 
-                            //store token
-                            _editor.putString("USER_TOKEN", token);
-                            _editor.commit();
+                            } else {
+                                _dbHandler.createUser(_phone, _name, 0);
+                            }
 
-                        } else {
-                            _dbHandler.createUser(_phone, _name, 0);
+                            new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
+
+                        } catch (NullPointerException e) {
+
+                            Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
+                            Log.d("error", e.toString());
                         }
-
-                        new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
 
                     }
 
                 },
-                new Response.ErrorListener() {
+                new com.android.volley.Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
