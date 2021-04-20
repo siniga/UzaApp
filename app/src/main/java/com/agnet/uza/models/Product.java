@@ -1,14 +1,13 @@
 package com.agnet.uza.models;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Product {
 
     private  int id, discount, stock, categoryId;
-    private String name, price, cost, imgUrl, barcode, category, sku;
+    private String name, cost, imgUrl, barcode, category, sku;
+    private double price;
 
 
-    public Product(int id, String name, String price, String cost, String barcode, int discount, int stock, String imgUrl, int categoryId, String category, String sku) {
+    public Product(int id, String name, double price, String cost, String barcode, int discount, int stock, String imgUrl, int categoryId, String category, String sku) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -31,7 +30,7 @@ public class Product {
         return name;
     }
 
-    public String getPrice() {
+    public double getPrice() {
         return price;
     }
 

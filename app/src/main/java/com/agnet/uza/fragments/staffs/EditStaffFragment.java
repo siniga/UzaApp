@@ -72,6 +72,8 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener{
         _userId = _preferences.getInt("SELECTED_STAFF_ID", 0);
         User user = _dbHandler.getUser(_userId);
 
+        _toolbar.setTitle("Edit "+user.getName() );
+
         _name.setText(user.getName());
         _phone.setText(user.getPhone());
 
@@ -93,6 +95,28 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener{
         //back arrows
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
     }
 
 
@@ -119,25 +143,5 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
-                        return true;
-                    }
-                }
-                return false;
-            }
-        });
-    }
 
 }

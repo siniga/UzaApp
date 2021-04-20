@@ -3,30 +3,46 @@ package com.agnet.uza.models;
 import java.util.List;
 
 public class ResponseData {
-    List<Street> streets;
-    List<Outlet> outlets;
+    private User user;
 
-   // @SerializedName("data")
-    List<Product> products;
+    private List<Street> streets;
 
-    List<Category> categories;
+    private List<Outlet> outlets;
 
-    List<Sku> skus;
+    private List<Product> products;
 
-    List<History> orders;
+    private List<Category> categories;
 
-    List<Partner> partners;
+    private List<Sku> skus;
 
-    public ResponseData(List streets, List products, List outlets, List categories, List skus, List<History> orders, List<Partner> partners){
-       this.streets = streets;
-       this.products = products;
-       this.outlets = outlets;
-       this.categories = categories;
-       this.skus = skus;
-       this.orders = orders;
-       this.partners = partners;
+    private List<History> orders;
+
+    private List<Partner> partners;
+
+    private int code;
+
+    private String token;
+
+    private Business business;
+
+
+    public ResponseData(List streets, List products, List outlets, List categories, List skus, List<History> orders, List<Partner> partners, User user, int code, String token, Business business) {
+        this.streets = streets;
+        this.products = products;
+        this.outlets = outlets;
+        this.categories = categories;
+        this.skus = skus;
+        this.orders = orders;
+        this.partners = partners;
+        this.user = user;
+        this.code = code;
+        this.token = token;
+        this.business = business;
     }
 
+    public User getUser() {
+        return user;
+    }
 
     public List<Partner> getPartners() {
         return partners;
@@ -54,5 +70,17 @@ public class ResponseData {
 
     public List<History> getOrders() {
         return orders;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public Business getBusiness() {
+        return business;
     }
 }

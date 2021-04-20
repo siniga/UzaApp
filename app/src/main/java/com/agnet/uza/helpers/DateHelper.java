@@ -1,6 +1,10 @@
 package com.agnet.uza.helpers;
 
+import java.text.DateFormatSymbols;
+import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -32,6 +36,14 @@ public class DateHelper {
         String currentTimeInterval = df.format(time.getTime());
 
         return currentTimeInterval;
+
+    }
+    public static String getMonth()
+    {
+        Format dateFormat = new SimpleDateFormat("MMMM  yyyy");
+        String res = dateFormat.format(new Date());
+
+        return res;
 
     }
 }

@@ -25,7 +25,7 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Store;
+import com.agnet.uza.models.Business;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Discount;
 import com.agnet.uza.models.Street;
@@ -173,7 +173,7 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
 
                 //get street last id and store it into business table to show its address
                 int lastId = _dbHandler.getLastId("streets");
-                _dbHandler.createBusiness(new Store(0,_name.getText().toString(), new Street(lastId,"")));
+                _dbHandler.createStore(new Business(0,_name.getText().toString(), lastId));
 
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 

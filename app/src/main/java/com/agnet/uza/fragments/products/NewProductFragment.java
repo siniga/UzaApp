@@ -425,7 +425,7 @@ public class NewProductFragment extends Fragment implements AdapterView.OnItemSe
 
 
         //TODO: add discount from customers
-        saveProductDetails(new Product(0, name, price, cost, barcode, 0, Integer.parseInt(stock), img, 1, "", ""));
+        saveProductDetails(new Product(0, name,  Double.parseDouble(price), cost, barcode, 0, Integer.parseInt(stock), img, 1, "", ""));
 
         if (!_sku.getText().toString().isEmpty()) {
 

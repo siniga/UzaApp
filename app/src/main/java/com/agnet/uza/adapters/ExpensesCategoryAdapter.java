@@ -2,6 +2,7 @@ package com.agnet.uza.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
+import com.agnet.uza.fragments.expenses.ExpensesCategoryFragment;
 import com.agnet.uza.fragments.expenses.ExpensesItemFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Expense;
 import com.agnet.uza.models.ExpensesCategory;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -43,12 +45,11 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ExpensesCategoryAdapter(Context c, List<ExpensesCategory> expenses) {
+    public ExpensesCategoryAdapter(Context c, List<ExpensesCategory> expenses, Fragment fragment) {
         this.expenses = expenses;
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
         this.c = c;
-
 
         _preferences = c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
@@ -76,23 +77,39 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
         //get a position of a current saleItem
         final ExpensesCategory currentExpense = expenses.get(position);
 
+        try{
+            if( currentExpense.getAmount().equals(null) || currentExpense.getAmount().isEmpty()){
+                holder.mAmount.setText("0.0");
+            }else {
+                DecimalFormat formatter = new DecimalFormat("#,###,###");
+                int formatedPrice = Integer.parseInt(currentExpense.getAmount());
+                holder.mAmount.setText("TZS: " + formatter.format(formatedPrice));
+
+            }
+
+        }catch (NullPointerException exception){
+            Log.e("log_error", exception.toString());
+        }
+
 
         holder.mName.setText(currentExpense.getName());
         char initial = currentExpense.getName().charAt(0);
 //        holder.mInitial.setText(""+initial);
-        holder.mAmount.setText("TZS"+currentExpense.getAmount());
 
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new FragmentHelper(c).replaceWithbackStack(new ExpensesItemFragment(),"ExpensesFragment", R.id.fragment_placeholder);
+                _editor.putInt("EXPCATEGORY_ID", currentExpense.getId());
+                _editor.putString("EXPCATEGORY_NAME", currentExpense.getName());
+                _editor.commit();
+
+                ((ExpensesCategoryFragment) fragment).showBtmBehavior();
+
+             ///   new FragmentHelper(c).replaceWithbackStack(new ExpensesItemFragment(),"ExpensesFragment", R.id.fragment_placeholder);
 
             }
         });
-
-
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mWrapper;

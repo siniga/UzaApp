@@ -92,11 +92,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Location"
+                android:text="Phone"
                 android:textColor="@android:color/black"
                 android:textSize="12sp"/>
 
             <EditText
+                android:inputType="number"
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"

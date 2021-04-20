@@ -1,9 +1,10 @@
-package com.agnet.uza.adapters;
+  package com.agnet.uza.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +12,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
+import com.agnet.uza.models.Cart;
+import com.agnet.uza.models.Order;
 import com.agnet.uza.models.Product;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.gson.Gson;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -47,10 +52,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private HomeFragment fragment;
     private DatabaseHandler _dbHandler;
     private int productListType = 0;
+    private Gson gson;
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ProductAdapter(Context c, List<Product> products, HomeFragment fragment,int productListType) {
+    public ProductAdapter(Context c, List<Product> products, HomeFragment fragment, int productListType) {
         this.products = products;
         this.inflator = LayoutInflater.from(c);
         this.c = c;
@@ -61,6 +67,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         _editor = _preferences.edit();
 
         _dbHandler = new DatabaseHandler(c);
+        gson = new Gson();
 
     }
 
@@ -96,30 +103,93 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return new ViewHolder(c, view);
     }
 
+    double totalAmount = 0;
+    final int[] count = {0};
+    List<Cart> carts = new ArrayList<>();
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
         final Product currentProduct = products.get(position);
-        final int[] count = {1};
 
         DecimalFormat formatter = new DecimalFormat("#,###,###");
-        int formatedPrice = Integer.parseInt(currentProduct.getPrice());
+        double formattedPrice = currentProduct.getPrice();
+
+        final int[] stock = {currentProduct.getStock()};
 
         holder.mName.setText(currentProduct.getName());
-        holder.mPrice.setText("TZS: " + formatter.format(formatedPrice));
+        holder.mPrice.setText("TZS: " + formatter.format(formattedPrice));
+        holder.mStcok.setText("" + currentProduct.getStock());
 
-        holder.mName.setOnClickListener(new View.OnClickListener() {
+        //TODO: store everything in a list when still manipulating cart data, before saving to db
+        holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(c, AndroidDatabaseManager.class);
-                c.startActivity(intent);
+
+                //TODO:avoid query the database everytime you receive user inputs
+                if (count[0] >= 0) {
+
+                    //out of stock
+                    if (stock[0] > 0) {
+
+                        stock[0]--;
+                        count[0]++;
+
+                        totalAmount = totalAmount + currentProduct.getPrice();
+                        _dbHandler.updateProductStock(stock[0], currentProduct.getId());
+                        int currentOrderId;
+
+                       if(!_dbHandler.isValueExist(0,"orders","status")){
+
+                           _dbHandler.createOrder(new Order(0,"","023883",0), 1);
+
+                           currentOrderId = _dbHandler.getCurrentOrderId();
+
+                       }else {
+                           currentOrderId = _dbHandler.getCurrentOrderId();
+                       }
+
+
+                        if (!_dbHandler.isProductIdExist(currentProduct.getId())) {
+
+                           // Toast.makeText(c, "Product doesnt exist", Toast.LENGTH_SHORT).show();
+                            //individual item count
+                            _dbHandler.createCart(new Cart(0, currentProduct.getPrice(), 1, currentProduct.getId(), currentProduct.getName(), currentProduct.getPrice()),currentOrderId);
+
+                        } else {
+
+                            double itemTotal = _dbHandler.getCartAmount(currentProduct.getId()) + currentProduct.getPrice();
+//
+
+                            int itemCount = _dbHandler.getCartQnty(currentProduct.getId());
+
+                            _dbHandler.updateCart(new Cart(0, itemTotal, ++itemCount, currentProduct.getId(), currentProduct.getName(), currentProduct.getPrice()), currentOrderId);
+
+                        }
+
+                    } else {
+                        ((HomeFragment) fragment).launchStockLowDialog(currentProduct.getName());
+                    }
+
+                    //show low stock msg
+                    if (stock[0] <= 5) {
+                        holder.mLowStock.setVisibility(View.VISIBLE);
+                    }
+
+                }
+
+
+                holder.mStcok.setText("" + stock[0]);
+
+                ((HomeFragment) fragment).addQntyCount();
+                ((HomeFragment) fragment).addAmount();
+
             }
         });
 
 
-       displayImg(currentProduct.getImgUrl(), holder.mImg);
+        displayImg(currentProduct.getImgUrl(), holder.mImg);
 
     }
 
@@ -136,9 +206,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mWrapper;
-        public TextView mName, mPrice, mSku;
+        public TextView mName, mPrice, mSku, mStcok;
         public EditText mQnty;
-        public ImageView mImg;
+        public ImageView mImg, mLowStock;
+
 
         public ViewHolder(Context context, View view) {
             super(view);
@@ -148,6 +219,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             mPrice = view.findViewById(R.id.price);
             mImg = view.findViewById(R.id.product_img);
             mSku = view.findViewById(R.id.sku);
+            mStcok = view.findViewById(R.id.stock);
+            mLowStock = view.findViewById(R.id.low_stock_msg);
         }
 
     }

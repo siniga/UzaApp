@@ -74,9 +74,10 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:paddingRight="15dp"
             android:paddingLeft="20dp"
-            android:id="@+id/popular_product_list"
+            android:id="@+id/product_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -96,6 +97,43 @@
         android:layout_height="150dp">
 
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/empty_items_msg"
+        android:padding="30dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_product"/>
+        <TextView
+            android:layout_marginTop="@dimen/padding_10"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hauna Bidhaa bado"/>
+        <TextView
+            android:layout_marginTop="10dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nenda kwenye menu kujaza bidhaa"/>
+
+        <Button
+            android:id="@+id/open_product_inventory_btn"
+            android:layout_marginTop="30dp"
+            android:padding="15dp"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/white"
+            android:text="Nenda kwenye menu"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"/>
     </LinearLayout>
 
 </RelativeLayout>

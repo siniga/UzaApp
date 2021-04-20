@@ -49,12 +49,12 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment {
         _cartListManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         _cartList.setLayoutManager(_cartListManager);
 
-        getCart();
+      //  getCart();
 
     }
 
 
-    public void getCart() {
+  /*  public void getCart() {
         List<Cart> cartList = new ArrayList<>();
         cartList.add(new Cart("Castle Light", "3,000", "330ml", "can", 4));
         cartList.add(new Cart("Budweiser", "1,000", "330ml", "can", 4));
@@ -65,5 +65,5 @@ public class ActionBottomDialogFragment extends BottomSheetDialogFragment {
         _cartList.setAdapter(adapter);
 
     }
-
+*/
 }

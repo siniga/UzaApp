@@ -17,17 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.ExpensesAdapter;
-import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Expense;
 import com.agnet.uza.models.ExpensesCategory;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class NewExpenseCategoryFragment extends Fragment   implements View.OnClickListener{
 

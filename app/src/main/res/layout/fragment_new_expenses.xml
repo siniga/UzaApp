@@ -32,6 +32,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/name_hdr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -56,6 +57,7 @@
                 android:textSize="12sp" />
 
             <EditText
+                android:inputType="number"
                 android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
@@ -70,7 +72,7 @@
                 android:layout_marginTop="20dp">
 
                 <Button
-                    android:id="@+id/save_product_btn"
+                    android:id="@+id/save_expense_btn"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:backgroundTint="@color/colorPrimary"

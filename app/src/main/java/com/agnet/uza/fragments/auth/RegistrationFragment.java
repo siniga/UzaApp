@@ -2,26 +2,45 @@ package com.agnet.uza.fragments.auth;
 
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.agnet.uza.R;
+import com.agnet.uza.application.mSingleton;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Store;
-import com.agnet.uza.models.Street;
+import com.agnet.uza.models.ResponseData;
+import com.agnet.uza.models.User;
+import com.agnet.uza.service.Endpoint;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.google.gson.Gson;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class RegistrationFragment extends Fragment {
@@ -31,8 +50,14 @@ public class RegistrationFragment extends Fragment {
     private Toolbar _toolbar;
     private Button _registerBtn;
     private DatabaseHandler _dbHandler;
-    private EditText _phoneInputEdTxt, _nameInputEdTxt, _addresInput;
-    private String _name, _phone, _address;
+    private EditText _phoneInputEdTxt, _nameInputEdTxt, _passwordInput;
+    private String _name, _phone, _password;
+    private Gson _gson;
+    private TextView _randomTxt;
+    private ProgressBar _progressBar;
+    private LinearLayout _transparentLoader;
+    private SharedPreferences _preferences;
+    private SharedPreferences.Editor _editor;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -42,18 +67,22 @@ public class RegistrationFragment extends Fragment {
         _c = getActivity();
 
         //initializing
+        _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
+        _editor = _preferences.edit();
         _dbHandler = new DatabaseHandler(_c);
+        _gson = new Gson();
 
         //binding
         _signinLink = view.findViewById(R.id.signin_link);
         _registerBtn = view.findViewById(R.id.register_btn);
         _phoneInputEdTxt = view.findViewById(R.id.phone_input);
         _nameInputEdTxt = view.findViewById(R.id.name_input);
-        _addresInput = view.findViewById(R.id.address_input);
+        _passwordInput = view.findViewById(R.id.password_input);
+        _randomTxt = view.findViewById(R.id.random_txt);
+        _progressBar = view.findViewById(R.id.progress_bar);
+        _transparentLoader = view.findViewById(R.id.transparent_loader);
 
         //set and get
-
-
         TextView viewdb = view.findViewById(R.id.welcom_hdr);
         viewdb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,17 +109,19 @@ public class RegistrationFragment extends Fragment {
 
                 _phone = _phoneInputEdTxt.getText().toString();
                 _name = _nameInputEdTxt.getText().toString();
-                _address = _addresInput.getText().toString();
+                _password = _passwordInput.getText().toString();
 
+                // new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
 
                 if (!checkEmptyFields()) {
+                    if (checkConnection()) {
+                        saveUserToServer();
+                    } else {
+                        saveUseTolocal();
+                    }
+                }
+/*
 
-                    _dbHandler.createUser(_phone, _name);
-                    _dbHandler.createStreet(_address);
-
-                    //get street last id and store it into business table to show its address
-                    int lastId = _dbHandler.getLastId("streets");
-                    _dbHandler.createBusiness(new Store(0,_name, new Street(lastId,"")));
 
                     //get business and user last id to connect user to their businesses
                     int userId = _dbHandler.getLastId("users");
@@ -99,10 +130,21 @@ public class RegistrationFragment extends Fragment {
                     _dbHandler.createUserBusiness(userId, businessId);
 
                     new FragmentHelper(_c).replaceWithbackStack(new CreatePinFragment(), "CreatePinFragment", R.id.fragment_placeholder);
-
+*//*
                 }
+*/
 
+            }
+        });
 
+        _randomTxt.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+
+                Intent intent = new Intent(_c, AndroidDatabaseManager.class);
+                _c.startActivity(intent);
+
+                return false;
             }
         });
 
@@ -111,20 +153,21 @@ public class RegistrationFragment extends Fragment {
     }
 
     private boolean checkEmptyFields() {
-        if (_phone.isEmpty() || _phone.length() < 10) {
 
-            Toast.makeText(_c, "Enter correct phone number!", Toast.LENGTH_LONG).show();
+        if (_name.isEmpty()) {
+            Toast.makeText(_c, "Ingiza jina!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (_phone.isEmpty() || _phone.length() < 10) {
+
+            Toast.makeText(_c, "Ingiza namba ya simu sahihi!", Toast.LENGTH_LONG).show();
             return true;
         } else if (_dbHandler.getUserPhone().matches(_phone)) {
 
-            Toast.makeText(_c, "Phone is already available!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(_c, "Namba ya simu hii ishatumika!", Toast.LENGTH_SHORT).show();
             return true;
 
-        } else if (_name.isEmpty()) {
-            Toast.makeText(_c, "Business name must not be empty!", Toast.LENGTH_LONG).show();
-            return true;
-        } else if (_address.isEmpty()) {
-            Toast.makeText(_c, "Address must not be empty!", Toast.LENGTH_LONG).show();
+        } else if (_password.isEmpty()) {
+            Toast.makeText(_c, "Ingiza password!", Toast.LENGTH_LONG).show();
             return true;
         }
 
@@ -136,138 +179,87 @@ public class RegistrationFragment extends Fragment {
         return pattern;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
 
+    private void saveUseTolocal() {
+        _dbHandler.createUser(_phone, _name, 0);
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
+    private void saveUserToServer() {
 
-    }
+        _progressBar.setVisibility(View.VISIBLE);
+        _transparentLoader.setVisibility(View.VISIBLE);
 
-
-   /* public void getCategories() {
-
-        _shimmerFrameLayout.setVisibility(View.VISIBLE);
-        _shimmerFrameLayout.startShimmerAnimation();
-
-        Endpoint.setUrl("mobile/categories");
+        Endpoint.setUrl("register");
         String url = Endpoint.getUrl();
-        StringRequest postRequest = new StringRequest(Request.Method.GET, url,
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        _progressBar.setVisibility(View.GONE);
+                        _transparentLoader.setVisibility(View.GONE);
 
-                        if (!AppManager.isNullOrEmpty(response)) {
+                        ResponseData res = _gson.fromJson(response, ResponseData.class);
 
+                        if (res.getCode() == 201) {
+                            User user = res.getUser();
+                            String token = res.getToken();
 
-                            _shimmerFrameLayout.stopShimmerAnimation();
-                            _shimmerFrameLayout.setVisibility(View.GONE);
+                            Log.d("RESPONSE", token);
 
-                            _editor.putString("RESPONSE", response);
+                            _dbHandler.createUser(user.getPhone(), user.getName(), 1);
+
+                            //store token
+                            _editor.putString("USER_TOKEN", token);
                             _editor.commit();
 
-                            ResponseData res = _gson.fromJson(response, ResponseData.class);
-                            List<Category> categories = res.getCategories();
-
-                            _dbHandler.addCategories(categories);
-
-                            CategoryAdapter adapter = new CategoryAdapter(_c, categories, HomeFragment.this);
-                            _categoryList.setAdapter(adapter);
+                        } else {
+                            _dbHandler.createUser(_phone, _name, 0);
                         }
+
+                        new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
+
                     }
+
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        error.printStackTrace();
 
-                        _shimmerFrameLayout.stopShimmerAnimation();
-                        _shimmerFrameLayout.setVisibility(View.GONE);
+                        _progressBar.setVisibility(View.GONE);
+                        _transparentLoader.setVisibility(View.GONE);
 
+                        // Log.d("RegistrationFragment", "here" + error.getMessage());
                         NetworkResponse response = error.networkResponse;
                         String errorMsg = "";
                         if (response != null && response.data != null) {
                             String errorString = new String(response.data);
                             Log.i("log error", errorString);
-                            //TODO: display errors based on the message from the server
-                            Toast.makeText(_c, "Kuna tatizo, angalia mtandao alafu jaribu tena", Toast.LENGTH_SHORT).show();
                         }
 
-
                     }
                 }
-        ){
+        ) {
             @Override
-            protected Response<String> parseNetworkResponse(NetworkResponse response) {
-                try {
-                    Cache.Entry cacheEntry = HttpHeaderParser.parseCacheHeaders(response);
-                    if (cacheEntry == null) {
-                        cacheEntry = new Cache.Entry();
-                    }
-                    final long cacheHitButRefreshed = 3 * 60 * 1000; // in 3 minutes cache will be hit, but also refreshed on background
-                    final long cacheExpired = 24 * 60 * 60 * 1000; // in 24 hours this cache entry expires completely
-                    long now = System.currentTimeMillis();
-                    final long softExpire = now + cacheHitButRefreshed;
-                    final long ttl = now + cacheExpired;
-                    cacheEntry.data = response.data;
-                    cacheEntry.softTtl = softExpire;
-                    cacheEntry.ttl = ttl;
-                    String headerValue;
-                    headerValue = response.headers.get("Date");
-                    if (headerValue != null) {
-                        cacheEntry.serverDate = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                    }
-                    headerValue = response.headers.get("Last-Modified");
-                    if (headerValue != null) {
-                        cacheEntry.lastModified = HttpHeaderParser.parseDateAsEpoch(headerValue);
-                    }
-                    cacheEntry.responseHeaders = response.headers;
-                    final String jsonString = new String(response.data,
-                            HttpHeaderParser.parseCharset(response.headers));
-                    return Response.success(jsonString, cacheEntry);
-                } catch (UnsupportedEncodingException e) {
-                    return Response.error(new ParseError(e));
-                }
-            }
-
-            @Override
-            protected void deliverResponse(String response) {
-                super.deliverResponse(String.valueOf(response));
-            }
-
-            @Override
-            public void deliverError(VolleyError error) {
-                super.deliverError(error);
-            }
-
-            @Override
-            protected VolleyError parseNetworkError(VolleyError volleyError) {
-                return super.parseNetworkError(volleyError);
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("name", _name);
+                params.put("password", _password);
+                params.put("phone", _phone);
+                params.put("pin", "1234");
+                return params;
             }
         };
+
         mSingleton.getInstance(_c).addToRequestQueue(postRequest);
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
-        postRequest.setRetryPolicy(new RetryPolicy() {
-            @Override
-            public int getCurrentTimeout() {
-                return 50000;
-            }
-
-            @Override
-            public int getCurrentRetryCount() {
-                return 50000;
-            }
-
-            @Override
-            public void retry(VolleyError error) throws VolleyError {
-
-            }
-        });
     }
 
-*/
+
+    public boolean checkConnection() {
+        ConnectivityManager cm = (ConnectivityManager) _c.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        return (networkInfo != null && networkInfo.isConnected());
+    }
 }

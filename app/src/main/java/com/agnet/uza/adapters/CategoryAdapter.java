@@ -100,9 +100,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 int productId = _preferences.getInt("SELECTED_PRODUCT_ID", 0);
 
                 _dbHandler.updateProductCategoryId(productId, currentCategory.getId());
-
-                Toast.makeText(c, "jehe", Toast.LENGTH_SHORT).show();
-
+                
                 _editor.putString("CATEGORY_NAME",currentCategory.getName());
                 _editor.commit();
 

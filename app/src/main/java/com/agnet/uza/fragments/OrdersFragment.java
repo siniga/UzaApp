@@ -71,7 +71,7 @@ public class OrdersFragment extends Fragment {
         _orderList.setLayoutManager(_orderLayoutManager);
 
         //methods
-        getroducts();
+       // getroducts();
 
         return view;
 
@@ -87,14 +87,14 @@ public class OrdersFragment extends Fragment {
 
     public void getroducts() {
 
-        _orders = new ArrayList<>();
+/*        _orders = new ArrayList<>();
         _orders.add(new Order(1, "", "11:00", "23443", 1, "11:22", 1, 1, 0, 0));
         _orders.add(new Order(1, "", "11:00", "23443", 1, "11:22", 1, 1, 0, 0));
         _orders.add(new Order(1, "", "11:00", "23443", 1, "11:22", 1, 1, 0, 0));
         _orders.add(new Order(1, "", "11:00", "23443", 1, "11:22", 1, 1, 0, 0));
 
         _ordersAdapter = new OrdersAdapter(_c, _orders);
-        _orderList.setAdapter(_ordersAdapter);
+        _orderList.setAdapter(_ordersAdapter);*/
     }
 
 

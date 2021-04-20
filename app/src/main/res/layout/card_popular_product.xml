@@ -61,24 +61,44 @@
 
 
             <LinearLayout
-
+                android:orientation="horizontal"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/padding_10"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="23 "/>
+                android:layout_height="wrap_content"
+                android:gravity="center">
+               <!-- <Button
+                    android:textSize="10dp"
+                    android:textColor="@color/white"
+                    android:background="@color/blue"
+                    android:textAllCaps="false"
+                    android:layout_width="70dp"
+                    android:layout_height="20dp"
+                    android:text="0 Stock"/>-->
+
 
                 <TextView
-                    android:gravity="center"
+                    android:id="@+id/stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="in stock"/>
+                    android:text="0 "/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" In "/>
+
+
+                <ImageView
+                    android:id="@+id/low_stock_msg"
+                    android:visibility="gone"
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/ic_low_stock_risk"
+                    android:layout_width="13dp"
+                    android:layout_height="wrap_content"
+                    />
 
                 <ImageButton
                     android:visibility="gone"

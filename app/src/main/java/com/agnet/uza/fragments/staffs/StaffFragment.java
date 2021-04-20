@@ -60,6 +60,7 @@ public class StaffFragment extends Fragment   implements View.OnClickListener{
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
+        _toolbar.setTitle("Your Staffs");
 
 
         // list setup

@@ -12,11 +12,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
+import com.agnet.uza.fragments.expenses.EditExpenseFragment;
 import com.agnet.uza.fragments.expenses.NewExpenseFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Expense;
+import com.agnet.uza.models.ExpensesItem;
 
+import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import java.util.List;
  */
 public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHolder> {
 
-    private List<Expense> expenses= Collections.emptyList();
+    private List<ExpensesItem> expenses= Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private int locateId;
@@ -42,7 +44,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ExpensesAdapter(Context c, List<Expense> expenses) {
+    public ExpensesAdapter(Context c, List<ExpensesItem> expenses) {
         this.expenses = expenses;
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
@@ -73,27 +75,30 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
-        final Expense currentExpense = expenses.get(position);
+        final ExpensesItem currentExpense = expenses.get(position);
 
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        int formatedPrice = Integer.parseInt(currentExpense.getAmount());
 
+        holder.mAmount.setText("TZS: " + formatter.format(formatedPrice));
         holder.mName.setText(currentExpense.getName());
-        holder.mAmount.setText("TZS"+currentExpense.getAmount());
+        holder.mDate.setText(currentExpense.getDate());
+
 
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new FragmentHelper(c).replaceWithbackStack(new NewExpenseFragment(),"NewExpenseFragment", R.id.fragment_placeholder);
+                _editor.putInt("EXPENSE_ID", currentExpense.getId());
+                _editor.commit();
 
+                new FragmentHelper(c).replaceWithbackStack(new EditExpenseFragment(),"EditExpenseFragment", R.id.fragment_placeholder);
             }
         });
-
-
     }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mWrapper;
-        public TextView mName, mInitial,mAmount;
+        public TextView mName, mInitial,mAmount,mDate;
 
         public ViewHolder(Context context, View view) {
             super(view);
@@ -101,7 +106,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
             mWrapper = view.findViewById(R.id.wrapper);
             mName = view.findViewById(R.id.name);
             mAmount = view.findViewById(R.id.amount);
-
+            mDate = view.findViewById(R.id.date);
 
         }
 

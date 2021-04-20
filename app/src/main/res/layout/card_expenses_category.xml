@@ -11,11 +11,10 @@
     android:orientation="horizontal">
 
     <LinearLayout
+        android:gravity="center"
         android:orientation="horizontal"
-        android:layout_centerVertical="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center">
+        android:layout_height="wrap_content">
         <ImageView
             android:padding="11dp"
             android:textColor="@android:color/black"
@@ -28,31 +27,46 @@
             android:text="U"
             android:src="@drawable/ic_bill"/>
 
-        <TextView
+        <LinearLayout
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="2dp"
-            android:id="@+id/name"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Umeme"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            />
+            >
 
+            <TextView
+                android:layout_marginTop="2dp"
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Umeme"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:id="@+id/amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="TZS: 0.0"/>
+        </LinearLayout>
 
     </LinearLayout>
+
+
     <LinearLayout
         android:layout_centerInParent="true"
         android:layout_alignParentRight="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_width="24dp"
+        android:layout_height="24dp">
 
-        <TextView
-            android:textColor="@android:color/black"
-            android:id="@+id/amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TZS23,000"/>
+     <ImageView
+         android:layout_width="match_parent"
+         android:layout_height="match_parent"
+         android:src="@drawable/menu_vertical"/>
 
     </LinearLayout>
 

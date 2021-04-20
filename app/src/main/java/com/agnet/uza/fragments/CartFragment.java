@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
@@ -40,6 +41,8 @@ CartFragment extends Fragment   implements View.OnClickListener{
     private RecyclerView _categoryList,_cartList;
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
+    private  DatabaseHandler _dbHandler;
+    private LinearLayout _emptyErroMsg;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -48,38 +51,33 @@ CartFragment extends Fragment   implements View.OnClickListener{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         _c = getActivity();
         _cartList = view.findViewById(R.id.cart_list);
+        _dbHandler = new DatabaseHandler(_c);
+
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
+        _emptyErroMsg = view.findViewById(R.id.empty_items_msg);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
-
         //cart list
         _cartList.setHasFixedSize(true);
         _cartListManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _cartList.setLayoutManager(_cartListManager);
 
-        getCart();
+        if(_dbHandler.isCartEmpty()){
+           showEmptyErrorMsg();
+        }else{
+           hideEmptyErrorMsg();
+        }
+        CartAdapter adapter = new CartAdapter(_c, _dbHandler.getCart(), this);
+        _cartList.setAdapter(adapter);
 
         return view;
-
-    }
-
-
-    public void getCart() {
-        List<Cart> cartList = new ArrayList<>();
-        cartList.add(new Cart("Castle Light", "3,000", "330ml", "can", 4));
-        cartList.add(new Cart("Budweiser", "1,000", "330ml", "can", 4));
-        cartList.add(new Cart("Uhai", "2,000", "330ml", "Plastic Bottle", 4));
-        cartList.add(new Cart("Safari", "3,000", "330ml", "can", 4));
-
-        CartAdapter adapter = new CartAdapter(_c, cartList);
-        _cartList.setAdapter(adapter);
 
     }
 
@@ -111,5 +109,15 @@ CartFragment extends Fragment   implements View.OnClickListener{
             default:
                 break;
         }
+    }
+
+    public void showEmptyErrorMsg(){
+        _emptyErroMsg.setVisibility(View.VISIBLE);
+        _cartList.setVisibility(View.GONE);
+    }
+
+    public void hideEmptyErrorMsg(){
+        _emptyErroMsg.setVisibility(View.GONE);
+        _cartList.setVisibility(View.VISIBLE);
     }
 }

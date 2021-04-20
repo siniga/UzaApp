@@ -10,12 +10,12 @@
         android:id="@+id/bottom_sheet"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="60dp"
         android:clipToPadding="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -59,11 +59,32 @@
 
 
             <TextView
+                android:id="@+id/name_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Jina lako"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/name_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@id/name_header"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:hint="Ingiza jina hapa"
+                android:paddingLeft="10dp" />
+
+
+            <TextView
                 android:id="@+id/phone_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/welcom_hdr_1"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="35dp"
                 android:text="Namba ya simu"
                 android:textColor="@android:color/black"
@@ -83,47 +104,23 @@
                 android:paddingLeft="10dp" />
 
             <TextView
-                android:id="@+id/name_header"
+                android:id="@+id/password_hdr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/phone_input"
-                android:layout_marginLeft="10dp"
                 android:layout_marginTop="25dp"
-                android:text="Jina la biashara"
+                android:text="Password"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/name_input"
+                android:inputType="textPassword"
+                android:id="@+id/password_input"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/name_header"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Ingiza jina hapa"
-                android:paddingLeft="10dp" />
-
-            <TextView
-                android:id="@+id/address_hdr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/name_input"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="25dp"
-                android:text="Eneo la biashara (Mtaa)"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/address_input"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_below="@id/address_hdr"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Ingiza eneo hapa"
+                android:hint="Ingiza password hapa"
                 android:paddingLeft="10dp" />
 
             <Button
@@ -146,6 +143,7 @@
               >
 
                 <TextView
+                    android:id="@+id/random_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Tayari umeshajisajili?"
@@ -165,17 +163,28 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/transparent_loader"
+        android:background="@color/black_light_transparent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal" />
+
     <ProgressBar
-        android:id="@+id/progressBar_cyclic"
+        android:visibility="gone"
+       android:theme="@style/AppTheme.WhiteAccent"
+        android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="160dp"
-        android:minWidth="50dp"
-        android:minHeight="50dp"
-        android:visibility="gone" />
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        />
+
+
 
 </RelativeLayout>

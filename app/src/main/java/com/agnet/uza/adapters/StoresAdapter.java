@@ -13,10 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.fragments.stores.EditStoreFragment;
-import com.agnet.uza.fragments.stores.NewStoreFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Store;
+import com.agnet.uza.models.Business;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,7 +25,7 @@ import java.util.List;
  */
 public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder> {
 
-    private List<Store> stores= Collections.emptyList();
+    private List<Business> stores= Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private int locateId;
@@ -43,7 +42,7 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public StoresAdapter(Context c, List<Store> stores) {
+    public StoresAdapter(Context c, List<Business> stores) {
         this.stores = stores;
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
@@ -74,14 +73,14 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
-        final Store currentStore = stores.get(position);
+        final Business currentStore = stores.get(position);
 
 
         holder.mName.setText(currentStore.getName());
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                _editor.putInt("SELECTED_STORE", currentStore.getId());
+                _editor.putInt("SELECTED_STORE_ID", currentStore.getId());
                 _editor.commit();
 
                 new FragmentHelper(c).replace(new EditStoreFragment(),"EditStoreFragment", R.id.fragment_placeholder);

@@ -107,7 +107,7 @@ public class EditProductFragment extends Fragment implements View.OnClickListene
         try {
 
             _name.setText(_product.getName());
-            _sellingPrice.setText(_product.getPrice());
+            _sellingPrice.setText(""+_product.getPrice());
             _costPrice.setText(_product.getCost());
             _stock.setText("" + _product.getStock());
             _sku.setText(_product.getSku());
@@ -257,7 +257,7 @@ public class EditProductFragment extends Fragment implements View.OnClickListene
         }
 
 
-        updateProductDetails(new Product(_product.getId(), name, price, cost, barcode, 0,
+        updateProductDetails(new Product(_product.getId(), name,  Double.parseDouble(price), cost, barcode, 0,
                 Integer.parseInt(stock), img, _product.getCategoryId(), "", ""
         ));
 

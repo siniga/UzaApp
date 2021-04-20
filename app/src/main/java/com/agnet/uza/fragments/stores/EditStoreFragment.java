@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -25,13 +24,8 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Discount;
-import com.agnet.uza.models.Store;
+import com.agnet.uza.models.Business;
 import com.agnet.uza.models.Street;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class EditStoreFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -69,9 +63,10 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
+        _toolbar.setTitle("Edit "+_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getName());
 
-        _name.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE",0)).getName());
-        _location.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE",0)).getStreet().getName());
+        _name.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getName());
+        //_location.setText(_dbHandler.getSelectedStore(_preferences.getInt("SELECTED_STORE_ID",0)).getStreet().getName());
 
         //events
         _saveStore.setOnClickListener(this);
@@ -136,13 +131,13 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
 
                 //get street last id and store it into business table to show its address
                 int lastId = _dbHandler.getLastId("streets");
-                _dbHandler.createBusiness(new Store(0,_name.getText().toString(), new Street(lastId,"")));
+                _dbHandler.updateStore(new Business(_preferences.getInt("SELECTED_STORE_ID",0),_name.getText().toString(), lastId));
 
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 
                 break;
             case R.id.delete_store_btn:
-                _dbHandler.deleteStore(_preferences.getInt("SELECTED_STORE",0));
+                _dbHandler.deleteStore(_preferences.getInt("SELECTED_STORE_ID",0));
                 new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
                 Toast.makeText(_c, "Item is deleted!", Toast.LENGTH_SHORT).show();
                 break;

@@ -85,7 +85,7 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
         final int[] count = {1};
 
         DecimalFormat formatter = new DecimalFormat("#,###,###");
-        int formatedPrice = Integer.parseInt(currentProduct.getPrice());
+        double formatedPrice = currentProduct.getPrice();
 
         holder.mName.setText(currentProduct.getName());
         holder.mPrice.setText("TZS: " +formatter.format(formatedPrice));

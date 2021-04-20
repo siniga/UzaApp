@@ -63,17 +63,13 @@ public class SelectCategoryFragment extends Fragment   implements View.OnClickLi
         _categoryList.setLayoutManager(_categoryLayoutManager);
 
 
-        getLocalCategory();
+        List<Category> categories = _dbHandler.getCategories();
+        CategoryAdapter adapter = new CategoryAdapter(_c, categories);
+        _categoryList.setAdapter(adapter);
         return view;
 
     }
 
-    public void getLocalCategory() {
-
-        List<Category> categories = _dbHandler.getCategories();
-        CategoryAdapter adapter = new CategoryAdapter(_c, categories);
-        _categoryList.setAdapter(adapter);
-    }
 
 
     @Override

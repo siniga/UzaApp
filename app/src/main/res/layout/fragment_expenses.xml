@@ -15,6 +15,7 @@
         android:layout_marginTop="20dp" />
 
     <LinearLayout
+        android:id="@+id/add_new_expenses_btn"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"

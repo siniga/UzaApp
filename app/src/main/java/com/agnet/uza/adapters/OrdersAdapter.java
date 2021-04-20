@@ -80,7 +80,7 @@ public class OrdersAdapter extends RecyclerView.Adapter<OrdersAdapter.ViewHolder
         });
 
         OrderStatusHelper statusHelper = new OrderStatusHelper(c);
-        statusHelper.showButtonByStatus(holder.mStatusBtn, currentOrder.getStatus());
+     //   statusHelper.showButtonByStatus(holder.mStatusBtn, currentOrder.getStatus());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

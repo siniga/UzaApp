@@ -11,7 +11,9 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.CartAdapter;
 import com.agnet.uza.adapters.CategoryAdapter;
+import com.agnet.uza.adapters.HomeCategoryAdapter;
 import com.agnet.uza.fragments.ReceiptFragment;
+import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Category;
@@ -37,6 +39,7 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
     private Toolbar _toolbar,_homeToolbar;
     private BottomNavigationView _bottomNavigation;
     private FloatingActionButton _fab;
+    private DatabaseHandler _dbHandler;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -44,6 +47,8 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_categories, container, false);
         _c = getActivity();
+
+        _dbHandler = new DatabaseHandler(_c);
 
         //binding
         _categoryList = view.findViewById(R.id.category_list);
@@ -61,30 +66,22 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
         // list setup
         //category list
         _categoryList.setHasFixedSize(true);
+
         _categoryLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _categoryList.setLayoutManager(_categoryLayoutManager);
 
+        List<Category> categories = _dbHandler.getCategories();
 
 
+        HomeCategoryAdapter adapter = new HomeCategoryAdapter(_c, categories);
+        _categoryList.setAdapter(adapter);
 
-        getLocalCategory();
+
         return view;
 
     }
 
-    public void getLocalCategory() {
 
-        List<Category> categories = new ArrayList<>();
-        categories.add(new Category(1, "Beer", "ic_beer_bottle", 1));
-        categories.add(new Category(1, "Whiskey", "whiskey", 1));
-        categories.add(new Category(1, "Wine", "ic_wine_bottle", 1));
-        categories.add(new Category(1, "Gin", "ic_gin_bottle", 1));
-        categories.add(new Category(1, "Soda", "ic_soda_bottle", 1));
-        categories.add(new Category(1, "Juice", "ic_juice_bottle", 1));
-
-        CategoryAdapter adapter = new CategoryAdapter(_c, categories);
-        _categoryList.setAdapter(adapter);
-    }
 
 
     @Override

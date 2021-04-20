@@ -19,7 +19,7 @@ import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.StoresAdapter;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Store;
+import com.agnet.uza.models.Business;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -57,7 +57,7 @@ public class StoresFragment extends Fragment   implements View.OnClickListener{
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
-
+        _toolbar.setTitle("Your Stores");
 
         // list setup
         //category list
@@ -76,7 +76,7 @@ public class StoresFragment extends Fragment   implements View.OnClickListener{
 
     public void getLocalStores() {
 
-        List<Store> stores = _dbHandler.getStores();
+        List<Business> stores = _dbHandler.getStores();
 
         StoresAdapter adapter = new StoresAdapter(_c, stores);
         _storeList.setAdapter(adapter);
