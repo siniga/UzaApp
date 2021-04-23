@@ -73,7 +73,7 @@ public class NetworkMonitor extends BroadcastReceiver {
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("BRECEIVER", response);
+
                         try {
                             Response res = _gson.fromJson(response, Response.class);
 
@@ -81,10 +81,10 @@ public class NetworkMonitor extends BroadcastReceiver {
 
                                 Success success = res.getSuccess();
                                 List<User> users = success.getUsers();
-                                String token = success.getToken();
+                                Log.d("BRECEIVER", _gson.toJson(users));
 
                                 for (User user:users) {
-                                    _dbHandler.updateUser(new User(0, user.getPhone(), user.getName(), SYNC_STATUS_ON));
+                                    _dbHandler.updateUser(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON));
                                 }
 
 
