@@ -30,7 +30,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 33;
+    private static final int DATABASE_VERSION = 35;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -354,8 +354,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PHONE, user.getPhone());
         values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
+        values.put(KEY_SYNC_STATUS, user.getSyncStatus());
 
         db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
+
+        db.close(); // Closing database connection
+    }
+
+    public void updateUserSyncStatus(User user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(KEY_PHONE, user.getPhone());
+        values.put(KEY_NAME, user.getName());
+        values.put(KEY_PIN, 0);
+        values.put(KEY_SYNC_STATUS, user.getSyncStatus());
+
+        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getPhone())});
 
         db.close(); // Closing database connection
     }
@@ -468,6 +484,33 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return user;
     }
 
+    public List<User> getUnsyncUsers(){
+        List<User> users = new ArrayList<>();
+
+        int SYNC_STATUS = 0;
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "+KEY_SYNC_STATUS+" = ?  ORDER BY id DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, new String[]{String.valueOf(SYNC_STATUS)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                User user = new User(
+
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
+                );
+
+                users.add(user);
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return users;
+    }
 
     public int deleteUser(int id) {
         SQLiteDatabase database = this.getWritableDatabase();
@@ -507,7 +550,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_ADDRESS_ID, business.getAddressId());
         db.insert(TABLE_BUSINESS, null, values);
 
-
         db.close(); // Closing database connection
     }
 
@@ -536,7 +578,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        0
+                        cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID))
                 );
 
                 businesses.add(business);
@@ -562,7 +604,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             business = new Business(
                     cursor.getInt(cursor.getColumnIndex("id")),
                     cursor.getString(cursor.getColumnIndex("name")),
-                    0
+                    cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID))
             );
         }
 

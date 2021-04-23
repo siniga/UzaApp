@@ -59,6 +59,8 @@ public class RegistrationFragment extends Fragment {
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private String TAG = "RESPONSE_TAG";
+    private int SYNC_STATUS_ON = 1;
+    private int SYNC_STATUS_OFF = 0;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -169,6 +171,8 @@ public class RegistrationFragment extends Fragment {
 
     private void saveUseTolocal() {
         _dbHandler.createUser(_phone, _name, 0);
+        new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
+
     }
 
     private void saveUserToServer() {
@@ -194,7 +198,7 @@ public class RegistrationFragment extends Fragment {
                                 User user = success.getUser();
                                 String token = success.getToken();
 
-                                _dbHandler.createUser(user.getPhone(), user.getName(), 1);
+                                _dbHandler.createUser(user.getPhone(), user.getName(), SYNC_STATUS_ON);
 
                                 //store token
                                 _editor.putInt("USER_ID", user.getId());
@@ -202,7 +206,8 @@ public class RegistrationFragment extends Fragment {
                                 _editor.commit();
 
                             } else {
-                                _dbHandler.createUser(_phone, _name, 0);
+                                Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
+                                _dbHandler.createUser(_phone, _name, SYNC_STATUS_OFF);
                             }
 
                             new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
@@ -229,6 +234,7 @@ public class RegistrationFragment extends Fragment {
                         if (response != null && response.data != null) {
                             String errorString = new String(response.data);
                             Log.i("log error", errorString);
+                            Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                         }
 
                     }
@@ -246,7 +252,7 @@ public class RegistrationFragment extends Fragment {
         };
 
         mSingleton.getInstance(_c).addToRequestQueue(postRequest);
-        postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+      //  postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
 

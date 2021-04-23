@@ -7,6 +7,8 @@ import java.util.List;
 public class Success {
     private User user;
 
+    private List<User> users;
+
     private List<Address> addresses;
 
     private List<Outlet> outlets;
@@ -30,7 +32,7 @@ public class Success {
 
 
     public Success(List streets, List products, List outlets, List categories, List skus, List<History> orders,
-                   List<Partner> partners, User user, String token, Business business, Address address) {
+                   List<Partner> partners, List<User> users, User user, String token, Business business, Address address) {
 
         this.addresses = streets;
         this.products = products;
@@ -43,6 +45,7 @@ public class Success {
         this.token = token;
         this.business = business;
         this.address = address;
+        this.users = users;
     }
 
     public User getUser() {
@@ -89,4 +92,7 @@ public class Success {
         return address;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
 }

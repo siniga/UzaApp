@@ -108,13 +108,12 @@
 
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/street_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Mtaa"
+                android:text="Mtaa unapopatikana"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -129,43 +128,67 @@
                 android:hint="Ingiza mtaa hapa"
                 android:paddingLeft="10dp" />
 
+
+            <TextView
+                android:id="@+id/country_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Chagua nchi"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <AutoCompleteTextView
+                android:paddingLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:id="@+id/country_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Chagua nchi"
+                android:completionThreshold="1"
+                android:ems="10" />
+
             <TextView
                 android:id="@+id/city_hdr"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:text="Mji"
+                android:text="Chagua mji"
                 android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
             <EditText
+                android:visibility="gone"
                 android:id="@+id/city_input"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Ingiza mji hapa"
+                android:hint="Ingiza jina la mji hapa"
                 android:paddingLeft="10dp" />
 
-            <TextView
-                android:id="@+id/country_hdr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="25dp"
-                android:text="Nchi"
-                android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <EditText
-                android:id="@+id/country_input"
+            <LinearLayout
+                android:id="@+id/city_spinner_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Ingiza  nchi hapa"
-                android:paddingLeft="10dp" />
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Spinner
+                    android:id="@+id/city_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/register_btn"

@@ -1,5 +1,6 @@
 package com.agnet.uza.activities;
 
+import android.content.IntentFilter;
 import android.os.Bundle;
 
 import com.agnet.uza.adapters.ProductAdapter;
@@ -10,6 +11,7 @@ import com.agnet.uza.fragments.ReportFragment;
 import com.agnet.uza.fragments.TransactionFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
+import com.agnet.uza.helpers.NetworkMonitor;
 import com.agnet.uza.models.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private ProductAdapter _productAdapter;
     private DatabaseHandler _dbHandler;
     private LinearLayout _toolbarIcon;
+    private NetworkMonitor _networkMonitor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,15 +55,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //initialize
+        _dbHandler = new DatabaseHandler(this);
+        _networkMonitor = new NetworkMonitor();
 
         //binding
         _btmNavBar = findViewById(R.id.bottom_navigation);
         _toolbarIcon = findViewById(R.id.toolbar_icon);
 
-        //initialize
         _btmNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        _dbHandler = new DatabaseHandler(this);
-
         Log.d("HEHHRHH", ""+_dbHandler.isTableEmpty("users"));
         //check if user is logged in
 
@@ -75,6 +78,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+
+        registerReceiver(_networkMonitor,filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(_networkMonitor);
+    }
 
     @Override
     protected void onResume() {
@@ -88,13 +106,19 @@ public class MainActivity extends AppCompatActivity {
     private void LogUser() {
         if(!_dbHandler.isTableEmpty("users")){
 
-            if(_dbHandler.getUserPhone().isEmpty()){
-                new FragmentHelper(MainActivity.this).replace(new LoginFragment(), "LoginFragment", R.id.fragment_placeholder);
 
-            }else {
-                new FragmentHelper(MainActivity.this).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+            try{
+                if(_dbHandler.getUserPhone().isEmpty()){
+                    new FragmentHelper(MainActivity.this).replace(new LoginFragment(), "LoginFragment", R.id.fragment_placeholder);
+
+                }else {
+                    new FragmentHelper(MainActivity.this).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+
+                }
+            }catch (NullPointerException e){
 
             }
+
         }else {
 
             new FragmentHelper(MainActivity.this).replace(new LoginFragment(), "LoginFragment", R.id.fragment_placeholder);

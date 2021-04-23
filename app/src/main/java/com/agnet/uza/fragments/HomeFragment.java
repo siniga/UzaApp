@@ -33,6 +33,7 @@ import com.agnet.uza.activities.ScannerActivity;
 import com.agnet.uza.adapters.ProductAdapter;
 import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.StockLowDialogClass;
+import com.agnet.uza.fragments.auth.LoginFragment;
 import com.agnet.uza.fragments.categories.CategoryFragment;
 import com.agnet.uza.fragments.inventories.InventoryFragment;
 import com.agnet.uza.fragments.products.NewProductFragment;
@@ -176,6 +177,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public boolean onLongClick(View view) {
                 Intent intent = new Intent(_c, AndroidDatabaseManager.class);
                 _c.startActivity(intent);
+
                 return false;
             }
         });
@@ -242,8 +244,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 new FragmentHelper(_c).replaceWithbackStack(new CartFragment(), "CartFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_scanner_btn:
-                Intent intent = new Intent(_c, ScannerActivity.class);
-                _c.startActivity(intent);
+              /*  Intent intent = new Intent(_c, ScannerActivity.class);
+                _c.startActivity(intent);*/
+                _dbHandler.deleteUser(1);
+                new FragmentHelper(_c).replace(new LoginFragment(), "LoginFragment", R.id.fragment_placeholder);
                 break;
             case R.id.cancel_search_btn:
                 _searchView.setText("");
