@@ -31,6 +31,7 @@ import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Discount;
+import com.agnet.uza.models.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -127,7 +128,7 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
                     return;
                 }
 
-                _dbHandler.createUser(_phone.getText().toString(), _name.getText().toString(),0);
+                _dbHandler.createUser(new User(0,_phone.getText().toString(), _name.getText().toString(),0, 0));
                 new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
 
                 break;

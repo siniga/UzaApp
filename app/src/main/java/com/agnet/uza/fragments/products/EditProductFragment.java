@@ -188,7 +188,7 @@ public class EditProductFragment extends Fragment implements View.OnClickListene
                 _editor.putInt("PRODUCT_ACTION_FLAG", 0);
                 _editor.commit();
 
-                new FragmentHelper(_c).replaceWithbackStack(new ProductQrCodeScannerFragment(), "ProductQrCodeScannerFragment", R.id.fragment_placeholder);
+               // new FragmentHelper(_c).replaceWithbackStack(new ProductQrCodeScannerFragment(), "ProductQrCodeScannerFragment", R.id.fragment_placeholder);
                 break;
         }
     }

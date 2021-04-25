@@ -31,7 +31,7 @@ public class NetworkMonitor extends BroadcastReceiver {
 
     private DatabaseHandler _dbHandler;
     private Gson _gson;
-    private String _name,_phone;
+    private String _name, _phone;
     private int SYNC_STATUS_ON = 1;
     private int SYNC_STATUS_OFF = 0;
     private String TAG = "NETWORKRECEIVER";
@@ -45,17 +45,22 @@ public class NetworkMonitor extends BroadcastReceiver {
         _dbHandler = new DatabaseHandler(context);
         _gson = new Gson();
 
-       if(checkConnection(context)){
-
-           Toast.makeText(context, "Online!", Toast.LENGTH_SHORT).show();
-          getSyncUsers(context);
-       }
+        if (checkConnection(context)) {
+            Toast.makeText(context, "Online", Toast.LENGTH_SHORT).show();
+            getSyncUsers(context);
+        }else {
+            Toast.makeText(context, "Offline", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
     private void getSyncUsers(Context context) {
         _users = _dbHandler.getUnsyncUsers();
-        saveUserToServer(context);
+
+        Log.d("BRECEIVER", _gson.toJson(_users));
+        if (_users.size() > 0) {
+            saveUserToServer(context);
+        }
     }
 
     public boolean checkConnection(Context context) {
@@ -73,22 +78,15 @@ public class NetworkMonitor extends BroadcastReceiver {
                 new com.android.volley.Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-
+                        Toast.makeText(context, "Synced!", Toast.LENGTH_SHORT).show();
                         try {
                             Response res = _gson.fromJson(response, Response.class);
+                            Success success = res.getSuccess();
+                            List<User> users = success.getUsers();
 
-                            if (res.getCode() == 201) {
-
-                                Success success = res.getSuccess();
-                                List<User> users = success.getUsers();
-                                Log.d("BRECEIVER", _gson.toJson(users));
-
-                                for (User user:users) {
-                                    _dbHandler.updateUser(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON));
-                                }
-
-
-
+                            Log.d("BRECEIVER", _gson.toJson(users));
+                            for (User user : users) {
+                                _dbHandler.updateUserSyncStatus(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getServerId(),user.getDeletedStatus()));
                             }
 
                         } catch (NullPointerException e) {
@@ -118,13 +116,14 @@ public class NetworkMonitor extends BroadcastReceiver {
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("users", _gson.toJson(_users));
-                params.put("flag", ""+FLAG_ADMIN);
+                params.put("flag", "" + FLAG_ADMIN);
                 return params;
             }
         };
 
         mSingleton.getInstance(context).addToRequestQueue(postRequest);
-          postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        postRequest.setRetryPolicy(new DefaultRetryPolicy(30000
+                , DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
 

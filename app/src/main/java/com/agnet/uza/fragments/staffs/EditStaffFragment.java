@@ -130,14 +130,14 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener{
                     return;
                 }
 
-                _dbHandler.updateUser(new User(_userId,_phone.getText().toString(),_name.getText().toString(),0));
+                _dbHandler.updateUser(new User(_userId,_phone.getText().toString(),_name.getText().toString(),0,0, 0));
                 new FragmentHelper(_c).replace(new StaffFragment(),"StaffFragment",R.id.fragment_placeholder);
 
                 break;
             case R.id.delete_staff_btn:
                 Toast.makeText(_c, "Item is deleted!", Toast.LENGTH_SHORT).show();
 
-                _dbHandler.deleteUser(_userId);
+                _dbHandler.updateUser(new User(_userId,_phone.getText().toString(),_name.getText().toString(),0,0, 1));
                 new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
                 break;
         }

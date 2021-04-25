@@ -5,18 +5,12 @@ import android.os.Bundle;
 import android.util.SparseArray;
 
 import com.agnet.uza.R;
-import com.agnet.uza.helpers.DatabaseHandler;
-import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
-import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
-import com.google.android.gms.vision.barcode.Barcode;
+
 
 import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
-
-public class ScannerActivity extends AppCompatActivity implements BarcodeRetriever {
+public class ScannerActivity extends AppCompatActivity{ /*implements BarcodeRetriever {
     private BarcodeCapture barcodeCapture;
     private DatabaseHandler _dbHandler;
 
@@ -26,21 +20,23 @@ public class ScannerActivity extends AppCompatActivity implements BarcodeRetriev
         setContentView(R.layout.activity_scanner);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+*//*
 
         barcodeCapture = (BarcodeCapture) getSupportFragmentManager().findFragmentById(R.id.barcode);
         barcodeCapture.setRetrieval(this);
+*//*
 
 
         _dbHandler = new DatabaseHandler(this);
 
 
-    /*    .setSupportMultipleScan(supportMultiple.isChecked())
+    *//*    .setSupportMultipleScan(supportMultiple.isChecked())
                 .setTouchAsCallback(touchBack.isChecked())
                 .shouldAutoFocus(autoFocus.isChecked())
                 .setShowFlash(flash.isChecked())
                 .setBarcodeFormat(Barcode.ALL_FORMATS)
                 .setCameraFacing(frontCam.isChecked() ? CameraSource.CAMERA_FACING_FRONT : CameraSource.CAMERA_FACING_BACK)
-                .setShouldShowText(drawText.isChecked());*/
+                .setShouldShowText(drawText.isChecked());*//*
     }
 
     @Override
@@ -105,7 +101,7 @@ public class ScannerActivity extends AppCompatActivity implements BarcodeRetriev
     protected void onPause() {
         super.onPause();
         //alertDialog.cancel();
-    }
+    }*/
 
 
 }

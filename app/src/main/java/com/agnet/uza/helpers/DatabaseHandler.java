@@ -21,6 +21,7 @@ import com.agnet.uza.models.Product;
 import com.agnet.uza.models.Sku;
 import com.agnet.uza.models.Address;
 import com.agnet.uza.models.User;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 35;
+    private static final int DATABASE_VERSION = 38;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -57,6 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_SYNC_STATUS = "sync_status";
     private static final String KEY_SERVER_ID = "server_id";
+    private static final String KEY_DELETED_STATUS = "deleted_status";
 
     //address table
     private static final String KEY_ID = "id";
@@ -99,10 +101,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_TOTAL_AMOUNT = "total_amount";
     private static final String KEY_ORDER_ID = "order_id";
 
+    private Gson _gson;
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         c = context;
+        _gson = new Gson();
     }
 
     // Creating Tables
@@ -114,7 +118,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT,"
                 + KEY_PIN + " INTEGER,"
                 + KEY_PHONE + " TEXT,"
-                + KEY_SYNC_STATUS+ " INTEGER " + ")";
+                + KEY_SYNC_STATUS + " INTEGER,"
+                + KEY_DELETED_STATUS + " INTEGER,"
+                + KEY_SERVER_ID + " INTEGER " + ")";
 
         String CREATE_ADDRESS_TABLE = "CREATE TABLE " + TABLE_ADDRESS+ "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -331,15 +337,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin user crude
      ********************************************/
-    public void createUser(String phone, String name, int syncStatus) {
+    public void createUser(User user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
 
-        values.put(KEY_PHONE, phone);
-        values.put(KEY_NAME, name);
+        values.put(KEY_PHONE, user.getPhone());
+        values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
-        values.put(KEY_SYNC_STATUS, syncStatus);
+        values.put(KEY_SYNC_STATUS, user.getSyncStatus());
+        values.put(KEY_SERVER_ID, user.getServerId());
 
         db.insert(TABLE_USER, null, values);
         db.close(); // Closing database connection
@@ -355,7 +362,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
         values.put(KEY_SYNC_STATUS, user.getSyncStatus());
-
         db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
 
         db.close(); // Closing database connection
@@ -370,8 +376,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
         values.put(KEY_SYNC_STATUS, user.getSyncStatus());
+        values.put(KEY_SERVER_ID, user.getServerId());
 
-        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getPhone())});
+        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
 
         db.close(); // Closing database connection
     }
@@ -444,7 +451,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
                 );
 
                 users.add(user);
@@ -473,7 +481,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
                 );
 
             } while (cursor.moveToNext());
@@ -499,7 +508,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
                 );
 
                 users.add(user);

@@ -1,5 +1,7 @@
 package com.agnet.uza.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class User {
 
     private int id;
@@ -7,12 +9,18 @@ public class User {
     private String name;
     private int syncStatus;
 
+    @SerializedName("server_id")
+    private int serverId;
+    private int deletedStatus;
 
-    public User(int id, String phone,String name, int syncStatus) {
+
+    public User(int id, String phone,String name, int syncStatus, int serverId, int deletedStatus) {
         this.id = id;
         this.phone = phone;
         this.name = name;
         this.syncStatus = syncStatus;
+        this.serverId = serverId;
+        this.deletedStatus = deletedStatus;
     }
 
     public int getId() {
@@ -29,5 +37,13 @@ public class User {
 
     public int getSyncStatus() {
         return syncStatus;
+    }
+
+    public int getServerId() {
+        return serverId;
+    }
+
+    public int getDeletedStatus() {
+        return deletedStatus;
     }
 }

@@ -3,7 +3,14 @@ package com.agnet.uza.application;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Build;
+
+import com.facebook.stetho.DumperPluginsProvider;
+import com.facebook.stetho.Stetho;
+import com.facebook.stetho.dumpapp.DumperPlugin;
+
+import java.util.ArrayList;
 
 
 public class App extends Application {
@@ -14,10 +21,12 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        createNotificationChannels();
+        final Context context =  this;
+        //createNotificationChannels();
+        Stetho.initializeWithDefaults(this);
     }
 
-    private void createNotificationChannels() {
+    /*private void createNotificationChannels() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel1 = new NotificationChannel(
                     CHANNEL_1_ID,
@@ -37,5 +46,5 @@ public class App extends Application {
             manager.createNotificationChannel(channel1);
             manager.createNotificationChannel(channel2);
         }
-    }
+    }*/
 }

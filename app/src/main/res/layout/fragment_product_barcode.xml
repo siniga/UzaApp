@@ -31,7 +31,7 @@
             android:layout_marginTop="40dp"
             android:src="@drawable/ic_scanner_large" />
 
-        <fragment
+      <!--  <fragment
             android:layout_marginTop="40dp"
             android:id="@+id/barcode"
             android:name="com.google.android.gms.samples.vision.barcodereader.BarcodeCapture"
@@ -42,7 +42,7 @@
             app:gvb_draw="true"
             app:gvb_flash="false"
             app:gvb_rect_colors="@array/rect_color"
-            app:gvb_touch="false" />
+            app:gvb_touch="false" />-->
     </LinearLayout>
 
 

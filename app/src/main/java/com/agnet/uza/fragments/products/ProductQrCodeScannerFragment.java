@@ -13,18 +13,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.agnet.uza.R;
-import com.agnet.uza.helpers.FragmentHelper;
-import com.google.android.gms.samples.vision.barcodereader.BarcodeCapture;
-import com.google.android.gms.samples.vision.barcodereader.BarcodeGraphic;
-import com.google.android.gms.vision.barcode.Barcode;
+
 import com.google.gson.Gson;
 import java.util.List;
 import androidx.fragment.app.FragmentActivity;
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeFragment;
-import xyz.belvi.mobilevisionbarcodescanner.BarcodeRetriever;
 
 
-public class ProductQrCodeScannerFragment extends BarcodeFragment implements BarcodeRetriever {
+public class ProductQrCodeScannerFragment {/* extends BarcodeFragment{implements BarcodeRetriever {
 
     private FragmentActivity _c;
     private SharedPreferences _preferences;
@@ -139,6 +134,6 @@ public class ProductQrCodeScannerFragment extends BarcodeFragment implements Bar
 
 
 
-
+*/
 
 }

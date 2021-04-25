@@ -81,7 +81,6 @@ public class StaffFragment extends Fragment   implements View.OnClickListener{
 
         List<User> staffs = _dbHandler.getUsers();
 
-
         StaffsAdapter adapter = new StaffsAdapter(_c, staffs);
         _staffList.setAdapter(adapter);
     }

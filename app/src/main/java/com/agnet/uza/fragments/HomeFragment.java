@@ -45,12 +45,12 @@ import com.agnet.uza.models.Product;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
-import com.karumi.dexter.Dexter;
+/*import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-import com.pusher.client.channel.Channel;
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener;*/
+//import com.pusher.client.channel.Channel;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences.Editor _editor;
     private TextView _errorMsg;
     private DatabaseHandler _dbHandler;
-    private Channel _channel;
+//    private Channel _channel;
     private String _mPhone;
     private Handler _mHandler;
     private RecyclerView _productList;
@@ -295,7 +295,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         outState.putDouble("TOTAL_AMOUNT", _savedtotalAmnt);
     }
 
-    public void requestPermissions() {
+  /*  public void requestPermissions() {
         Dexter.withActivity(_c)
                 .withPermissions(
                         Manifest.permission.READ_CALENDAR,
@@ -323,7 +323,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 .onSameThread()
                 .check();
     }
-
+*/
     public static void showKeyboard(EditText editText) {
         editText.post(new Runnable() {
             @Override

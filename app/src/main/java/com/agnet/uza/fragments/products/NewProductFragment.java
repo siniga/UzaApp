@@ -283,7 +283,7 @@ public class NewProductFragment extends Fragment implements AdapterView.OnItemSe
                 _editor.putInt("PRODUCT_ACTION_FLAG", 1);
                 _editor.commit();
 
-                new FragmentHelper(_c).replaceWithbackStack(new ProductQrCodeScannerFragment(), "ProductQrCodeScannerFragment", R.id.fragment_placeholder);
+//                new FragmentHelper(_c).replaceWithbackStack(new ProductQrCodeScannerFragment(), "ProductQrCodeScannerFragment", R.id.fragment_placeholder);
                 break;
         }
     }
