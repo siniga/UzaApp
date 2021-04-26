@@ -254,7 +254,7 @@ public class BusinessRegistrationFragment extends Fragment {
                 response -> {
                     Response res = _gson.fromJson(response, Response.class);
 
-                    Log.d(TAG, response);
+                  //  Log.d(TAG, response);
 
                     if (res.getCode() == 201) {
                         Success success = res.getSuccess();

@@ -11,6 +11,8 @@ public class User {
 
     @SerializedName("server_id")
     private int serverId;
+
+    @SerializedName("deleted_status")
     private int deletedStatus;
 
 

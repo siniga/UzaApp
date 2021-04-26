@@ -79,9 +79,9 @@ public class StaffFragment extends Fragment   implements View.OnClickListener{
 
     public void getLocalCategory() {
 
-        List<User> staffs = _dbHandler.getUsers();
+        List<User> users = _dbHandler.getUndeletedUsers();
 
-        StaffsAdapter adapter = new StaffsAdapter(_c, staffs);
+        StaffsAdapter adapter = new StaffsAdapter(_c, users);
         _staffList.setAdapter(adapter);
     }
 

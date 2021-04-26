@@ -7,9 +7,13 @@
     android:background="#d8d8d8"
     android:elevation="@dimen/padding_10"
     android:orientation="vertical"
-    android:padding="15dp">
+    >
 
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
     <RelativeLayout
         android:paddingLeft="15dp"
         android:id="@+id/btns_wrapper"
@@ -124,5 +128,24 @@
 
     </androidx.core.widget.NestedScrollView>
 
+    </RelativeLayout>
 
+
+    <LinearLayout
+        android:id="@+id/transparent_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_light_transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:theme="@style/AppTheme.WhiteAccent"
+        android:visibility="gone" />
 </RelativeLayout>

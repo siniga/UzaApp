@@ -347,6 +347,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_PIN, 0);
         values.put(KEY_SYNC_STATUS, user.getSyncStatus());
         values.put(KEY_SERVER_ID, user.getServerId());
+        values.put(KEY_DELETED_STATUS, user.getDeletedStatus());
 
         db.insert(TABLE_USER, null, values);
         db.close(); // Closing database connection
@@ -362,8 +363,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, user.getName());
         values.put(KEY_PIN, 0);
         values.put(KEY_SYNC_STATUS, user.getSyncStatus());
-        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
+        values.put(KEY_DELETED_STATUS, user.getDeletedStatus());
 
+        db.update(TABLE_USER, values, "id = ?", new String[]{String.valueOf(user.getId())});
         db.close(); // Closing database connection
     }
 
@@ -437,12 +439,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public List<User> getUsers() {
+    public List<User> getUndeletedUsers() {
         List<User> users = new ArrayList<>();
 
-        String selectQuery = "SELECT  * FROM " + TABLE_USER + "  ORDER BY id DESC";
+        String selectQuery = "SELECT  * FROM " + TABLE_USER + " WHERE "+KEY_DELETED_STATUS+" = ? ORDER BY id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, new String[]{String.valueOf(0)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -452,7 +454,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_DELETED_STATUS))
                 );
 
                 users.add(user);
@@ -482,7 +485,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_DELETED_STATUS))
                 );
 
             } while (cursor.moveToNext());
@@ -509,7 +513,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_PHONE)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getInt(cursor.getColumnIndex(KEY_SYNC_STATUS)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_DELETED_STATUS))
                 );
 
                 users.add(user);

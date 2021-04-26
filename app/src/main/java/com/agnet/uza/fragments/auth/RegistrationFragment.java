@@ -170,7 +170,7 @@ public class RegistrationFragment extends Fragment {
 
 
     private void saveUseTolocal() {
-        _dbHandler.createUser(new User(0,_phone, _name, 0,0));
+        _dbHandler.createUser(new User(0,_phone, _name, 0,0,0));
         new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
 
     }
@@ -198,7 +198,9 @@ public class RegistrationFragment extends Fragment {
                                 User user = success.getUser();
                                 String token = success.getToken();
 
-                                _dbHandler.createUser(new User(0,user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getServerId()));
+                                Log.d(TAG, _gson.toJson(user));
+
+                                _dbHandler.createUser(new User(0,user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getId(),0));
 
                                 //store token
                                 _editor.putInt("USER_ID", user.getId());
@@ -207,7 +209,7 @@ public class RegistrationFragment extends Fragment {
 
                             } else {
                                 Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
-                                _dbHandler.createUser(new User(0,_phone, _name, SYNC_STATUS_OFF, 0));
+                                _dbHandler.createUser(new User(0,_phone, _name, SYNC_STATUS_OFF, 0,0));
                             }
 
                             new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);

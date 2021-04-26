@@ -50,7 +50,6 @@ public class StaffsAdapter extends RecyclerView.Adapter<StaffsAdapter.ViewHolder
         this.fragment = fragment;
         this.c = c;
 
-
         _preferences = c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
     }
@@ -81,19 +80,20 @@ public class StaffsAdapter extends RecyclerView.Adapter<StaffsAdapter.ViewHolder
         holder.mName.setText(currentStaff.getName());
 
         //check snyc status
-        if(currentStaff.getSyncStatus() == 0){
+       /* if(currentStaff.getSyncStatus() == 0){
             holder.mSyncStatusFail.setVisibility(View.VISIBLE);
             holder.mSyncStatusOk.setVisibility(View.GONE);
         }else {
             holder.mSyncStatusFail.setVisibility(View.GONE);
             holder.mSyncStatusOk.setVisibility(View.VISIBLE);
-        }
+        }*/
 
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                _editor.putInt("SELECTED_STAFF_ID", currentStaff.getId());
+                _editor.putInt("USER_SERVER_ID", currentStaff.getServerId());
+                _editor.putInt("USER_ID", currentStaff.getId());
                 _editor.commit();
 
                 new FragmentHelper(c).replace(new EditStaffFragment(),"ditStaffFragment", R.id.fragment_placeholder);

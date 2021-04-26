@@ -5,111 +5,131 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d8d8d8"
-    android:orientation="vertical"
-    android:padding="15dp"
-    android:elevation="@dimen/padding_10">
-
+    android:elevation="@dimen/padding_10"
+    android:orientation="vertical">
 
     <RelativeLayout
-        android:background="@drawable/round_corners"
-        android:paddingLeft="15dp"
-        android:id="@+id/btns_wrapper"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="15dp">
 
-        <ImageView
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/ic_staffs"/>
-
-        <TextView
-            android:layout_marginLeft="30dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:textSize="14sp"
+        <RelativeLayout
+            android:id="@+id/btns_wrapper"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add a new staff here"/>
+            android:layout_marginTop="5dp"
+            android:background="@drawable/round_corners"
+            android:paddingLeft="15dp">
 
-        <Button
-            android:id="@+id/save_staff_btn"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@color/white"
-            android:text="Save"
-            android:drawableRight="@drawable/ic_done_green_24dp"></Button>
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_staffs" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="30dp"
+                android:text="Add a new staff here"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/save_staff_btn"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="@color/white"
+                android:drawableRight="@drawable/ic_done_green_24dp"
+                android:text="Save"></Button>
 
 
-    </RelativeLayout>
+        </RelativeLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="25dp"
-        android:layout_below="@id/btns_wrapper"
-        android:id="@+id/scroll_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="0dp"
-            android:background="@drawable/round_corners"
-            android:gravity="center"
-            android:minHeight="400dp"
-            android:orientation="vertical"
-            android:padding="20dp">
+            android:layout_below="@id/btns_wrapper"
+            android:layout_marginTop="25dp">
 
-            <TextView
-                android:textSize="16sp"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Personal Details"
-                android:textColor="@color/colorPrimary"
-                android:textStyle="bold" />
+                android:layout_height="match_parent"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/round_corners"
+                android:gravity="center"
+                android:minHeight="400dp"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-            <TextView
-                android:textSize="12sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
-                android:textColor="@android:color/black" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Personal Details"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Name"
-                android:padding="10dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Name"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Phone"
-                android:textColor="@android:color/black"
-                android:textSize="12sp"/>
+                <EditText
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/round_corners_with_stroke_grey_light"
+                    android:hint="Name"
+                    android:padding="10dp" />
 
-            <EditText
-                android:inputType="number"
-                android:id="@+id/phone"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Phone"
-                android:padding="10dp" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Phone"
+                    android:textColor="@android:color/black"
+                    android:textSize="12sp" />
+
+                <EditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="55dp"
+                    android:background="@drawable/round_corners_with_stroke_grey_light"
+                    android:hint="Phone"
+                    android:inputType="number"
+                    android:padding="10dp" />
 
 
+            </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </RelativeLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    <LinearLayout
+        android:id="@+id/transparent_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_light_transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:theme="@style/AppTheme.WhiteAccent"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -55,12 +55,12 @@ public class NetworkMonitor extends BroadcastReceiver {
     }
 
     private void getSyncUsers(Context context) {
-        _users = _dbHandler.getUnsyncUsers();
+       /* _users = _dbHandler.getUnsyncUsers();
 
-        Log.d("BRECEIVER", _gson.toJson(_users));
+        Log.d("BRECEIVER1", _gson.toJson(_users));
         if (_users.size() > 0) {
             saveUserToServer(context);
-        }
+        }*/
     }
 
     public boolean checkConnection(Context context) {
@@ -87,6 +87,11 @@ public class NetworkMonitor extends BroadcastReceiver {
                             Log.d("BRECEIVER", _gson.toJson(users));
                             for (User user : users) {
                                 _dbHandler.updateUserSyncStatus(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getServerId(),user.getDeletedStatus()));
+
+                                //delete user with delete status 1
+                                if(user.getDeletedStatus() == 1){
+                                    _dbHandler.deleteUser(user.getId());
+                                }
                             }
 
                         } catch (NullPointerException e) {
