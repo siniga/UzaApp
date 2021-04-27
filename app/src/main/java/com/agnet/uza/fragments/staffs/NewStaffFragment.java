@@ -55,8 +55,6 @@ import java.util.Map;
 
 
 public class NewStaffFragment extends Fragment implements View.OnClickListener {
-
-
     private FragmentActivity _c;
     private Toolbar _toolbar, _homeToolbar;
     private SharedPreferences _preferences;
@@ -64,11 +62,12 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
     private EditText _nameInput, _phoneInput;
     private Button _saveStaff;
     private DatabaseHandler _dbHandler;
-    private String _TOKEN;
     private String _name, _phone;
     private Gson _gson;
+    private String _TOKEN;
     private ProgressBar _progressBar;
     private LinearLayout _transparentLoader;
+    private int _businessId;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint({"RestrictedApi", "WrongConstant"})
@@ -96,11 +95,18 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
-
         _saveStaff.setOnClickListener(this);
 
-        if (_preferences.getString("USER_TOKEN", null) != null) {
-            _TOKEN = _preferences.getString("USER_TOKEN", null);
+        try{
+            if (_preferences.getString("USER_TOKEN", null) != null) {
+                _TOKEN = _preferences.getString("USER_TOKEN", null);
+            }
+
+            if(_preferences.getInt("BUSINESS_ID", 0) != 0){
+              _businessId  = _preferences.getInt("BUSINESS_ID", 0);
+            }
+        }catch (NullPointerException e){
+            e.getMessage();
         }
 
         return view;
@@ -195,22 +201,19 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
                     }
 
                 },
-                new com.android.volley.Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        _progressBar.setVisibility(View.GONE);
-                        _transparentLoader.setVisibility(View.GONE);
+                error -> {
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
 
-                        // Log.d("RegistrationFragment", "here" + error.getMessage());
-                        NetworkResponse response = error.networkResponse;
-                        String errorMsg = "";
-                        if (response != null && response.data != null) {
-                            String errorString = new String(response.data);
-                            Log.i("log error", errorString);
-                            Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
-                        }
-
+                    // Log.d("RegistrationFragment", "here" + error.getMessage());
+                    NetworkResponse response = error.networkResponse;
+                    String errorMsg = "";
+                    if (response != null && response.data != null) {
+                        String errorString = new String(response.data);
+                        Log.i("log error", errorString);
+                        Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
+
                 }
         ) {
             @Override
@@ -226,6 +229,7 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
                 params.put("name", _name);
                 params.put("phone", _phone);
                 params.put("pin", "1234");
+                params.put("business_id", ""+_businessId);
                 return params;
             }
         };

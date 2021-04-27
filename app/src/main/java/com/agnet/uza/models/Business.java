@@ -8,17 +8,23 @@ public class Business {
 
     @SerializedName("address_id")
     private int addressId;
+    private int serverId;
+    private Address address;
 
-    public Business(int id, String name, int addressId) {
+    public Business(int id, String name, int addressId,int serverId) {
         this.id = id;
         this.name = name;
         this.addressId =  addressId;
+        this.serverId = serverId;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public int getId() {
         return id;
     }
-
 
     public String getName() {
         return name;
@@ -26,5 +32,13 @@ public class Business {
 
     public int getAddressId() {
         return addressId;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public int getServerId() {
+        return serverId;
     }
 }

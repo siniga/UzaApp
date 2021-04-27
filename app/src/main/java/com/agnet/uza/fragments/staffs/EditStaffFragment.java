@@ -58,7 +58,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
     private LinearLayout _transparentLoader;
     private String _TOKEN;
     private String _name, _phone;
-    ;
+    private User _user;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -98,16 +98,15 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
                 _userId = _preferences.getInt("USER_ID", 0);
             }
 
-            User user = _dbHandler.getUser(_userId);
-            _toolbar.setTitle("Edit " + user.getName());
+            _user = _dbHandler.getUser(_userId);
+            _toolbar.setTitle("Edit " +_user.getName());
 
-            _nameInput.setText(user.getName());
-            _phoneInput.setText(user.getPhone());
+            _nameInput.setText(_user.getName());
+            _phoneInput.setText(_user.getPhone());
 
             if (_preferences.getString("USER_TOKEN", null) != null) {
                 _TOKEN = _preferences.getString("USER_TOKEN", null);
             }
-
 
         } catch (NullPointerException e) {
            e.getMessage();
@@ -168,12 +167,11 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
                 if (!validateFields()) {
                     editUser();
                 }
+
                 break;
             case R.id.delete_staff_btn:
                 Toast.makeText(_c, "Item is deleted!", Toast.LENGTH_SHORT).show();
-
-                _dbHandler.updateUser(new User(_userId, _phone, _name, 0, 0, 1));
-                new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
+                deleteUser();
                 break;
         }
     }
@@ -191,6 +189,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
 
         _progressBar.setVisibility(View.VISIBLE);
         _transparentLoader.setVisibility(View.VISIBLE);
+
 
         Endpoint.setUrl("user/update");
         String url = Endpoint.getUrl();
@@ -221,7 +220,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
                         _progressBar.setVisibility(View.GONE);
                         _transparentLoader.setVisibility(View.GONE);
 
-                         Log.d("RegistrationFragment", "here" + error.getMessage());
+                        Log.d("RegistrationFragment", "here" + error.getMessage());
                         NetworkResponse response = error.networkResponse;
                         String errorMsg = "";
                         if (response != null && response.data != null) {
@@ -247,6 +246,56 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
                 params.put("server_id", ""+_serverId);
                 params.put("device_id", ""+_userId);
 
+                return params;
+            }
+        };
+
+        mSingleton.getInstance(_c).addToRequestQueue(postRequest);
+        //  postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+    }
+
+    private void deleteUser() {
+
+        _progressBar.setVisibility(View.VISIBLE);
+        _transparentLoader.setVisibility(View.VISIBLE);
+
+        Endpoint.setUrl("user/device/delete/"+_user.getServerId());
+        String url = Endpoint.getUrl();
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                       // Log.d("RESPONSE", ""+_userId);
+
+                        _progressBar.setVisibility(View.GONE);
+                        _transparentLoader.setVisibility(View.GONE);
+
+                        _dbHandler.deleteUser(_userId);
+
+                        new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
+                    }
+
+                },
+                error -> {
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
+
+                    Log.d("RegistrationFragment", "here" + error.getMessage());
+                    NetworkResponse response = error.networkResponse;
+                    String errorMsg = "";
+                    if (response != null && response.data != null) {
+                        String errorString = new String(response.data);
+                        Log.i("log error", errorString);
+                        Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + _TOKEN);
                 return params;
             }
         };

@@ -108,11 +108,11 @@ public class BusinessRegistrationFragment extends Fragment {
         _businessTypesSpinner = view.findViewById(R.id.business_types_spinner);
         _progressBar = view.findViewById(R.id.progress_bar);
         _transparentLoader = view.findViewById(R.id.transparent_loader);
-        _registerBtn = view.findViewById(R.id.register_btn);
         _citySpinner = view.findViewById(R.id.city_spinner);
         _countryAutocomplete = view.findViewById(R.id.country_autocomplete);
         _cityInput  = view.findViewById(R.id.city_input);
         _citySpinnerWrapper =view.findViewById(R.id.city_spinner_wrapper);
+        _registerBtn = view.findViewById(R.id.register_btn);
 
         _registerBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,7 +191,16 @@ public class BusinessRegistrationFragment extends Fragment {
 
         //city list
         _cityList = new ArrayList<>();
-        _cityList.add(new Country(0,"Select city"));
+        _cityList.add(new Country(0,"Chagua mji"));
+
+        // Creating adapter for spinner
+        ArrayAdapter<Country> dataAdapter = new ArrayAdapter<Country>(_c, android.R.layout.simple_spinner_item, _cityList);
+
+        // Drop down layout style - list view with radio button
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // attaching data adapter to spinner
+        _citySpinner.setAdapter(dataAdapter);
 
         return view;
 
@@ -238,7 +247,7 @@ public class BusinessRegistrationFragment extends Fragment {
         _dbHandler.createAddress(new Address(0, _street, _selectedCity, _selectedCountry, SYNC_STATUS_OFF));
         int lastId = _dbHandler.getLastId("addresses");
 
-        _dbHandler.createBusiness(new Business(0, _name, lastId));
+        _dbHandler.createBusiness(new Business(0, _name, lastId,0));
         new FragmentHelper(_c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
     }
 
@@ -265,14 +274,17 @@ public class BusinessRegistrationFragment extends Fragment {
                         _dbHandler.createAddress(new Address(0, address.getName(), address.getCity(), address.getCountry(), SYNC_STATUS_ON));
 
                         int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, business.getName(), lastId));
+                        _dbHandler.createBusiness(new Business(0, business.getName(), lastId, business.getId()));
+
+                        _editor.putInt("BUSINESS_ID", business.getId());
+                        _editor.commit();
 
                     } else {
 
                         _dbHandler.createAddress(new Address(0, _street, _selectedCity, _selectedCountry, 0));
 
                         int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, _name, lastId));
+                        _dbHandler.createBusiness(new Business(0, _name, lastId,0));
 
                         Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }

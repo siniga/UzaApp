@@ -31,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 38;
+    private static final int DATABASE_VERSION = 39;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -127,12 +127,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT,"
                 + KEY_CITY + " TEXT,"
                 + KEY_COUNTRY + " TEXT,"
-                + KEY_SYNC_STATUS + " INTEGER " + ")";
+                + KEY_SERVER_ID + " INTEGER " + ")";
 
         String CREATE_BUSINESS_TABLE = "CREATE TABLE " + TABLE_BUSINESS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
-                + KEY_ADDRESS_ID + " INTEGER " + ")";
+                + KEY_ADDRESS_ID + " INTEGER,"
+                + KEY_SERVER_ID + " INTEGER " + ")";
 
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -545,7 +546,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, address.getName());
         values.put(KEY_CITY, address.getCity());
         values.put(KEY_COUNTRY, address.getCountry());
-        values.put(KEY_SYNC_STATUS, address.getSyncStatus());
+        values.put(KEY_SERVER_ID, address.getServerId());
 
         db.insert(TABLE_ADDRESS, null, values);
 
@@ -583,19 +584,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<Business> getBusinesses() {
         List<Business> businesses = new ArrayList<>();
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON streets.id = businesses.street_id  ORDER BY businesses.id DESC";
+        String selectQuery = "SELECT  businesses.id, businesses.name, businesses.server_id, addresses.name as address, addresses.id  as address_id , addresses.city , addresses.country, addresses.server_id "
+                +" FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON addresses.id = businesses.address_id  ORDER BY businesses.id DESC";
         SQLiteDatabase database = this.getWritableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
-                Business business = new Business(
-
-                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
-                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID))
+                Address address = new Address(
+                        cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
+                        cursor.getString(cursor.getColumnIndex("address")),
+                        cursor.getString(cursor.getColumnIndex("city")),
+                        cursor.getString(cursor.getColumnIndex("country")),
+                        0
                 );
 
+                Business business = new Business(
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
+                );
+
+                business.setAddress(address);
                 businesses.add(business);
 
             } while (cursor.moveToNext());
@@ -610,17 +621,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         Business business = null;
 
-        String selectQuery = "SELECT  businesses.id, businesses.name,  streets.name as street, streets.id  as street_id  FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON streets.id = businesses.street_id  WHERE businesses.id = " + storeId + " ORDER BY businesses.id DESC ";
+        String selectQuery = "SELECT  businesses.id, businesses.name,  addresses.name as address, businesses.server_id, addresses.id  as address_id , addresses.city , addresses.country, addresses.server_id "
+                +" FROM " + TABLE_BUSINESS + " JOIN " + TABLE_ADDRESS + " ON addresses.id = businesses.address_id  WHERE businesses.id = ? ORDER BY businesses.id DESC ";
         SQLiteDatabase database = this.getWritableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery,new  String[]{String.valueOf(storeId)});
 
         if (cursor.moveToFirst()) {
 
-            business = new Business(
-                    cursor.getInt(cursor.getColumnIndex("id")),
-                    cursor.getString(cursor.getColumnIndex("name")),
-                    cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID))
+            Address address = new Address(
+                    cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
+                    cursor.getString(cursor.getColumnIndex("address")),
+                    cursor.getString(cursor.getColumnIndex("city")),
+                    cursor.getString(cursor.getColumnIndex("country")),
+                    0
             );
+
+            business = new Business(
+                    cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                    cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                    cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
+                    cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
+                    );
+
+            business.setAddress(address);
         }
 
         database.close();

@@ -197,8 +197,7 @@ public class RegistrationFragment extends Fragment {
                                 Success success = res.getSuccess();
                                 User user = success.getUser();
                                 String token = success.getToken();
-
-                                Log.d(TAG, _gson.toJson(user));
+//                                Log.d(TAG, _gson.toJson(user));
 
                                 _dbHandler.createUser(new User(0,user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getId(),0));
 

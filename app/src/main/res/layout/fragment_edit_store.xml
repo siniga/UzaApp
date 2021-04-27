@@ -6,106 +6,210 @@
     android:layout_height="match_parent"
     android:background="#d8d8d8"
     android:orientation="vertical"
-    android:padding="15dp"
->
+   >
 
 
-    <RelativeLayout
+
+    <LinearLayout
+        android:padding="5dp"
         android:id="@+id/btns_wrapper"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white">
+        android:layout_marginTop="0dp">
 
         <Button
-            android:text="Update"
+            android:layout_weight="1"
+            android:id="@+id/delete_store_btn"
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_grey_clear_24"
+            android:text="Delete Store"
+            android:textColor="@color/midd_grey" />
+        <Button
+            android:layout_weight="1"
             android:id="@+id/update_store_btn"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:elevation="2dp"
-            android:background="@color/white"
-            android:drawableRight="@drawable/ic_done_green_24dp"/>
-
-
-    </RelativeLayout>
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_done_green_24"
+            android:text="Update"
+            android:textColor="@color/midd_grey" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="5dp"
-        android:layout_below="@id/btns_wrapper"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@id/btns_wrapper"
+        >
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
-            android:background="@drawable/round_corners"
             android:gravity="center"
-            android:minHeight="400dp"
+            android:minHeight="600dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <TextView
-                android:textSize="16sp"
+                android:id="@+id/name_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Personal Details"
-                android:textColor="@color/colorPrimary"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Jina la biashara"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:textSize="12sp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
-                android:textColor="@android:color/black" />
-
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/name_input"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Name"
-                android:padding="10dp" />
+                android:hint="Ingiza jina la biashara hapa"
+                android:paddingLeft="10dp" />
+
 
             <TextView
+                android:id="@+id/type_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Location"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Aina ya biashara"
                 android:textColor="@android:color/black"
-                android:textSize="12sp"/>
-
-            <EditText
-                android:id="@+id/location"
-                android:layout_width="match_parent"
-                android:layout_height="55dp"
-                android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Location"
-                android:padding="10dp" />
-
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Spinner
+                    android:id="@+id/business_types_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/street_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
-                <Button
-                    android:drawableRight="@drawable/ic_delete"
-                    android:id="@+id/delete_store_btn"
+                android:layout_marginTop="25dp"
+                android:text="Mtaa unapopatikana"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+
+            <EditText
+                android:id="@+id/street_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:hint="Ingiza mtaa hapa"
+                android:paddingLeft="10dp" />
+
+
+            <TextView
+                android:id="@+id/country_header"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Chagua nchi"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <AutoCompleteTextView
+                android:id="@+id/country_autocomplete"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:completionThreshold="1"
+                android:ems="10"
+                android:hint="Chagua nchi"
+                android:paddingLeft="10dp" />
+
+            <TextView
+                android:id="@+id/city_hdr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Chagua mji"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/city_input"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:hint="Ingiza jina la mji hapa"
+                android:paddingLeft="10dp"
+                />
+
+            <LinearLayout
+                android:visibility="gone"
+                android:id="@+id/city_spinner_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <Spinner
+                    android:id="@+id/city_spinner"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/white"
-                    android:text="Delete Store"
-                    android:textColor="@color/midd_grey" />
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:padding="5dp" />
+
             </LinearLayout>
+
+
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/transparent_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_light_transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:theme="@style/AppTheme.WhiteAccent"
+        android:visibility="gone" />
 </RelativeLayout>

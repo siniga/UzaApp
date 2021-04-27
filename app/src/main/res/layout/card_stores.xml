@@ -34,6 +34,17 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/ic_baseline_clear_24"/>
+    </LinearLayout>
 
     <View
         android:layout_alignParentBottom="true"
