@@ -2,6 +2,7 @@ package com.agnet.uza.fragments;
 
 
 import android.Manifest;
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -18,12 +19,20 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +51,7 @@ import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Product;
+import com.agnet.uza.util.CircleAnimationUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
@@ -75,7 +85,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private SharedPreferences.Editor _editor;
     private TextView _errorMsg;
     private DatabaseHandler _dbHandler;
-//    private Channel _channel;
+    //    private Channel _channel;
     private String _mPhone;
     private Handler _mHandler;
     private RecyclerView _productList;
@@ -103,6 +113,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private LinearLayout _emptyItemsMsg;
     private DecimalFormat _currencyformatter;
     private int _categoryId;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @SuppressLint("RestrictedApi")
@@ -147,6 +158,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _fab = _c.findViewById(R.id.fab);
         _openInventoryBtn = view.findViewById(R.id.open_product_inventory_btn);
         _emptyItemsMsg = view.findViewById(R.id.empty_items_msg);
+
 
         //set items
         _homeToolbar.setVisibility(View.VISIBLE);
@@ -295,35 +307,35 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         outState.putDouble("TOTAL_AMOUNT", _savedtotalAmnt);
     }
 
-  /*  public void requestPermissions() {
-        Dexter.withActivity(_c)
-                .withPermissions(
-                        Manifest.permission.READ_CALENDAR,
-                        Manifest.permission.RECORD_AUDIO)
-//                        Manifest.permission.ACCESS_FINE_LOCATION)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        // check if all permissions are granted
-                        if (report.areAllPermissionsGranted()) {
-                            // do you work now
-                        }
+    /*  public void requestPermissions() {
+          Dexter.withActivity(_c)
+                  .withPermissions(
+                          Manifest.permission.READ_CALENDAR,
+                          Manifest.permission.RECORD_AUDIO)
+  //                        Manifest.permission.ACCESS_FINE_LOCATION)
+                  .withListener(new MultiplePermissionsListener() {
+                      @Override
+                      public void onPermissionsChecked(MultiplePermissionsReport report) {
+                          // check if all permissions are granted
+                          if (report.areAllPermissionsGranted()) {
+                              // do you work now
+                          }
 
-                        // check for permanent denial of any permission
-                        if (report.isAnyPermissionPermanentlyDenied()) {
-                            // permission is denied permenantly, navigate user to app settings
-                        }
-                    }
+                          // check for permanent denial of any permission
+                          if (report.isAnyPermissionPermanentlyDenied()) {
+                              // permission is denied permenantly, navigate user to app settings
+                          }
+                      }
 
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                })
-                .onSameThread()
-                .check();
-    }
-*/
+                      @Override
+                      public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                          token.continuePermissionRequest();
+                      }
+                  })
+                  .onSameThread()
+                  .check();
+      }
+  */
     public static void showKeyboard(EditText editText) {
         editText.post(new Runnable() {
             @Override
@@ -384,11 +396,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         }
 
-        try{
+        try {
             //calling a method of the adapter class and passing the filtered list
             _productAdapter.filterList(filterdProducts);
 
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
 
         }
 
@@ -403,6 +415,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             _productAdapter = new ProductAdapter(_c, _products, this, 1);
             _productList.setAdapter(_productAdapter);
+            _productAdapter.setActionListener(imageView -> {
+                if (imageView != null)
+                    makeFlyAnimation(imageView);
+            });
 
         } else {
 
@@ -414,13 +430,46 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         addEditTxtChangeListener();
     }
 
+    private void makeFlyAnimation(ImageView targetView) {
+
+        RelativeLayout destView = (RelativeLayout) _c.findViewById(R.id.cartRelativeLayout);
+
+        new CircleAnimationUtil().attachActivity(_c).setTargetView(targetView).setMoveDuration(300).setDestView(destView).setAnimationListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                //addItemToCart();
+                _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
+                _totalAmount.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+
+                targetView.setVisibility(View.VISIBLE);
+               // Toast.makeText(_c, "Continue Shopping...", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).startAnimation();
+
+
+    }
 
     public void addQntyCount() {
-        _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
+
     }
 
     public void addAmount() {
-        _totalAmount.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+
     }
 
     public void launchStockLowDialog(String name) {

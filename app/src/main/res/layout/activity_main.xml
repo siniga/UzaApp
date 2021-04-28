@@ -19,6 +19,7 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -54,7 +55,7 @@
                         android:elevation="4dp"
                         android:gravity="right"
                         android:text="TZS:"
-                        android:textColor="@color/white"
+                        android:textColor="@android:color/white"
                         android:textSize="9sp" />
 
                     <TextView
@@ -81,17 +82,36 @@
                     android:id="@+id/view_cart_btn"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6">
+                    android:layout_weight="0.6"
+                    android:gravity="center">
 
-                    <TextView
-                        android:id="@+id/cart_qnty"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:text="0"
-                        android:textColor="@color/white"
-                        android:textSize="22sp"
-                        android:textStyle="bold" />
+                    <RelativeLayout
+                        android:id="@+id/cartRelativeLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:minWidth="20dip"
+                        android:minHeight="20dip">
+
+
+                        <TextView
+                            android:id="@+id/cart_qnty"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:autoMirrored="true"
+                            android:clickable="false"
+                            android:rotationY="0"
+                            android:text="0"
+                            android:textColor="@android:color/white"
+                            android:textSize="22sp"
+                            android:textStyle="bold"
+                            />
+
+
+                    </RelativeLayout>
+
+
                 </LinearLayout>
 
             </LinearLayout>
@@ -170,6 +190,7 @@
         app:elevation="8dp"
         app:srcCompat="@drawable/ic_save_white_24dp"
         tools:ignore="VectorDrawableCompat" />
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

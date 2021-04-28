@@ -537,7 +537,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
 
     /*******************************************
-     Begin street crude
+     Begin address crude
      ********************************************/
     public void createAddress(Address address) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -555,6 +555,21 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
+    public void updateAddress(Address address) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, address.getName());
+        values.put(KEY_CITY, address.getCity());
+        values.put(KEY_COUNTRY, address.getCountry());
+
+        db.update(TABLE_ADDRESS, values, "id = ?", new String[]{String.valueOf(address.getId())});
+
+
+        db.close(); // Closing database connection
+    }
+
+
     /*******************************************
      Begin business crude
      ********************************************/
@@ -564,8 +579,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, business.getName());
         values.put(KEY_ADDRESS_ID, business.getAddressId());
-        db.insert(TABLE_BUSINESS, null, values);
+        values.put(KEY_SERVER_ID, business.getServerId());
 
+        db.insert(TABLE_BUSINESS, null, values);
         db.close(); // Closing database connection
     }
 
@@ -594,9 +610,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Address address = new Address(
                         cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
                         cursor.getString(cursor.getColumnIndex("address")),
-                        cursor.getString(cursor.getColumnIndex("city")),
-                        cursor.getString(cursor.getColumnIndex("country")),
-                        0
+                        cursor.getString(cursor.getColumnIndex(KEY_CITY)),
+                        cursor.getString(cursor.getColumnIndex(KEY_COUNTRY)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
                 );
 
                 Business business = new Business(
@@ -631,9 +647,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             Address address = new Address(
                     cursor.getInt(cursor.getColumnIndex(KEY_ADDRESS_ID)),
                     cursor.getString(cursor.getColumnIndex("address")),
-                    cursor.getString(cursor.getColumnIndex("city")),
-                    cursor.getString(cursor.getColumnIndex("country")),
-                    0
+                    cursor.getString(cursor.getColumnIndex(KEY_CITY)),
+                    cursor.getString(cursor.getColumnIndex(KEY_COUNTRY)),
+                    cursor.getInt(cursor.getColumnIndex(KEY_SERVER_ID))
             );
 
             business = new Business(

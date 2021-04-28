@@ -24,7 +24,7 @@
             android:layout_height="60dp"
             android:backgroundTint="@color/white"
             android:drawableRight="@drawable/ic_baseline_grey_clear_24"
-            android:text="Delete Store"
+            android:text="Futa Taarifa"
             android:textColor="@color/midd_grey" />
         <Button
             android:layout_weight="1"
@@ -33,7 +33,7 @@
             android:layout_height="60dp"
             android:backgroundTint="@color/white"
             android:drawableRight="@drawable/ic_baseline_done_green_24"
-            android:text="Update"
+            android:text="Badilisha"
             android:textColor="@color/midd_grey" />
     </LinearLayout>
 

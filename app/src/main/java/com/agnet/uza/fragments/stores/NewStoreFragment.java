@@ -212,17 +212,14 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
 
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
-                        return true;
-                    }
+        getView().setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 
@@ -245,10 +242,13 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
                 _address = _addressInput.getText().toString();
 
                 if (!checkEmptyFields()) {
+                    _saveStore.setClickable(false);
                     saveBusiness();
+                }else {
+                    _saveStore.setClickable(true);
                 }
 
-                _saveStore.setClickable(false);
+
 
                 break;
         }

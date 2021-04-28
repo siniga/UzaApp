@@ -9,22 +9,38 @@
     android:background="@color/white"
     android:elevation="1dp">
 
+
     <LinearLayout
-        android:layout_centerInParent="true"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="80dp">
-        <ImageView
-            android:layout_gravity="center"
-            android:src="@drawable/ic_product"
-            android:id="@+id/product_img"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:scaleType="fitCenter" />
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+      <RelativeLayout
+          android:layout_width="wrap_content"
+          android:layout_height="match_parent">
+          <ImageView
+              android:layout_centerInParent="true"
+              android:id="@+id/product_img_copy"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:scaleType="fitCenter"
+              android:src="@drawable/ic_product" />
+          <ImageView
+              android:layout_centerInParent="true"
+              android:id="@+id/product_img"
+              android:layout_width="40dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:scaleType="fitCenter"
+              android:src="@drawable/ic_product" />
+      </RelativeLayout>
+
         <RelativeLayout
-            android:layout_marginTop="@dimen/padding_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/padding_10"
             android:paddingLeft="15dp">
 
             <TextView
@@ -34,19 +50,18 @@
                 android:text="name"
                 android:textColor="#606373"
                 android:textSize="16sp"
-                android:textStyle="bold"
-           />
+                android:textStyle="bold" />
 
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/sku"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/name"
                 android:text="500ml"
                 android:textColor="@android:color/black"
-                android:textSize="12dp" />
+                android:textSize="12dp"
+                android:visibility="gone" />
 
 
             <TextView
@@ -61,57 +76,54 @@
 
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_marginLeft="20dp"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/padding_10"
-                android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center">
-               <!-- <Button
-                    android:textSize="10dp"
-                    android:textColor="@color/white"
-                    android:background="@color/blue"
-                    android:textAllCaps="false"
-                    android:layout_width="70dp"
-                    android:layout_height="20dp"
-                    android:text="0 Stock"/>-->
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="@dimen/padding_10"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <!-- <Button
+                     android:textSize="10dp"
+                     android:textColor="@color/white"
+                     android:background="@color/blue"
+                     android:textAllCaps="false"
+                     android:layout_width="70dp"
+                     android:layout_height="20dp"
+                     android:text="0 Stock"/>-->
 
 
                 <TextView
                     android:id="@+id/stock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="0 "/>
+                    android:text="0 " />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" In "/>
+                    android:text=" In " />
 
 
                 <ImageView
                     android:id="@+id/low_stock_msg"
-                    android:visibility="gone"
-                    android:layout_marginLeft="3dp"
-                    android:src="@drawable/ic_low_stock_risk"
                     android:layout_width="13dp"
                     android:layout_height="wrap_content"
-                    />
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/ic_low_stock_risk"
+                    android:visibility="gone" />
 
                 <ImageButton
-                    android:visibility="gone"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/solid_circle_strike_primary"
                     android:scaleType="centerInside"
                     android:src="@drawable/ic_add_black_24dp"
-                    android:background="@drawable/solid_circle_strike_primary"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp" />
+                    android:visibility="gone" />
             </LinearLayout>
         </RelativeLayout>
     </LinearLayout>
-
-
 
 
 </RelativeLayout>

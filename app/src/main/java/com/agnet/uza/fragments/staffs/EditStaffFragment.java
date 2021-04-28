@@ -93,9 +93,12 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         _deleteStaff.setOnClickListener(this);
 
         try {
-            if (_preferences.getInt("SELECTED_STAFF_ID", 0) != 0) {
-                _serverId = _preferences.getInt("USER_SERVER_ID", 0);
+            if (_preferences.getInt("USER_ID", 0) != 0) {
                 _userId = _preferences.getInt("USER_ID", 0);
+            }
+
+            if(_preferences.getInt("USER_SERVER_ID", 0) != 0){
+                _serverId = _preferences.getInt("USER_SERVER_ID", 0);
             }
 
             _user = _dbHandler.getUser(_userId);
@@ -274,7 +277,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
 
                         _dbHandler.deleteUser(_userId);
 
-                        new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
+                        new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
                     }
 
                 },

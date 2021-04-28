@@ -271,7 +271,7 @@ public class BusinessRegistrationFragment extends Fragment {
                         Address address = success.getAddress();
                         Business business = success.getBusiness();
 
-                        _dbHandler.createAddress(new Address(0, address.getName(), address.getCity(), address.getCountry(), SYNC_STATUS_ON));
+                        _dbHandler.createAddress(new Address(0, address.getName(), address.getCity(), address.getCountry(), address.getId()));
 
                         int lastId = _dbHandler.getLastId("addresses");
                         _dbHandler.createBusiness(new Business(0, business.getName(), lastId, business.getId()));

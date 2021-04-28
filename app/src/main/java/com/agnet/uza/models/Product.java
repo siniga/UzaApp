@@ -65,5 +65,6 @@ public class Product {
     public String getSku() {
         return sku;
     }
+
 }
 

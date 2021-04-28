@@ -30,6 +30,7 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.application.mSingleton;
 import com.agnet.uza.fragments.HomeFragment;
+import com.agnet.uza.fragments.staffs.StaffFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Address;
@@ -63,7 +64,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
     private Spinner _businessTypesSpinner;
     private List<BusinessType> _businessType;
     private int _typeId;
-    private String _typeName,_name, _address, _city,_country;
+    private String _typeName, _name, _address, _city, _country;
     private AutoCompleteTextView _countryAutocomplete;
     private EditText _cityInput;
     private ProgressBar _progressBar;
@@ -94,7 +95,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         _addressInput = view.findViewById(R.id.street_input);
         _countryAutocomplete = view.findViewById(R.id.country_autocomplete);
         _businessTypesSpinner = view.findViewById(R.id.business_types_spinner);
-        _cityInput  = view.findViewById(R.id.city_input);
+        _cityInput = view.findViewById(R.id.city_input);
         _progressBar = view.findViewById(R.id.progress_bar);
         _transparentLoader = view.findViewById(R.id.transparent_loader);
 
@@ -105,20 +106,21 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
 
-        try{
-            if(_preferences.getInt("SELECTED_STORE_ID",0) != 0){
-                _selectedBusinessId = _preferences.getInt("SELECTED_STORE_ID",0);
+        try {
+            if (_preferences.getInt("SELECTED_STORE_ID", 0) != 0) {
+                _selectedBusinessId = _preferences.getInt("SELECTED_STORE_ID", 0);
             }
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             e.getMessage();
         }
 
         _business = _dbHandler.getSelectedBusiness(_selectedBusinessId);
-        _toolbar.setTitle("Edit "+_business.getName());
+        _toolbar.setTitle("Edit " + _business.getName());
         _nameInput.setText(_business.getName());
         _addressInput.setText(_business.getAddress().getName());
         _countryAutocomplete.setText(_business.getAddress().getCountry());
         _cityInput.setText(_business.getAddress().getCity());
+
 
         //events
         _saveStore.setOnClickListener(this);
@@ -173,17 +175,14 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
 
-        getView().setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK) {
-                        new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
-                        return true;
-                    }
+        getView().setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
+                    return true;
                 }
-                return false;
             }
+            return false;
         });
     }
 
@@ -204,37 +203,17 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
                 _name = _nameInput.getText().toString();
                 _address = _addressInput.getText().toString();
                 _country = _countryAutocomplete.getText().toString();
-               _city =  _cityInput.getText().toString();
+                _city = _cityInput.getText().toString();
 
                 if (!checkEmptyFields()) {
+                    _saveStore.setClickable(true);
                     saveBusiness();
+                }else {
+                    _saveStore.setClickable(false);
                 }
-
-                //     saveBusiness();
-
-              /*  _dbHandler.createAddress(new Address(0,addressName,"","",0));
-
-                //get street last id and store it into business table to show its address
-                int lastId = _dbHandler.getLastId("addresses");
-                _dbHandler.createBusiness(new Business(0,_name.getText().toString(), lastId));
-
-                new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);*/
-
-                _saveStore.setClickable(false);
-              /*  String addressName = _location.getText().toString();
-                _dbHandler.createAddress(new Address(0,addressName, "","",0));
-
-                //get street last id and store it into business table to show its address
-                int lastId = _dbHandler.getLastId("addresses");
-                _dbHandler.updateBusiness(new Business(_selectedBusinessId,_name.getText().toString(), lastId));
-
-                new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);*/
-
                 break;
             case R.id.delete_store_btn:
-              /*  _dbHandler.deleteBusiness(_selectedBusinessId);
-                new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
-                Toast.makeText(_c, "Item is deleted!", Toast.LENGTH_SHORT).show();*/
+                deleteBusiness();
                 break;
         }
     }
@@ -246,10 +225,10 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         } else if (_address.isEmpty()) {
             Toast.makeText(_c, "Ingiza jina la mtaa!", Toast.LENGTH_LONG).show();
             return true;
-        }else if (_city.isEmpty()) {
+        } else if (_city.isEmpty()) {
             Toast.makeText(_c, "Ingiza jina la mji!", Toast.LENGTH_LONG).show();
             return true;
-        }else if (_country.isEmpty()) {
+        } else if (_country.isEmpty()) {
             Toast.makeText(_c, "Ingiza jina la nchi", Toast.LENGTH_LONG).show();
             return true;
         }
@@ -292,38 +271,27 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
                 response -> {
                     Response res = _gson.fromJson(response, Response.class);
 
-                      Log.d("RESPONSE", response);
-/*
+                    Log.d("RESPONSE", response);
 
-                    if (res.getCode() == 201) {
+                    if (res.getCode() == 200) {
                         Success success = res.getSuccess();
 
                         Address address = success.getAddress();
                         Business business = success.getBusiness();
 
-                        _dbHandler.createAddress(new Address(0, address.getName(), address.getCity(), address.getCountry(), SYNC_STATUS_ON));
-
-                        int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, business.getName(), lastId));
-
-                        _editor.putInt("BUSINESS_ID", business.getId());
-                        _editor.commit();
+                        _dbHandler.updateAddress(new Address(_business.getAddress().getId(),address.getName(),address.getCity(),address.getCountry(),address.getServerId()));
+                        _dbHandler.updateBusiness(new Business(_business.getId(), business.getName(), _business.getAddress().getId(), business.getServerId()));
 
                     } else {
 
-                        _dbHandler.createAddress(new Address(0, _address, _selectedCity, _selectedCountry, 0));
-
-                        int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, _name, lastId));
-
                         Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
-*/
 
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
 
-                   // new FragmentHelper(_c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+                    _saveStore.setClickable(true);
+                     new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 
                 },
                 error -> {
@@ -368,6 +336,56 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
 
     }
 
+    private void deleteBusiness() {
+
+        _progressBar.setVisibility(View.VISIBLE);
+        _transparentLoader.setVisibility(View.VISIBLE);
+
+        Endpoint.setUrl("business/device/delete/"+_business.getServerId());
+        String url = Endpoint.getUrl();
+
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new com.android.volley.Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Log.d("RESPONSE", ""+_userId);
+
+                        _progressBar.setVisibility(View.GONE);
+                        _transparentLoader.setVisibility(View.GONE);
+
+                        _dbHandler.deleteBusiness(_business.getId());
+
+                        new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
+                    }
+
+                },
+                error -> {
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
+                    _saveStore.setClickable(true);
+
+                    Log.d("RegistrationFragment", "here" + error.getMessage());
+                    NetworkResponse response = error.networkResponse;
+                    String errorMsg = "";
+                    if (response != null && response.data != null) {
+                        String errorString = new String(response.data);
+                        Log.i("log error", errorString);
+                        Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
+                    }
+                }
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", "Bearer " + _TOKEN);
+                return params;
+            }
+        };
+
+        mSingleton.getInstance(_c).addToRequestQueue(postRequest);
+        //  postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+    }
 
 
 }

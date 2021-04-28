@@ -54,7 +54,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private int productListType = 0;
     private Gson gson;
 
-
+    private ProductItemActionListener actionListener;
     // Provide a suitable constructor (depends on the kind of dataset)
     public ProductAdapter(Context c, List<Product> products, HomeFragment fragment, int productListType) {
         this.products = products;
@@ -71,36 +71,20 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     }
 
-    @Override
-    public int getItemViewType(int position) {
-
-        //if chat is my chat or not
-        //TODO: use my logged in stored id
-        if (productListType == 0)
-            return VIEW_TYPES.productByCategory;
-        else
-            return VIEW_TYPES.popularProduct;
-
+    public void setActionListener(ProductItemActionListener actionListener) {
+        this.actionListener = actionListener;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
-        View view = null;
+        // create a new view
+        View v = inflator.inflate(R.layout.card_popular_product, parent, false);
+        // set the view's size, margins, padding and layout parameters
 
-        switch (viewType) {
-            case VIEW_TYPES.productByCategory:
-                view = inflator.inflate(R.layout.card_product, parent, false);
-                break;
-            case VIEW_TYPES.popularProduct:
-                view = inflator.inflate(R.layout.card_popular_product, parent, false);
-                break;
-            default:
-                break;
-        }
-
-        return new ViewHolder(c, view);
+        ViewHolder vh = new ViewHolder(c, v);
+        return vh;
     }
 
     double totalAmount = 0;
@@ -121,6 +105,16 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         holder.mName.setText(currentProduct.getName());
         holder.mPrice.setText("TZS: " + formatter.format(formattedPrice));
         holder.mStcok.setText("" + currentProduct.getStock());
+
+        /*holder.mItemIv.setImageResource(currentProduct.getResourceId());
+        holder.mItemCopy.setImageResource(currentProduct.getResourceId());*/
+
+   /*     holder.mWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });*/
 
         //TODO: store everything in a list when still manipulating cart data, before saving to db
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +143,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                        }else {
                            currentOrderId = _dbHandler.getCurrentOrderId();
                        }
+
+                        if(actionListener!=null)
+                            actionListener.onItemTap(holder.mImg);
 
 
                         if (!_dbHandler.isProductIdExist(currentProduct.getId())) {
@@ -188,7 +185,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             }
         });
 
-
         displayImg(currentProduct.getImgUrl(), holder.mImg);
 
     }
@@ -221,6 +217,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             mSku = view.findViewById(R.id.sku);
             mStcok = view.findViewById(R.id.stock);
             mLowStock = view.findViewById(R.id.low_stock_msg);
+
         }
 
     }
@@ -244,8 +241,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         return drawableResourceId;
     }
 
-    public class VIEW_TYPES {
-        public static final int productByCategory = 1;
-        public static final int popularProduct = 2;
+
+
+    public interface ProductItemActionListener{
+        void onItemTap(ImageView imageView);
     }
 }
