@@ -6,6 +6,7 @@
     <color name="light_grey">#E2E2E2</color>
     <color name="light_grey_ddd">#dddddd</color>
     <color name="midd_grey">#666666</color>
+    <color name="light_midd_grey">#989898</color>
     <color name="black_transparent">#C9000000</color>
     <color name="grey_transparent">#A1cccccc</color>
     <color name="blue_transparent">#C9001689</color>

@@ -1,13 +1,25 @@
-package com.agnet.uza.models;
+ package com.agnet.uza.models;
+
+import com.google.gson.annotations.SerializedName;
 
 public class Product {
 
-    private  int id, discount, stock, categoryId;
+    private  int id, discount, stock;
     private String name, cost, imgUrl, barcode, category, sku;
     private double price;
 
+    @SerializedName("category_id")
+    private int categoryId;
 
-    public Product(int id, String name, double price, String cost, String barcode, int discount, int stock, String imgUrl, int categoryId, String category, String sku) {
+    @SerializedName("server_id")
+    private int serverId;
+
+    @SerializedName("sku_id")
+    private int skuId;
+
+
+    public Product(int id, String name, double price, String cost, String barcode,
+                   int discount, int stock, String imgUrl, int categoryId, String category, String sku, int serverId, int skuId) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -19,6 +31,8 @@ public class Product {
         this.barcode = barcode;
         this.category = category;
         this.sku = sku;
+        this.serverId = serverId;
+        this.skuId = skuId;
     }
 
 
@@ -66,5 +80,12 @@ public class Product {
         return sku;
     }
 
+    public int getServerId() {
+        return serverId;
+    }
+
+    public int getSkuId() {
+        return skuId;
+    }
 }
 

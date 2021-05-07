@@ -23,6 +23,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
@@ -49,6 +50,7 @@ import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
+import com.agnet.uza.helpers.MyBounceInterpolator;
 import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Product;
 import com.agnet.uza.util.CircleAnimationUtil;
@@ -98,7 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private TextView _searchItemEditTxt;
     private Button _categoryBtn;
     private LinearLayout _sellBtn, _viewCartBtn;
-    private TextView _cartQnty, _totalAmount;
+    private Button _cartQnty, _totalAmount;
     private Toolbar _toolbar, _homeToolbar;
     private LinearLayout _cancelCategoryBtmsheetBtn, _cancelCartBtmsheet;
     private ImageButton _scannerBtn, _searchBtn;
@@ -113,6 +115,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private LinearLayout _emptyItemsMsg;
     private DecimalFormat _currencyformatter;
     private int _categoryId;
+    private View view;
+    private LinearLayout _toolbarIcon;
+    private LinearLayout _checkoutBtn;
+    private TextView _loggedInName;
 
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -120,9 +126,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        view = inflater.inflate(R.layout.fragment_home, container, false);
         _c = getActivity();
-
 
         //initialization
         _dbHandler = new DatabaseHandler(_c);
@@ -134,18 +139,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
 
-
         //binding
         _errorMsg = view.findViewById(R.id.error_msg);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _categoryBtn = view.findViewById(R.id.category_btn);
         _viewLoginPg = view.findViewById(R.id.view_user_login);
-        _sellBtn = _c.findViewById(R.id.sell_btn);
-        _viewCartBtn = _c.findViewById(R.id.view_cart_btn);
-        _totalAmount = _c.findViewById(R.id.total_amount);
-        _cartQnty = _c.findViewById(R.id.cart_qnty);
+        _loggedInName = view.findViewById(R.id.logged_in_name);
+        //  _viewCartBtn = view.findViewById(R.id.view_cart_btn);
+        _totalAmount = view.findViewById(R.id.total_amount);
+        _checkoutBtn = view.findViewById(R.id.checkout_main_btn);
+        _cartQnty = view.findViewById(R.id.cart_qnty);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
+        _toolbarIcon = view.findViewById(R.id.toolbar_icon);
         _cancelCategoryBtmsheetBtn = _c.findViewById(R.id.cancel_category_btmsheet);
         _cancelCartBtmsheet = _c.findViewById(R.id.cancel_cart_btmsheet);
         _scannerBtn = view.findViewById(R.id.view_scanner_btn);
@@ -172,8 +178,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //events
         _categoryBtn.setOnClickListener(this);
-        _sellBtn.setOnClickListener(this);
-        _viewCartBtn.setOnClickListener(this);
+        _cartQnty.setOnClickListener(this);
+        _totalAmount.setOnClickListener(this);
         _cancelCategoryBtmsheetBtn.setOnClickListener(this);
         _scannerBtn.setOnClickListener(this);
         _cancelSearchBtn.setOnClickListener(this);
@@ -182,7 +188,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //method calls
         ((MainActivity) _c).setHomeIconBottomNav();
-
 
         _scannerBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -194,31 +199,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        if (_preferences.getInt("CAMERA_FLAG", 0) == 1) {
-            new FragmentHelper(_c).replaceWithbackStack(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
-            _editor.remove("CAMERA_FLAG");
-            _editor.commit();
+        _toolbarIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FragmentHelper(_c).replaceWithbackStack(new MenuFragment(), " MenuFragment", R.id.fragment_placeholder);
 
-        }
+            }
+        });
 
-        if (!_dbHandler.isTableEmpty("carts")) {
+        try {
+            if (_preferences.getInt("CAMERA_FLAG", 0) == 1) {
+                new FragmentHelper(_c).replaceWithbackStack(new NewProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
+                _editor.remove("CAMERA_FLAG");
+                _editor.commit();
 
-            _totalAmount.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
-            _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
+            }
 
-        } else {
-            _totalAmount.setText("0.0");
-            _cartQnty.setText("0");
-        }
+            if (!_dbHandler.isTableEmpty("carts")) {
 
-        if (_preferences.getInt("CATEGORY_ID", 0) != 0) {
+                _totalAmount.setText("TZS:" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+                _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
 
-            _categoryId = _preferences.getInt("CATEGORY_ID", 0);
-            _products = _dbHandler.getProductsByCategory(_categoryId);
+            } else {
+                _totalAmount.setText("0.0");
+                _cartQnty.setText("0");
+            }
 
-        } else {
+            if (_preferences.getInt("CATEGORY_ID", 0) != 0) {
 
-            _products = _dbHandler.getProducts();
+                _categoryId = _preferences.getInt("CATEGORY_ID", 0);
+                _products = _dbHandler.getProductsByCategory(_categoryId);
+
+            } else {
+
+                _products = _dbHandler.getProducts();
+            }
+
+        } catch (NullPointerException e) {
+            e.getMessage();
         }
 
         getProducts();
@@ -237,7 +255,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onPause() {
         super.onPause();
-
         _editor.remove("CATEGORY_ID");
         _editor.commit();
     }
@@ -249,15 +266,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.category_btn:
                 new FragmentHelper(_c).replaceWithbackStack(new CategoryFragment(), "CategoryFragment", R.id.fragment_placeholder);
                 break;
-            case R.id.sell_btn:
+            case R.id.total_amount:
                 new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "PaymentFragment", R.id.fragment_placeholder);
                 break;
-            case R.id.view_cart_btn:
+            case R.id.cart_qnty:
                 new FragmentHelper(_c).replaceWithbackStack(new CartFragment(), "CartFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_scanner_btn:
               /*  Intent intent = new Intent(_c, ScannerActivity.class);
                 _c.startActivity(intent);*/
+
+                _editor.clear();
+                _editor.commit();
                 _dbHandler.deleteUser(1);
                 new FragmentHelper(_c).replace(new LoginFragment(), "LoginFragment", R.id.fragment_placeholder);
                 break;
@@ -432,9 +452,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void makeFlyAnimation(ImageView targetView) {
 
-        RelativeLayout destView = (RelativeLayout) _c.findViewById(R.id.cartRelativeLayout);
+//        LinearLayout destView = view.findViewById(R.id.cart);
 
-        new CircleAnimationUtil().attachActivity(_c).setTargetView(targetView).setMoveDuration(300).setDestView(destView).setAnimationListener(new Animator.AnimatorListener() {
+        new CircleAnimationUtil().attachActivity(_c).setTargetView(targetView).setMoveDuration(300).setDestView(_cartQnty).setAnimationListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
 
@@ -444,10 +464,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onAnimationEnd(Animator animation) {
                 //addItemToCart();
                 _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
-                _totalAmount.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+                _totalAmount.setText("TZS:" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
 
                 targetView.setVisibility(View.VISIBLE);
-               // Toast.makeText(_c, "Continue Shopping...", Toast.LENGTH_SHORT).show();
+                final Animation myAnim = AnimationUtils.loadAnimation(_c, R.anim.bounce_animation);
+
+
+                // Use bounce interpolator with amplitude 0.2 and frequency 20
+                MyBounceInterpolator interpolator = new MyBounceInterpolator(0.2, 20);
+                myAnim.setInterpolator(interpolator);
+                _checkoutBtn.startAnimation(myAnim);
+                // Toast.makeText(_c, "Continue Shopping...", Toast.LENGTH_SHORT).show();
             }
 
             @Override

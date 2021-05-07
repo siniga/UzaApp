@@ -5,41 +5,48 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d8d8d8"
-    android:orientation="vertical"
-    android:padding="15dp">
+    android:orientation="vertical">
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/btns_wrapper"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white">
+        android:layout_marginTop="0dp"
+        android:padding="5dp">
 
         <Button
-            android:text="Update"
-            android:id="@+id/update_btn_wrapper"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:elevation="2dp"
-            android:background="@color/white"
-            android:drawableRight="@drawable/ic_done_green_24dp"/>
+            android:id="@+id/delete_product_btn"
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_grey_clear_24"
+            android:text="Katisha"
+            android:textColor="@color/midd_grey" />
 
-
-    </RelativeLayout>
-
+        <Button
+            android:id="@+id/update_btn"
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_done_green_24"
+            android:text="Badilisha"
+            android:textColor="@color/midd_grey" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/btns_wrapper"
-        android:layout_marginTop="5dp">
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="5dp"
             android:gravity="center"
             android:minHeight="400dp"
             android:orientation="vertical">
@@ -54,62 +61,39 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="Product title"
-                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="20dp"
+                    android:text="Jina la bidhaa"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Cost"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Name"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
 
 
                 <EditText
                     android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:hint="Name"
+                    android:hint="Ingiza jina la bidhaa"
                     android:inputType="textCapSentences"
                     android:padding="10dp" />
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Pricing"
-                    android:textColor="@color/colorPrimary"
+                    android:text="Bei ya kuuzia"
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Price"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
 
                 <EditText
                     android:id="@+id/selling_price"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:hint="Selling Price"
+                    android:hint="Ingiza bei ya kuuzia"
                     android:inputType="number"
                     android:padding="10dp" />
 
@@ -117,16 +101,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Cost"
+                    android:text="Bei ya kununulia"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/cost_price"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:hint="Cost Price"
+                    android:hint="Ingiza bei ya kununulia"
                     android:inputType="number"
                     android:padding="10dp" />
 
@@ -134,16 +120,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:text="Stock"
+                    android:text="Bidhaa zimebaki ngapi (stock)"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <EditText
                     android:id="@+id/stock"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:hint="Stock"
+                    android:hint="Ingiza namba ya bidhaa zilizobaki"
                     android:inputType="number"
                     android:padding="10dp" />
 
@@ -160,64 +148,61 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="Inventory"
-                    android:textColor="@color/colorPrimary"
+                    android:layout_marginTop="20dp"
+                    android:text="Aina ya bidhaa "
+                    android:textColor="@android:color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Category"
-                    android:textColor="@android:color/black"
-                    android:textSize="12sp" />
-
                 <LinearLayout
-                    android:orientation="horizontal"
-                    android:background="@drawable/round_corners_with_stroke_grey_light"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
-                    >
+                    android:background="@drawable/round_corners_with_stroke_grey_light"
+                    android:orientation="horizontal">
 
                     <TextView
-                        android:layout_weight="1"
+                        android:textColor="@android:color/black"
                         android:id="@+id/edit_category"
                         android:layout_width="1dp"
-                        android:layout_height="55dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:hint="Category"
                         android:padding="10dp" />
 
-
                     <Button
                         android:id="@+id/change_category"
-                        android:paddingLeft="10dp"
-                        android:textSize="13sp"
-                        android:textColor="@color/blue"
-                        android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
-                        android:background="@drawable/round_corners_with_stroke_grey_light"
-                        android:textAllCaps="false"
-                        android:layout_weight="0.6"
                         android:layout_width="1dp"
                         android:layout_height="match_parent"
-                        android:text="change"/>
+                        android:layout_weight="0.6"
+                        android:background="@drawable/round_corners_with_stroke_blue"
+                        android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_24"
+                        android:paddingLeft="10dp"
+                        android:text="Badili"
+                        android:textAllCaps="false"
+                        android:textColor="@color/blue"
+                        android:textSize="13sp" />
                 </LinearLayout>
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="SKU"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"  />
 
                 <EditText
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
                     android:id="@+id/sku"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:hint="SKU"
+                    android:hint="SKU "
                     android:padding="10dp" />
 
             </LinearLayout>
@@ -233,27 +218,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="0dp"
-                    android:text="Extra"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:text="Image"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="12sp"
+                    android:visibility="gone" />
 
                 <LinearLayout
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="55dp"
                     android:background="@drawable/round_corners_with_stroke_grey_light"
-                    android:gravity="center_vertical">
+                    android:gravity="center_vertical"
+                    android:visibility="gone">
 
                     <ImageButton
                         android:layout_width="60dp"
@@ -275,7 +251,8 @@
                     android:layout_marginTop="20dp"
                     android:text="Barcode"
                     android:textColor="@android:color/black"
-                    android:textSize="12sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
                 <LinearLayout
                     android:id="@+id/qr_code_scanner_btn_wrapper"
@@ -301,7 +278,6 @@
                 </LinearLayout>
 
 
-
             </LinearLayout>
 
         </LinearLayout>
@@ -309,22 +285,20 @@
     </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
-        android:id="@+id/progress_bar"
+        android:id="@+id/transparent_loader"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:gravity="center"
-        android:orientation="vertical"
-        android:visibility="gone">
+        android:background="@color/black_light_transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/padding_10"
-            android:text="Saving Product..." />
-    </LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:theme="@style/AppTheme.WhiteAccent"
+        android:visibility="gone" />
 </RelativeLayout>

@@ -121,7 +121,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         _countryAutocomplete.setText(_business.getAddress().getCountry());
         _cityInput.setText(_business.getAddress().getCity());
 
-
+        //  Log.d("SELECTEID", ""+_gson.toJson(_business));
         //events
         _saveStore.setOnClickListener(this);
         _deleteStore.setOnClickListener(this);
@@ -208,7 +208,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
                 if (!checkEmptyFields()) {
                     _saveStore.setClickable(true);
                     saveBusiness();
-                }else {
+                } else {
                     _saveStore.setClickable(false);
                 }
                 break;
@@ -261,6 +261,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
 
     private void saveBusiness() {
 
+        //Log.d("RESPONSE", "" + _business.getServerId());
         _progressBar.setVisibility(View.VISIBLE);
         _transparentLoader.setVisibility(View.VISIBLE);
 
@@ -270,16 +271,13 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
                     Response res = _gson.fromJson(response, Response.class);
-
-                    Log.d("RESPONSE", response);
-
                     if (res.getCode() == 200) {
                         Success success = res.getSuccess();
 
                         Address address = success.getAddress();
                         Business business = success.getBusiness();
 
-                        _dbHandler.updateAddress(new Address(_business.getAddress().getId(),address.getName(),address.getCity(),address.getCountry(),address.getServerId()));
+                        _dbHandler.updateAddress(new Address(_business.getAddress().getId(), address.getName(), address.getCity(), address.getCountry(), address.getServerId()));
                         _dbHandler.updateBusiness(new Business(_business.getId(), business.getName(), _business.getAddress().getId(), business.getServerId()));
 
                     } else {
@@ -287,17 +285,18 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
                         Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
 
+
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
-
                     _saveStore.setClickable(true);
-                     new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
+                    new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
 
                 },
                 error -> {
 
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
+                    _saveStore.setClickable(true);
 
                     // Log.d("RegistrationFragment", "here" + error.getMessage());
                     NetworkResponse response = error.networkResponse;
@@ -341,7 +340,7 @@ public class EditStoreFragment extends Fragment implements AdapterView.OnItemSel
         _progressBar.setVisibility(View.VISIBLE);
         _transparentLoader.setVisibility(View.VISIBLE);
 
-        Endpoint.setUrl("business/device/delete/"+_business.getServerId());
+        Endpoint.setUrl("business/device/delete/" + _business.getServerId());
         String url = Endpoint.getUrl();
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,

@@ -86,10 +86,10 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
-        _nameInput = view.findViewById(R.id.name);
+        _nameInput = view.findViewById(R.id.name_input);
         _transparentLoader = view.findViewById(R.id.transparent_loader);
         _progressBar = view.findViewById(R.id.progress_bar);
-        _phoneInput = view.findViewById(R.id.phone);
+        _phoneInput = view.findViewById(R.id.phone_input);
         _saveStaff = view.findViewById(R.id.save_staff_btn);
 
         //set items
@@ -192,7 +192,7 @@ public class NewStaffFragment extends Fragment implements View.OnClickListener {
                         if (res.getCode() == 201) {
                             Success success = res.getSuccess();
                             User user = success.getUser();
-                             _dbHandler.createUser(new User(0,user.getPhone(), user.getName(),0, user.getId(),0));
+                             _dbHandler.createUser(new User(0,user.getPhone(), user.getName(), user.getId(),0));
                         }
 
                         _progressBar.setVisibility(View.GONE);

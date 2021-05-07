@@ -59,8 +59,6 @@ public class RegistrationFragment extends Fragment {
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private String TAG = "RESPONSE_TAG";
-    private int SYNC_STATUS_ON = 1;
-    private int SYNC_STATUS_OFF = 0;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -113,14 +111,14 @@ public class RegistrationFragment extends Fragment {
                 _phone = _phoneInputEdTxt.getText().toString();
                 _name = _nameInputEdTxt.getText().toString();
                 _password = _passwordInput.getText().toString();
-
                 // new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
 
                 if (!checkEmptyFields()) {
                     if (checkConnection()) {
+                        _registerBtn.setClickable(false);
                         saveUserToServer();
                     } else {
-                        saveUseTolocal();
+                        Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
                 }
             }
@@ -168,13 +166,6 @@ public class RegistrationFragment extends Fragment {
         return pattern;
     }
 
-
-    private void saveUseTolocal() {
-        _dbHandler.createUser(new User(0,_phone, _name, 0,0,0));
-        new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
-
-    }
-
     private void saveUserToServer() {
 
         _progressBar.setVisibility(View.VISIBLE);
@@ -184,41 +175,41 @@ public class RegistrationFragment extends Fragment {
         String url = Endpoint.getUrl();
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new com.android.volley.Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        _progressBar.setVisibility(View.GONE);
-                        _transparentLoader.setVisibility(View.GONE);
+                response -> {
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
 
-                        try {
-                            Response res = _gson.fromJson(response, Response.class);
-                            if (res.getCode() == 201) {
+                    try {
+                        Log.d("RESPONSE", response);
 
-                                Success success = res.getSuccess();
-                                User user = success.getUser();
-                                String token = success.getToken();
-//                                Log.d(TAG, _gson.toJson(user));
+                        Response res = _gson.fromJson(response, Response.class);
+                        if (res.getCode() == 201) {
 
-                                _dbHandler.createUser(new User(0,user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getId(),0));
+                            Success success = res.getSuccess();
+                            User user = success.getUser();
+                            String token = success.getToken();
 
-                                //store token
-                                _editor.putInt("USER_ID", user.getId());
-                                _editor.putString("USER_TOKEN", token);
-                                _editor.commit();
+                            _dbHandler.createUser(new User(0,user.getPhone(), user.getName(),  user.getId(),0));
 
-                            } else {
-                                Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
-                                _dbHandler.createUser(new User(0,_phone, _name, SYNC_STATUS_OFF, 0,0));
-                            }
+                            //store token
+                            _editor.putInt("USER_ID", user.getId());
+                            _editor.putString("USER_TOKEN", token);
+                            _editor.commit();
 
                             new FragmentHelper(_c).replace(new BusinessRegistrationFragment(), "BusinessRegistrationFragment", R.id.fragment_placeholder);
 
-                        } catch (NullPointerException e) {
 
+                        } else if(res.getCode() == 409) {
+                            Toast.makeText(_c, "Namba ya simu imeshasajiliwa!", Toast.LENGTH_LONG).show();
+                        }else{
                             Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
-                            Log.d("error", e.toString());
                         }
+                        _registerBtn.setClickable(true);
 
+                    } catch (NullPointerException e) {
+
+                        Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
+                        Log.d("error", e.toString());
                     }
 
                 },

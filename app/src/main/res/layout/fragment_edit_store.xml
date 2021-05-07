@@ -5,32 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d8d8d8"
-    android:orientation="vertical"
-   >
-
+    android:orientation="vertical">
 
 
     <LinearLayout
-        android:padding="5dp"
         android:id="@+id/btns_wrapper"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="0dp"
+        android:padding="5dp">
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/delete_store_btn"
             android:layout_width="1dp"
             android:layout_height="60dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:drawableRight="@drawable/ic_baseline_grey_clear_24"
             android:text="Futa Taarifa"
             android:textColor="@color/midd_grey" />
+
         <Button
-            android:layout_weight="1"
             android:id="@+id/update_store_btn"
             android:layout_width="1dp"
             android:layout_height="60dp"
+            android:layout_weight="1"
             android:backgroundTint="@color/white"
             android:drawableRight="@drawable/ic_baseline_done_green_24"
             android:text="Badilisha"
@@ -38,19 +37,18 @@
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
         android:id="@+id/scroll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/btns_wrapper"
-        >
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <LinearLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
+            android:background="@color/white"
             android:gravity="center"
             android:minHeight="600dp"
             android:orientation="vertical"
@@ -166,11 +164,9 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
                 android:hint="Ingiza jina la mji hapa"
-                android:paddingLeft="10dp"
-                />
+                android:paddingLeft="10dp" />
 
             <LinearLayout
-                android:visibility="gone"
                 android:id="@+id/city_spinner_wrapper"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -178,7 +174,8 @@
                 android:background="@drawable/round_corners_with_stroke_grey_light"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="5dp"
+                android:visibility="gone">
 
                 <Spinner
                     android:id="@+id/city_spinner"
@@ -188,7 +185,6 @@
                     android:padding="5dp" />
 
             </LinearLayout>
-
 
 
         </LinearLayout>

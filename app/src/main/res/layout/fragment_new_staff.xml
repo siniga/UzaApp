@@ -46,44 +46,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="0dp"
-            android:background="@drawable/round_corners"
+            android:background="#ffffff"
             android:gravity="center"
+            android:minHeight="300dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
 
             <TextView
+                android:id="@+id/name_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="0dp"
+                android:text="Jina la Mfanyakazi"
                 android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/name"
+                android:id="@+id/name_input"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Name"
-                android:padding="10dp" />
+                android:hint="Ingiza jina la mfanyakazi hapa"
+                android:paddingLeft="10dp" />
+
 
             <TextView
+                android:id="@+id/street_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Phone"
+                android:layout_marginTop="25dp"
+                android:text="Namba ya simu"
                 android:textColor="@android:color/black"
-                android:textSize="12sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
 
             <EditText
-                android:id="@+id/phone"
+                android:id="@+id/phone_input"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Phone"
-                android:inputType="number"
-                android:padding="10dp" />
-
+                android:hint="Ingiza namba ya simu hapa"
+                android:paddingLeft="10dp" />
 
         </LinearLayout>
 

@@ -75,7 +75,6 @@ public class StoresAdapter extends RecyclerView.Adapter<StoresAdapter.ViewHolder
         //get a position of a current saleItem
         final Business currentStore = stores.get(position);
 
-
         holder.mName.setText(currentStore.getName());
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override

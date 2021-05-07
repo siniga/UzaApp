@@ -105,6 +105,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                 _dbHandler.updateCart(new Cart(0, itemTotal, count[0], currentCart.getProductId(), currentCart.getProductName(), currentCart.getOriginalPrice()), currentOrderId);
 
                 holder.mPrice.setText("" + formatter.format(itemTotal));
+                fragment.updateTotalAmoutUi();
 
             }
         });
@@ -121,6 +122,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
                     _dbHandler.updateCart(new Cart(0, itemTotal, count[0], currentCart.getProductId(), currentCart.getProductName(), currentCart.getOriginalPrice()),currentOrderId);
 
                     holder.mPrice.setText("" + formatter.format(itemTotal));
+                    fragment.updateTotalAmoutUi();
 
                 }
             }
@@ -166,19 +168,18 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.ViewHolder> {
         DialogDeleteCartItem dialog = new DialogDeleteCartItem(c, cartItemId,this, position);
         dialog.show();
         dialog.setCancelable(false);
-        dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
+        dialog.setOnDismissListener(dialogInterface -> {
 
-                if(_dbHandler.isTableEmpty("carts")){
+            if(_dbHandler.isTableEmpty("carts")){
 
-                    ((CartFragment) fragment).showEmptyErrorMsg();
-                }else{
-                    ((CartFragment) fragment).hideEmptyErrorMsg();
-                }
-
-              //  Toast.makeText(c, "Item Deleted!"+cartItemId, Toast.LENGTH_SHORT).show();
+                fragment.showEmptyErrorMsg();
+            }else{
+                fragment.hideEmptyErrorMsg();
             }
+
+            fragment.updateTotalAmoutUi();
+
+          //  Toast.makeText(c, "Item Deleted!"+cartItemId, Toast.LENGTH_SHORT).show();
         });
     }
 

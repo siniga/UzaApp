@@ -78,8 +78,8 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
-        _nameInput = view.findViewById(R.id.name);
-        _phoneInput = view.findViewById(R.id.phone);
+        _nameInput = view.findViewById(R.id.name_input);
+        _phoneInput = view.findViewById(R.id.phone_input);
         _transparentLoader = view.findViewById(R.id.transparent_loader);
         _progressBar = view.findViewById(R.id.progress_bar);
         _updateStaff = view.findViewById(R.id.update_staff_btn);
@@ -208,7 +208,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
                             Success success = res.getSuccess();
                             User user = success.getUser();
 
-                            _dbHandler.updateUser(new User(user.getId(), user.getPhone(), user.getName(), 0, user.getServerId(), 0));
+                            _dbHandler.updateUser(new User(user.getId(), user.getPhone(), user.getName(), user.getServerId(), 0));
                         }
 
                         _progressBar.setVisibility(View.GONE);
@@ -277,7 +277,7 @@ public class EditStaffFragment extends Fragment implements View.OnClickListener 
 
                         _dbHandler.deleteUser(_userId);
 
-                        new FragmentHelper(_c).replace(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
+                        new FragmentHelper(_c).replace(new StaffFragment(), "StaffFragment", R.id.fragment_placeholder);
                     }
 
                 },

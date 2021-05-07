@@ -86,7 +86,7 @@ public class NetworkMonitor extends BroadcastReceiver {
 
                             Log.d("BRECEIVER", _gson.toJson(users));
                             for (User user : users) {
-                                _dbHandler.updateUserSyncStatus(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getServerId(),user.getDeletedStatus()));
+                               // _dbHandler.updateUserSyncStatus(new User(user.getId(), user.getPhone(), user.getName(), SYNC_STATUS_ON, user.getServerId(),user.getDeletedStatus()));
 
                                 //delete user with delete status 1
                                 if(user.getDeletedStatus() == 1){

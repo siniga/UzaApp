@@ -1,15 +1,24 @@
 package com.agnet.uza.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Category {
 
-    int id, serverId;
-    String  name,photo ;
+    private int id;
+    private String name, photo;
 
-    public Category(int id, String name, String photo, int serverId){
+    @SerializedName("avalability_status")
+    private int availabilityStatus;
+
+    @SerializedName("server_id")
+    private int serverId;
+
+    public Category(int id, String name, String photo, int serverId, int availabilityStatus) {
         this.id = id;
         this.name = name;
         this.photo = photo;
         this.serverId = serverId;
+        this.availabilityStatus = availabilityStatus;
     }
 
 
@@ -32,5 +41,9 @@ public class Category {
     @Override
     public String toString() {
         return name;
+    }
+
+    public int getAvailabilityStatus() {
+        return availabilityStatus;
     }
 }

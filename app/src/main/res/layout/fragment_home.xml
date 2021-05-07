@@ -4,136 +4,244 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_grey_f9f8fe"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginTop="30dp"
-        android:orientation="vertical"
+        android:id="@+id/main_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:visibility="gone"
-            android:id="@+id/search_wrapper"
-            android:padding="5dp"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:gravity="center">
-            <EditText
-                android:id="@+id/search_view"
-                android:hint="Search product"
-                android:layout_weight="1.5"
-                android:layout_width="1dp"
-                android:layout_height="match_parent" />
+            android:paddingRight="@dimen/padding_10">
+
+            <LinearLayout
+                android:id="@+id/toolbar_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_baseline_apps_24" />
+
+                <TextView
+                    android:id="@+id/logged_in_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Business Name"
+                    android:textColor="#5D6060"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
             <ImageView
-                android:id="@+id/cancel_search_btn"
-                android:src="@drawable/ic_delete"
-                android:layout_weight="0.2"
-                android:layout_width="1dp"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/btn_wrapper"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_baseline_account_circle_blue_24" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingTop="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="20dp">
+
+
+            <LinearLayout
+                android:id="@+id/checkout_main_btn"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/round_corners_primary"
+                android:elevation="24dp"
+                android:gravity="center_vertical">
+
+              <RelativeLayout
+                  android:layout_weight="0.4"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content">
+                  <Button
+                      android:background="@drawable/round_corners_primary"
+                      android:id="@+id/total_amount"
+                      android:layout_width="match_parent"
+                      android:layout_height="match_parent"
+                      android:elevation="4dp"
+                      android:text="00000000.00"
+                      android:textColor="@color/white"
+                      android:textSize="22sp"
+                      android:textStyle="bold" />
+
+              </RelativeLayout>
+
+
+
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="25dp"
+                    android:background="#9a9cca" />
+
+
+                <Button
+                    android:background="@drawable/round_corners_primary"
+                    android:drawableRight="@drawable/ic_baseline_keyboard_arrow_right_white_24"
+                    android:id="@+id/cart_qnty"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:autoMirrored="true"
+                    android:clickable="false"
+                    android:rotationY="0"
+                    android:text="0"
+                    android:textColor="@android:color/white"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/search_btn"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/btn_wrapper"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_search_black_24dp" />
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp">
 
-            <Button
-                android:id="@+id/category_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_weight="1"
-                android:backgroundTint="@color/white"
-                android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
-                android:text="All Products" />
+                <ImageButton
+                    android:id="@+id/search_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_search_black_24dp" />
+
+                <Button
+                    android:id="@+id/category_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/white"
+                    android:drawableRight="@drawable/ic_arrow_drop_down_black_24dp"
+                    android:text="Bidhaa zote" />
 
 
-            <ImageButton
-                android:id="@+id/view_scanner_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_barcode_scanner" />
+                <ImageButton
+                    android:id="@+id/view_scanner_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_barcode_scanner" />
 
-            <ImageButton
-                android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/white"
-                android:src="@drawable/ic_add_black_24dp" />
-        </LinearLayout>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/white"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/search_wrapper"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center"
+                android:padding="5dp"
+                android:visibility="gone">
+
+                <EditText
+                    android:id="@+id/search_view"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1.5"
+                    android:hint="Search product" />
+
+                <ImageView
+                    android:id="@+id/cancel_search_btn"
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.2"
+                    android:src="@drawable/ic_delete" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
-            android:paddingRight="15dp"
-            android:paddingLeft="20dp"
             android:id="@+id/product_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:paddingBottom="60dp" />
+            android:paddingLeft="20dp"
+            android:paddingRight="15dp"
+            android:paddingBottom="60dp"
+            android:visibility="gone" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:paddingTop="20dp"
         android:paddingLeft="30dp"
+        android:paddingTop="20dp"
         android:paddingRight="30dp"
         android:paddingBottom="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="150dp">
+        android:visibility="gone">
 
 
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/empty_items_msg"
-        android:padding="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:padding="30dp">
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_product"/>
+            android:src="@drawable/ic_product" />
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/padding_10"
-            android:textStyle="bold"
+            android:text="Hauna Bidhaa bado"
             android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hauna Bidhaa bado"/>
+            android:textStyle="bold" />
+
         <TextView
-            android:layout_marginTop="10dp"
-            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nenda kwenye menu kujaza bidhaa"/>
+            android:layout_marginTop="10dp"
+            android:text="Nenda kwenye menu kujaza bidhaa"
+            android:textSize="16sp" />
 
         <Button
             android:id="@+id/open_product_inventory_btn"
-            android:layout_marginTop="30dp"
-            android:padding="15dp"
-            android:background="@color/colorPrimary"
-            android:textColor="@color/white"
-            android:text="Nenda kwenye menu"
             android:layout_width="wrap_content"
-            android:layout_height="50dp"/>
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@color/colorPrimary"
+            android:padding="15dp"
+            android:text="Nenda kwenye menu"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </RelativeLayout>

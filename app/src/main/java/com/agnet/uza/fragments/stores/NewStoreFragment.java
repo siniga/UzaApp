@@ -84,7 +84,7 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
     private String _selectedCountry,_selectedCity;
     private EditText _cityInput;
     private LinearLayout _citySpinnerWrapper;
-    private int _serverId;
+    private int _userId;
     private String _typeName;
     private int _typeId;
     private int SYNC_STATUS_ON = 1;
@@ -131,10 +131,13 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
 
         if (_preferences.getString("USER_TOKEN", null) != null) {
             _TOKEN = _preferences.getString("USER_TOKEN", null);
+//            Log.d("TOKEN_HERE",""+_TOKEN);
         }
 
         if (_preferences.getInt("USER_ID", 0) != 0) {
-            _serverId = _preferences.getInt("USER_ID", 0);
+            _userId = _preferences.getInt("USER_ID", 0);
+          //  int serveid = _preferences.getInt("USER_SERVER_ID", 0);
+
         }
 
         _businessTypesSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -264,9 +267,8 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 response -> {
+                    Log.d("RESPONSE", response);
                     Response res = _gson.fromJson(response, Response.class);
-
-                      Log.d("RESPONSE", response);
 
                     if (res.getCode() == 201) {
                         Success success = res.getSuccess();
@@ -284,13 +286,9 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
 
                     } else {
 
-                        _dbHandler.createAddress(new Address(0, _address, _selectedCity, _selectedCountry,0));
-
-                        int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, _name, lastId, 0));
-
                         Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
+
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
                     _saveStore.setClickable(true);
@@ -298,13 +296,12 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
 
                 },
                 error -> {
-
+                    _saveStore.setClickable(true);
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
 
-                    // Log.d("RegistrationFragment", "here" + error.getMessage());
+                     Log.d("RESPONSE_ERROR", "here" + error.getMessage());
                     NetworkResponse response = error.networkResponse;
-                    String errorMsg = "";
                     if (response != null && response.data != null) {
                         String errorString = new String(response.data);
                         Log.i("log error", errorString);
@@ -328,7 +325,7 @@ public class NewStoreFragment extends Fragment implements AdapterView.OnItemSele
                 params.put("city", _selectedCity);
                 params.put("country", _selectedCountry);
                 params.put("typeId", "" + _typeId);
-                params.put("userId", "" + _serverId);
+                params.put("userId", "" + _userId);
                 return params;
             }
         };

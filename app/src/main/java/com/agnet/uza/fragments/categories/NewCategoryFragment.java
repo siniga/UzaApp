@@ -131,7 +131,7 @@ public class NewCategoryFragment extends Fragment implements View.OnClickListene
                 if (_preferences.getInt("NEW_CATEGORY_FLAG", 0) == 0) {
                     if (!_categoryName.getText().toString().isEmpty()) {
 
-                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0));
+                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0,0));
 
                     }
 
@@ -140,7 +140,7 @@ public class NewCategoryFragment extends Fragment implements View.OnClickListene
                 } else {
 
                     if (!_categoryName.getText().toString().isEmpty()) {
-                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0));
+                        _dbHandler.createCategory(new Category(0, _categoryName.getText().toString(), "", 0,0));
                     }
                  //   trans.remove(new InventoryFragment());
                     new FragmentHelper(_c).replace(new InventoryFragment(), "InventoryFragment", R.id.fragment_placeholder);

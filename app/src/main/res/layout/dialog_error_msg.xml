@@ -23,15 +23,15 @@
         android:textStyle="bold"/>
 
     <TextView
+        android:id="@+id/error_msg"
         android:layout_marginTop="@dimen/padding_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Fill all the fields that are required!"
+        android:text=""
         android:textColor="@color/midd_grey"
         android:textSize="13sp"
        />
-
 
 
     <Button

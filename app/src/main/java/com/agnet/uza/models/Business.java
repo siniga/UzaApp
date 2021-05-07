@@ -8,6 +8,8 @@ public class Business {
 
     @SerializedName("address_id")
     private int addressId;
+
+    @SerializedName("business_server_id")
     private int serverId;
     private Address address;
 

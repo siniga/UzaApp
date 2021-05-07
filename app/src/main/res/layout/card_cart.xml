@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginLeft="15dp"
-        android:src="@drawable/ic_baseline_clear_24" />
+        android:src="@drawable/ic_baseline_clear_red_24" />
 
     <LinearLayout
         android:layout_width="1px"

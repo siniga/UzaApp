@@ -23,6 +23,7 @@ import com.agnet.uza.models.Cart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +44,9 @@ CartFragment extends Fragment   implements View.OnClickListener{
     private BottomNavigationView _bottomNavigation;
     private  DatabaseHandler _dbHandler;
     private LinearLayout _emptyErroMsg;
+    private TextView _totalAmntTxt;
+    private DecimalFormat _currencyformatter;
+    private Button _continueBtn;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -52,12 +56,16 @@ CartFragment extends Fragment   implements View.OnClickListener{
         _c = getActivity();
         _cartList = view.findViewById(R.id.cart_list);
         _dbHandler = new DatabaseHandler(_c);
+        _currencyformatter = new DecimalFormat("#,###,###");
+
 
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _emptyErroMsg = view.findViewById(R.id.empty_items_msg);
+        _totalAmntTxt = view.findViewById(R.id.total_amount_txt);
+        _continueBtn = view.findViewById(R.id.continue_btn);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -69,13 +77,29 @@ CartFragment extends Fragment   implements View.OnClickListener{
         _cartListManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _cartList.setLayoutManager(_cartListManager);
 
-        if(_dbHandler.isCartEmpty()){
-           showEmptyErrorMsg();
-        }else{
-           hideEmptyErrorMsg();
+        try {
+            if(_dbHandler.isCartEmpty()){
+                showEmptyErrorMsg();
+            }else{
+                hideEmptyErrorMsg();
+            }
+            CartAdapter adapter = new CartAdapter(_c, _dbHandler.getCart(), this);
+            _cartList.setAdapter(adapter);
+
+            if (!_dbHandler.isTableEmpty("carts")) {
+                _totalAmntTxt.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+            }
+        }catch (NullPointerException e){
+            e.getMessage();
         }
-        CartAdapter adapter = new CartAdapter(_c, _dbHandler.getCart(), this);
-        _cartList.setAdapter(adapter);
+
+        _continueBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+            }
+        });
+
 
         return view;
 
@@ -119,5 +143,14 @@ CartFragment extends Fragment   implements View.OnClickListener{
     public void hideEmptyErrorMsg(){
         _emptyErroMsg.setVisibility(View.GONE);
         _cartList.setVisibility(View.VISIBLE);
+    }
+
+    public void updateTotalAmoutUi(){
+
+        try {
+            _totalAmntTxt.setText(" " + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
+        }catch (NullPointerException e){
+            e.getMessage();
+        }
     }
 }

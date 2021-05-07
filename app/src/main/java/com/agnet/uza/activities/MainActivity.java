@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         _toolbarIcon = findViewById(R.id.toolbar_icon);
 
         _btmNavBar.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        Log.d("HEHHRHH", ""+_dbHandler.isTableEmpty("users"));
+       // Log.d("HEHHRHH", ""+_dbHandler.isTableEmpty("users"));
         //check if user is logged in
 
         //events

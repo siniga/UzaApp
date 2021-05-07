@@ -1,9 +1,14 @@
 package com.agnet.uza.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Address {
 
-    int id, serverId;
+    int id;
     String name, city, country;
+
+    @SerializedName("address_server_id")
+    int serverId;
 
 
     public Address(int id, String name, String city, String country, int serverId) {

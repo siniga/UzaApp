@@ -2,13 +2,16 @@ package com.agnet.uza.fragments;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -30,6 +33,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import me.abhinay.input.CurrencyEditText;
+
 public class ReceiptFragment extends Fragment implements View.OnClickListener {
 
     private FragmentActivity _c;
@@ -39,6 +44,7 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener {
     private Toolbar _toolbar, _homeToolbar;
     private TextView _newSaleBtn;
     private DatabaseHandler _dbHandler;
+    private EditText _customerPaid;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -58,6 +64,7 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener {
         _toolbar = _c.findViewById(R.id.toolbar);
         _newSaleBtn = view.findViewById(R.id.new_sale_btn);
         TextView changeTxt = view.findViewById(R.id.change_txt);
+        _customerPaid = view.findViewById(R.id.customer_paid);
 
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
@@ -68,12 +75,14 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener {
         //events
         _newSaleBtn.setOnClickListener(this);
 
-        if (!_preferences.getString("TOTAL_CHANGE", null).equals(null)) {
+       /* if (!_preferences.getString("TOTAL_CHANGE", null).equals(null)) {
 
             String totalCHange = _preferences.getString("TOTAL_CHANGE", null);
             changeTxt.setText(totalCHange);
-        }
+        }*/
 
+
+        showKeyboard(_customerPaid);
         return view;
 
     }
@@ -114,7 +123,7 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener {
 
     private void updateSaleStatus() {
         if (_dbHandler.isValueExist(0, "orders", "status")) {
-          //  Toast.makeText(_c, "juju", Toast.LENGTH_SHORT).show();
+            //  Toast.makeText(_c, "juju", Toast.LENGTH_SHORT).show();
             _dbHandler.updateOrder(1);
 
         }
@@ -126,4 +135,17 @@ public class ReceiptFragment extends Fragment implements View.OnClickListener {
             fm.popBackStack();
         }
     }
+
+    public static void showKeyboard(EditText editText) {
+        editText.post(new Runnable() {
+            @Override
+            public void run() {
+                editText.requestFocus();
+                InputMethodManager imm = (InputMethodManager) editText.getContext()
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+            }
+        });
+    }
+
 }

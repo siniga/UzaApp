@@ -83,7 +83,7 @@ public class BusinessRegistrationFragment extends Fragment {
     private List<Country> _countryList, _cityList;
     private AutoCompleteTextView _countryAutocomplete;
     private String _COUNTRY_TOKEN;
-    private String _selectedCountry,_selectedCity;
+    private String _selectedCountry, _selectedCity;
     private EditText _cityInput;
     private LinearLayout _citySpinnerWrapper;
     private int SYNC_STATUS_ON = 1;
@@ -110,8 +110,8 @@ public class BusinessRegistrationFragment extends Fragment {
         _transparentLoader = view.findViewById(R.id.transparent_loader);
         _citySpinner = view.findViewById(R.id.city_spinner);
         _countryAutocomplete = view.findViewById(R.id.country_autocomplete);
-        _cityInput  = view.findViewById(R.id.city_input);
-        _citySpinnerWrapper =view.findViewById(R.id.city_spinner_wrapper);
+        _cityInput = view.findViewById(R.id.city_input);
+        _citySpinnerWrapper = view.findViewById(R.id.city_spinner_wrapper);
         _registerBtn = view.findViewById(R.id.register_btn);
 
         _registerBtn.setOnClickListener(new View.OnClickListener() {
@@ -191,7 +191,7 @@ public class BusinessRegistrationFragment extends Fragment {
 
         //city list
         _cityList = new ArrayList<>();
-        _cityList.add(new Country(0,"Chagua mji"));
+        _cityList.add(new Country(0, "Chagua mji"));
 
         // Creating adapter for spinner
         ArrayAdapter<Country> dataAdapter = new ArrayAdapter<Country>(_c, android.R.layout.simple_spinner_item, _cityList);
@@ -247,7 +247,7 @@ public class BusinessRegistrationFragment extends Fragment {
         _dbHandler.createAddress(new Address(0, _street, _selectedCity, _selectedCountry, SYNC_STATUS_OFF));
         int lastId = _dbHandler.getLastId("addresses");
 
-        _dbHandler.createBusiness(new Business(0, _name, lastId,0));
+        _dbHandler.createBusiness(new Business(0, _name, lastId, 0));
         new FragmentHelper(_c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
     }
 
@@ -263,7 +263,8 @@ public class BusinessRegistrationFragment extends Fragment {
                 response -> {
                     Response res = _gson.fromJson(response, Response.class);
 
-                  //  Log.d(TAG, response);
+                    Log.d("RESPONSE", response);
+
 
                     if (res.getCode() == 201) {
                         Success success = res.getSuccess();
@@ -284,7 +285,7 @@ public class BusinessRegistrationFragment extends Fragment {
                         _dbHandler.createAddress(new Address(0, _street, _selectedCity, _selectedCountry, 0));
 
                         int lastId = _dbHandler.getLastId("addresses");
-                        _dbHandler.createBusiness(new Business(0, _name, lastId,0));
+                        _dbHandler.createBusiness(new Business(0, _name, lastId, 0));
 
                         Toast.makeText(_c, "Kuna tatizo la mtandao, jaribu tena!", Toast.LENGTH_LONG).show();
                     }
@@ -292,6 +293,8 @@ public class BusinessRegistrationFragment extends Fragment {
                     _progressBar.setVisibility(View.GONE);
                     _transparentLoader.setVisibility(View.GONE);
 
+                    _progressBar.setVisibility(View.GONE);
+                    _transparentLoader.setVisibility(View.GONE);
                     new FragmentHelper(_c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
 
                 },
@@ -332,7 +335,7 @@ public class BusinessRegistrationFragment extends Fragment {
         };
 
         mSingleton.getInstance(_c).addToRequestQueue(postRequest);
-       // postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        // postRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 2, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
     }
 
@@ -381,7 +384,7 @@ public class BusinessRegistrationFragment extends Fragment {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Accept", "application/json");
                 params.put("api-token", "73mD2LeNtk6n1PsvuvXT1bx0Ot6Opze-ZkqZpc3sA0p7t3Bu3JjljyVM6WjrfSuzNlM");
-                params.put("user-email","peterkhamis5@gmail.com");
+                params.put("user-email", "peterkhamis5@gmail.com");
                 return params;
             }
         };
@@ -398,12 +401,12 @@ public class BusinessRegistrationFragment extends Fragment {
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
-                 //  String res = _gson.toJson(response);
+                    //  String res = _gson.toJson(response);
                     try {
                         JSONArray countryArr = new JSONArray(response);
-                        for (int i = 0; i<= countryArr.length()-1; i++){
-                           JSONObject country = countryArr.getJSONObject(i);
-                           _countryList.add(new Country(0,country.getString("country_name")));
+                        for (int i = 0; i <= countryArr.length() - 1; i++) {
+                            JSONObject country = countryArr.getJSONObject(i);
+                            _countryList.add(new Country(0, country.getString("country_name")));
                         }
 
 
@@ -447,7 +450,7 @@ public class BusinessRegistrationFragment extends Fragment {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Accept", "application/json");
-                params.put("Authorization", "Bearer "+ _COUNTRY_TOKEN);
+                params.put("Authorization", "Bearer " + _COUNTRY_TOKEN);
 
                 return params;
             }
@@ -456,20 +459,20 @@ public class BusinessRegistrationFragment extends Fragment {
         mSingleton.getInstance(_c).addToRequestQueue(postRequest);
     }
 
-    private void  getCities(){
+    private void getCities() {
 
-        String url = "https://www.universal-tutorial.com/api/states/"+_selectedCountry;
-
+        String url = "https://www.universal-tutorial.com/api/states/" + _selectedCountry;
 
         StringRequest postRequest = new StringRequest(Request.Method.GET, url,
                 response -> {
-                      String res = _gson.toJson(response);
+                    _cityList.clear();
+                    String res = _gson.toJson(response);
                     try {
                         JSONArray cityArr = new JSONArray(response);
 
-                        for (int i = 0; i<= cityArr.length()-1; i++){
+                        for (int i = 0; i <= cityArr.length() - 1; i++) {
                             JSONObject city = cityArr.getJSONObject(i);
-                            _cityList.add(new Country(0,city.getString("state_name")));
+                            _cityList.add(new Country(0, city.getString("state_name")));
                         }
 
                         // Creating adapter for spinner
@@ -506,7 +509,7 @@ public class BusinessRegistrationFragment extends Fragment {
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Accept", "application/json");
-                params.put("Authorization", "Bearer "+ _COUNTRY_TOKEN);
+                params.put("Authorization", "Bearer " + _COUNTRY_TOKEN);
 
                 return params;
             }

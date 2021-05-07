@@ -130,7 +130,8 @@ public class EditCategoryFragment extends Fragment implements View.OnClickListen
                 manager.popBackStack();*/
 
                 if (!_categoryName.getText().toString().isEmpty()) {
-                    _dbHandler.updateCategory(new Category(_preferences.getInt("SELECTED_CATEGORY_ID", 0), _categoryName.getText().toString(), "", 0));
+                    _dbHandler.updateCategory(new Category(_preferences.getInt("SELECTED_CATEGORY_ID", 0),
+                            _categoryName.getText().toString(), "", 0,0));
                     new FragmentHelper(_c).replace(new InventoryFragment(), "InventoryFragment", R.id.fragment_placeholder);
                 } else {
                     Toast.makeText(_c, "Field should not be empty!", Toast.LENGTH_SHORT).show();
