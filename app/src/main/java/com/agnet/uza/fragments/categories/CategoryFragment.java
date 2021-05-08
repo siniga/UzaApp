@@ -9,19 +9,15 @@ import android.view.ViewGroup;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CartAdapter;
-import com.agnet.uza.adapters.CategoryAdapter;
 import com.agnet.uza.adapters.HomeCategoryAdapter;
-import com.agnet.uza.fragments.ReceiptFragment;
+import com.agnet.uza.fragments.checkout.PaymentFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Category;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.appcompat.widget.Toolbar;
@@ -104,7 +100,7 @@ public class CategoryFragment extends Fragment   implements View.OnClickListener
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_user_login:
 //                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);

@@ -7,8 +7,8 @@ import com.agnet.uza.adapters.ProductAdapter;
 import com.agnet.uza.fragments.HomeFragment;
 import com.agnet.uza.fragments.auth.LoginFragment;
 import com.agnet.uza.fragments.MenuFragment;
-import com.agnet.uza.fragments.ReportFragment;
-import com.agnet.uza.fragments.TransactionFragment;
+import com.agnet.uza.fragments.reports.ReportFragment;
+import com.agnet.uza.fragments.reports.TransactionFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.NetworkMonitor;
@@ -22,7 +22,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;

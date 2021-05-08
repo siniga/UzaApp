@@ -10,9 +10,7 @@ import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.adapters.CartAdapter;
-import com.agnet.uza.fragments.CartFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
-import com.agnet.uza.models.Cart;
 
 public class DialogDeleteCartItem extends Dialog {
 

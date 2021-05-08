@@ -21,28 +21,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CategoryAdapter;
 import com.agnet.uza.adapters.StaffsAdapter;
 import com.agnet.uza.application.mSingleton;
-import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
-import com.agnet.uza.models.Success;
 import com.agnet.uza.models.User;
 import com.agnet.uza.service.Endpoint;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,8 +25,7 @@ import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesCategoryAdapter;
 import com.agnet.uza.fragments.MenuFragment;
-import com.agnet.uza.fragments.ReceiptFragment;
-import com.agnet.uza.fragments.categories.EditCategoryFragment;
+import com.agnet.uza.fragments.checkout.PaymentFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.DateHelper;
 import com.agnet.uza.helpers.FragmentHelper;
@@ -233,7 +231,7 @@ public class ExpensesCategoryFragment extends Fragment   implements View.OnClick
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_user_login:
 //                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);

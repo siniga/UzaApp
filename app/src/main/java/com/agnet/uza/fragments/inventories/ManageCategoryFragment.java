@@ -5,14 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -21,20 +18,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CategoryAdapter;
 import com.agnet.uza.adapters.ManageCategoryAdapter;
-import com.agnet.uza.adapters.StaffsAdapter;
-import com.agnet.uza.fragments.ReceiptFragment;
 import com.agnet.uza.fragments.categories.NewCategoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
-import com.agnet.uza.models.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ManageCategoryFragment extends Fragment implements View.OnClickListener {

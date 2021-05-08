@@ -1,7 +1,6 @@
 package com.agnet.uza.fragments;
 
 
-import android.Manifest;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -14,44 +13,34 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.ScaleAnimation;
-import android.view.animation.TranslateAnimation;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.activities.ScannerActivity;
 import com.agnet.uza.adapters.ProductAdapter;
-import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.StockLowDialogClass;
 import com.agnet.uza.fragments.auth.LoginFragment;
 import com.agnet.uza.fragments.categories.CategoryFragment;
+import com.agnet.uza.fragments.checkout.CartFragment;
+import com.agnet.uza.fragments.checkout.ReceiptFragment;
 import com.agnet.uza.fragments.inventories.InventoryFragment;
 import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.MyBounceInterpolator;
-import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Product;
 import com.agnet.uza.util.CircleAnimationUtil;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -188,6 +177,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         //method calls
         ((MainActivity) _c).setHomeIconBottomNav();
+        _loggedInName.setText(_dbHandler.getUserName());
 
         _scannerBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -267,7 +257,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 new FragmentHelper(_c).replaceWithbackStack(new CategoryFragment(), "CategoryFragment", R.id.fragment_placeholder);
                 break;
             case R.id.total_amount:
-                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "PaymentFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "PaymentFragment", R.id.fragment_placeholder);
                 break;
             case R.id.cart_qnty:
                 new FragmentHelper(_c).replaceWithbackStack(new CartFragment(), "CartFragment", R.id.fragment_placeholder);

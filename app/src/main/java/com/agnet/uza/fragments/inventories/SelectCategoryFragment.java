@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.CategoryAdapter;
-import com.agnet.uza.fragments.ReceiptFragment;
+import com.agnet.uza.fragments.checkout.PaymentFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
@@ -92,7 +92,7 @@ public class SelectCategoryFragment extends Fragment   implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_user_login:
 //                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);

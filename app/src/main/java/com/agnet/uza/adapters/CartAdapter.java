@@ -2,9 +2,7 @@ package com.agnet.uza.adapters;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.graphics.ImageDecoder;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +11,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.dialogs.DialogCancelSale;
 import com.agnet.uza.dialogs.DialogDeleteCartItem;
-import com.agnet.uza.fragments.CartFragment;
-import com.agnet.uza.fragments.HomeFragment;
+import com.agnet.uza.fragments.checkout.CartFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
-import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Cart;
 
 import java.text.DecimalFormat;

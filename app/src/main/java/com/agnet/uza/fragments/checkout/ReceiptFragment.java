@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.checkout;
 
 
 import android.annotation.SuppressLint;
@@ -19,7 +19,8 @@ import android.widget.Toast;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.DialogCancelSale;
-import com.agnet.uza.dialogs.StockLowDialogClass;
+import com.agnet.uza.fragments.HomeFragment;
+import com.agnet.uza.fragments.inventories.InventoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -33,7 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.DecimalFormat;
 
-public class PaymentFragment extends Fragment implements View.OnClickListener {
+public class ReceiptFragment extends Fragment {
 
     private FragmentActivity _c;
     private Gson _gson;
@@ -49,7 +50,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
     private LinearLayout _currentTabLayout;
     private Toolbar _toolbar, _homeToolbar;
     private Button _continueBtn, _cancelBtn;
-    private TextView _totalAmntTxt;
+    private TextView _totalChange;
     private DecimalFormat _currencyformatter;
     private EditText _amountPaid;
 
@@ -57,7 +58,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_payment, container, false);
+        View view = inflater.inflate(R.layout.fragment_receipt, container, false);
 
         //initialization
         _c = getActivity();
@@ -71,10 +72,7 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _continueBtn = view.findViewById(R.id.continue_btn);
-        _cancelBtn = view.findViewById(R.id.cancel_btn);
-        _totalAmntTxt = view.findViewById(R.id.total_amount_txt);
-        _amountPaid = view.findViewById(R.id.amount_paid);
-
+        _totalChange = view.findViewById(R.id.total_change);
 
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
@@ -82,16 +80,18 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
         BottomNavigationView navigationView = _c.findViewById(R.id.bottom_navigation);
         navigationView.setVisibility(View.GONE);
 
-        if (!_dbHandler.isTableEmpty("carts")) {
-            _totalAmntTxt.setText("" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
-            _amountPaid.setText("" + _dbHandler.getCartTotalAmt());
-
+        try {
+            String totalChange = _preferences.getString("TOTAL_CHANGE", null);
+         //   String currencyChange = _currencyformatter.format(totalChange);
+            _totalChange.setText("TZS:"+totalChange);
+        } catch (NullPointerException e) {
+            e.getMessage();
         }
 
-        //events
-        _continueBtn.setOnClickListener(this);
-        _cancelBtn.setOnClickListener(this);
-
+        _continueBtn.setOnClickListener(view1 -> {
+            _dbHandler.deleteCart();
+            new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
+        });
 
         return view;
 
@@ -111,37 +111,6 @@ public class PaymentFragment extends Fragment implements View.OnClickListener {
     public void onPause() {
         super.onPause();
 
-    }
-
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.continue_btn:
-                calculateTotalChange();
-                break;
-            case R.id.view_user_login:
-//                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
-                break;
-            case R.id.cancel_btn:
-                launchCancelSaleDialog();
-                break;
-            default:
-                break;
-        }
-    }
-
-    public void calculateTotalChange() {
-
-        double amountPaid = Double.parseDouble(_amountPaid.getText().toString());
-        double totalChange = amountPaid - _dbHandler.getCartTotalAmt();
-
-      //  Toast.makeText(_c, "" + totalChange, Toast.LENGTH_SHORT).show();
-        _editor.putString("TOTAL_CHANGE", ""+totalChange);
-        _editor.commit();
-
-
-        new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
     }
 
     public void launchCancelSaleDialog() {

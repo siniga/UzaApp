@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.checkout;
 
 
 import android.annotation.SuppressLint;
@@ -10,22 +10,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.CartAdapter;
+import com.agnet.uza.fragments.checkout.PaymentFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Cart;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -47,6 +43,8 @@ CartFragment extends Fragment   implements View.OnClickListener{
     private TextView _totalAmntTxt;
     private DecimalFormat _currencyformatter;
     private Button _continueBtn;
+    private SharedPreferences _preferences;
+    private SharedPreferences.Editor _editor;
 
     @SuppressLint("RestrictedApi")
     @Override
@@ -57,7 +55,8 @@ CartFragment extends Fragment   implements View.OnClickListener{
         _cartList = view.findViewById(R.id.cart_list);
         _dbHandler = new DatabaseHandler(_c);
         _currencyformatter = new DecimalFormat("#,###,###");
-
+        _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
+        _editor = _preferences.edit();
 
         //binding
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
@@ -96,7 +95,7 @@ CartFragment extends Fragment   implements View.OnClickListener{
         _continueBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
             }
         });
 
@@ -125,7 +124,7 @@ CartFragment extends Fragment   implements View.OnClickListener{
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_user_login:
 //                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);

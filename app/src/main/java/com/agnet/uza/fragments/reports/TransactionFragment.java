@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.reports;
 
 
 import android.annotation.SuppressLint;
@@ -9,10 +9,9 @@ import android.view.ViewGroup;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.CartAdapter;
 import com.agnet.uza.adapters.TransactionAdapter;
+import com.agnet.uza.fragments.checkout.PaymentFragment;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Cart;
 import com.agnet.uza.models.Date;
 import com.agnet.uza.models.Transaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -104,7 +103,7 @@ public class TransactionFragment extends Fragment   implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.continue_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ReceiptFragment(), "ReceiptFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new PaymentFragment(), "ReceiptFragment", R.id.fragment_placeholder);
                 break;
             case R.id.view_user_login:
 //                new FragmentHelper(_c).replaceWithbackStack(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);

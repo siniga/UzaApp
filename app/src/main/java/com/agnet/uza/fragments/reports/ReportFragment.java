@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments;
+package com.agnet.uza.fragments.reports;
 
 
 import android.annotation.SuppressLint;
