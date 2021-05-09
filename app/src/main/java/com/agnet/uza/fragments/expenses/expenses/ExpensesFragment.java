@@ -38,6 +38,7 @@ import com.yarolegovich.discretescrollview.DiscreteScrollView;
 import com.yarolegovich.discretescrollview.transform.Pivot;
 import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ExpensesFragment extends Fragment {
@@ -53,6 +54,7 @@ public class ExpensesFragment extends Fragment {
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private DiscreteScrollView _categoryList;
+    private DecimalFormat _currencyformatter;
 
 
     @SuppressLint("RestrictedApi")
@@ -67,6 +69,7 @@ public class ExpensesFragment extends Fragment {
 
         _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
+        _currencyformatter = new DecimalFormat("#,###,###");
 
         //binding
         _expensesList = view.findViewById(R.id.expenses_list);
@@ -110,14 +113,21 @@ public class ExpensesFragment extends Fragment {
                 .setPivotY(Pivot.Y.BOTTOM) // CENTER is a default one
                 .build());
 
-        _categoryList.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
-            @Override
-            public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int position) {
-                final ExpensesCategory currentCategory = categories.get(position);
+        _categoryList.addOnItemChangedListener((viewHolder, position) -> {
+            final ExpensesCategory currentCategory = categories.get(position);
 
-                loadExpenseAdapter(currentCategory.getId());
-            }
+            loadExpenseAdapter(currentCategory.getId());
+            TextView amnt = viewHolder.itemView.findViewById(R.id.amount);
+            amnt.setVisibility(View.VISIBLE);
+            amnt.setText("" + currentCategory.getAmount());
+
         });
+
+        _categoryList.removeItemChangedListener((viewHolder, position) -> {
+            TextView amnt  = viewHolder.itemView.findViewById(R.id.amount);
+            amnt.setVisibility(View.GONE);
+        });
+
 
         _addCategoryBtn.setOnClickListener(view12 -> {
             new FragmentHelper(_c).replace(new NewCategoryFragment(), " NewCategoyFragment", R.id.fragment_placeholder);

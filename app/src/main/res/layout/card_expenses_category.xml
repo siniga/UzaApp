@@ -19,7 +19,7 @@
             android:padding="11dp"
             android:textColor="@android:color/black"
             android:textStyle="bold"
-            android:id="@+id/initial_name"
+            android:id="@+id/circle_img"
             android:background="@drawable/solid_circle_very_light_grey"
             android:layout_width="45dp"
             android:layout_height="45dp"
@@ -32,6 +32,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Umeme"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:layout_marginTop="2dp"
+            android:id="@+id/amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:textColor="@android:color/black"
             android:textSize="16sp"
             />

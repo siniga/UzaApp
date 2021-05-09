@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -96,6 +97,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
         holder.mName.setText(currentExpense.getName());
         char initial = currentExpense.getName().charAt(0);
 
+
         //update expense list when position is 1 and display default data
         if(position == 1){
           ((ExpensesFragment) fragment).loadExpenseAdapter(currentExpense.getId());
@@ -115,13 +117,15 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mWrapper;
         public TextView mName, mInitial, mAmount;
-        public View mBorderBtm;
+        public ImageView mImg;
 
         public ViewHolder(Context context, View view) {
             super(view);
 
             mWrapper = view.findViewById(R.id.wrapper);
             mName = view.findViewById(R.id.name);
+           mImg =  view.findViewById(R.id.circle_img);
+           mAmount = view.findViewById(R.id.amount);
 //
 
 

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.fragments.expenses.categories.CategoryFragment;
+import com.agnet.uza.fragments.expenses.expenses.ExpensesFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.ExpensesCategory;
@@ -87,7 +88,7 @@ public class NewCategoryFragment extends Fragment   implements View.OnClickListe
         switch (view.getId()) {
             case R.id.save_expenses_btn:
                 _dbHandler.createExpensesCategory(new ExpensesCategory(0, _name.getText().toString(),""));
-                new FragmentHelper(_c).replace(new CategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replace(new ExpensesFragment(), "ExpensesFragment", R.id.fragment_placeholder);
                 break;
             default:
                 break;
