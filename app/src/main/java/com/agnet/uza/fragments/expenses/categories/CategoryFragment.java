@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments.expenses;
+package com.agnet.uza.fragments.expenses.categories;
 
 
 import android.annotation.SuppressLint;
@@ -26,6 +26,7 @@ import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesCategoryAdapter;
 import com.agnet.uza.fragments.MenuFragment;
 import com.agnet.uza.fragments.checkout.PaymentFragment;
+import com.agnet.uza.fragments.expenses.expenses.ExpensesFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.DateHelper;
 import com.agnet.uza.helpers.FragmentHelper;
@@ -37,7 +38,7 @@ import com.google.gson.Gson;
 import java.text.DecimalFormat;
 import java.util.List;
 
-public class ExpensesCategoryFragment extends Fragment   implements View.OnClickListener{
+public class CategoryFragment extends Fragment   implements View.OnClickListener{
 
     private FragmentActivity _c;
     private Gson _gson;
@@ -111,21 +112,21 @@ public class ExpensesCategoryFragment extends Fragment   implements View.OnClick
         _newBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FragmentHelper(_c).replaceWithbackStack(new NewExpenseCategoryFragment(), "NewExpenseCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new NewCategoryFragment(), "NewExpenseCategoryFragment", R.id.fragment_placeholder);
             }
         });
 
         _viewCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FragmentHelper(_c).replaceWithbackStack(new ExpensesItemFragment(),"ExpensesFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new ExpensesFragment(),"ExpensesFragment", R.id.fragment_placeholder);
             }
         });
 
         _editCategory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new FragmentHelper(_c).replaceWithbackStack(new EditExpenseCategoryFragment(),"EditExpenseCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new EditCategoryFragment(),"EditExpenseCategoryFragment", R.id.fragment_placeholder);
 
             }
         });

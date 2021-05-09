@@ -39,6 +39,7 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0'
     implementation 'com.facebook.stetho:stetho:1.6.0'
     implementation 'com.cottacush:CurrencyEditText:0.0.3'
+    implementation  'com.yarolegovich:discrete-scrollview:1.5.1'
 
     //noinspection GradleCompatible
 /*    implementation 'com.google.android.gms:play-services-vision:15.0.2'

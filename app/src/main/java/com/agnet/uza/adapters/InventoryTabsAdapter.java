@@ -4,8 +4,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
-import com.agnet.uza.fragments.inventories.ManageProductsFragment;
+import com.agnet.uza.fragments.inventories.categories.ManageCategoryFragment;
+import com.agnet.uza.fragments.inventories.products.ManageProductsFragment;
 
 public class InventoryTabsAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;

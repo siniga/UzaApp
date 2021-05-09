@@ -12,8 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.expenses.EditExpenseFragment;
-import com.agnet.uza.fragments.expenses.NewExpenseFragment;
+import com.agnet.uza.fragments.expenses.expenses.EditFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.ExpensesItem;
@@ -91,7 +90,7 @@ public class ExpensesAdapter extends RecyclerView.Adapter<ExpensesAdapter.ViewHo
                 _editor.putInt("EXPENSE_ID", currentExpense.getId());
                 _editor.commit();
 
-                new FragmentHelper(c).replaceWithbackStack(new EditExpenseFragment(),"EditExpenseFragment", R.id.fragment_placeholder);
+                new FragmentHelper(c).replaceWithbackStack(new EditFragment(),"EditExpenseFragment", R.id.fragment_placeholder);
             }
         });
     }

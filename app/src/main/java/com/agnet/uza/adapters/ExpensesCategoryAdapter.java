@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.expenses.ExpensesCategoryFragment;
-import com.agnet.uza.fragments.expenses.ExpensesItemFragment;
+import com.agnet.uza.fragments.expenses.categories.EditCategoryFragment;
+import com.agnet.uza.fragments.expenses.expenses.ExpensesFragment;
+import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.ExpensesCategory;
@@ -28,16 +29,15 @@ import java.util.List;
  */
 public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCategoryAdapter.ViewHolder> {
 
-    private List<ExpensesCategory> expenses= Collections.emptyList();
+    private List<ExpensesCategory> expenses = Collections.emptyList();
     private LayoutInflater inflator;
     private Context c;
     private int locateId;
-    private SharedPreferences preferences;
-    private SharedPreferences.Editor editor;
     private int index = -1;
     private Fragment fragment;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
+    private DatabaseHandler _dbHandler;
 
     public interface OnItemClickListener {
         void onItemClick(Category item);
@@ -50,6 +50,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
         this.inflator = LayoutInflater.from(c);
         this.fragment = fragment;
         this.c = c;
+        this._dbHandler = new DatabaseHandler(c);
 
         _preferences = c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
@@ -77,43 +78,43 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
         //get a position of a current saleItem
         final ExpensesCategory currentExpense = expenses.get(position);
 
-        try{
-            if( currentExpense.getAmount().equals(null) || currentExpense.getAmount().isEmpty()){
+        try {
+            if (currentExpense.getAmount().equals(null) || currentExpense.getAmount().isEmpty()) {
                 holder.mAmount.setText("0.0");
-            }else {
+            } else {
                 DecimalFormat formatter = new DecimalFormat("#,###,###");
                 int formatedPrice = Integer.parseInt(currentExpense.getAmount());
-                holder.mAmount.setText("TZS: " + formatter.format(formatedPrice));
+//                holder.mAmount.setText("TZS: " + formatter.format(formatedPrice));
 
             }
 
-        }catch (NullPointerException exception){
+        } catch (NullPointerException exception) {
             Log.e("log_error", exception.toString());
         }
 
 
         holder.mName.setText(currentExpense.getName());
         char initial = currentExpense.getName().charAt(0);
-//        holder.mInitial.setText(""+initial);
 
-        holder.mWrapper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                _editor.putInt("EXPCATEGORY_ID", currentExpense.getId());
-                _editor.putString("EXPCATEGORY_NAME", currentExpense.getName());
-                _editor.commit();
+        //update expense list when position is 1 and display default data
+        if(position == 1){
+          ((ExpensesFragment) fragment).loadExpenseAdapter(currentExpense.getId());
+        }
 
-                ((ExpensesCategoryFragment) fragment).showBtmBehavior();
 
-             ///   new FragmentHelper(c).replaceWithbackStack(new ExpensesItemFragment(),"ExpensesFragment", R.id.fragment_placeholder);
+        holder.mWrapper.setOnClickListener(v -> {
+            _editor.putInt("EXPCATEGORY_ID", currentExpense.getId());
+            _editor.putString("EXPCATEGORY_NAME", currentExpense.getName());
+            _editor.commit();
 
-            }
+            new FragmentHelper(c).replaceWithbackStack(new EditCategoryFragment(), "EditExpensesFragment", R.id.fragment_placeholder);
+
         });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout mWrapper;
-        public TextView mName, mInitial,mAmount;
+        public TextView mName, mInitial, mAmount;
         public View mBorderBtm;
 
         public ViewHolder(Context context, View view) {
@@ -121,8 +122,7 @@ public class ExpensesCategoryAdapter extends RecyclerView.Adapter<ExpensesCatego
 
             mWrapper = view.findViewById(R.id.wrapper);
             mName = view.findViewById(R.id.name);
-//            mInitial = view.findViewById(R.id.initial_name);
-            mAmount = view.findViewById(R.id.amount);
+//
 
 
         }

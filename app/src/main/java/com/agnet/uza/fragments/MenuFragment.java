@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.fragments.expenses.ExpensesCategoryFragment;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.expenses.expenses.ExpensesFragment;
+import com.agnet.uza.fragments.inventories.products.InventoryFragment;
 import com.agnet.uza.fragments.staffs.StaffFragment;
 import com.agnet.uza.fragments.stores.StoresFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
@@ -140,7 +140,7 @@ public class MenuFragment extends Fragment implements View.OnClickListener {
                 new FragmentHelper(_c).replaceWithbackStack(new StoresFragment(), "StoresFragment", R.id.fragment_placeholder);
                 break;
             case R.id.expenses_btn:
-                new FragmentHelper(_c).replaceWithbackStack(new ExpensesCategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replaceWithbackStack(new ExpensesFragment(), "ExpensesFragment", R.id.fragment_placeholder);
                 break;
             default:
                 break;

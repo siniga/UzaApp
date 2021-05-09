@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments.expenses;
+package com.agnet.uza.fragments.expenses.expenses;
 
 
 import android.annotation.SuppressLint;
@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
@@ -21,15 +23,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.adapters.ExpensesAdapter;
+import com.agnet.uza.adapters.ExpensesCategoryAdapter;
+import com.agnet.uza.fragments.MenuFragment;
+import com.agnet.uza.fragments.categories.EditCategoryFragment;
+import com.agnet.uza.fragments.expenses.categories.CategoryFragment;
+import com.agnet.uza.fragments.expenses.categories.NewCategoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
+import com.agnet.uza.models.ExpensesCategory;
 import com.agnet.uza.models.ExpensesItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.yarolegovich.discretescrollview.DiscreteScrollView;
+import com.yarolegovich.discretescrollview.transform.Pivot;
+import com.yarolegovich.discretescrollview.transform.ScaleTransformer;
 
 import java.util.List;
 
-public class ExpensesItemFragment extends Fragment {
+public class ExpensesFragment extends Fragment {
 
     private FragmentActivity _c;
     private Gson _gson;
@@ -37,10 +48,11 @@ public class ExpensesItemFragment extends Fragment {
     private RecyclerView _expensesList;
     private Toolbar _toolbar, _homeToolbar;
     private BottomNavigationView _bottomNavigation;
-    private LinearLayout _addExpenseBtn;
+    private LinearLayout _addExpenseBtn, _addCategoryBtn;
     private DatabaseHandler _dbHandler;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
+    private DiscreteScrollView _categoryList;
 
 
     @SuppressLint("RestrictedApi")
@@ -56,13 +68,14 @@ public class ExpensesItemFragment extends Fragment {
         _preferences = _c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
 
-
         //binding
         _expensesList = view.findViewById(R.id.expenses_list);
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
+        _categoryList = view.findViewById(R.id.category_picker);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _addExpenseBtn = view.findViewById(R.id.add_new_expenses_btn);
+        _addCategoryBtn = view.findViewById(R.id.add_new_category_btn);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -75,21 +88,46 @@ public class ExpensesItemFragment extends Fragment {
         _expensesLayoutManager = new LinearLayoutManager(_c, RecyclerView.VERTICAL, false);
         _expensesList.setLayoutManager(_expensesLayoutManager);
 
-        _addExpenseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new FragmentHelper(_c).replace(new NewExpenseFragment(), "NewExpenseFragment", R.id.fragment_placeholder);
-            }
+     /*   int expCategoryId = _preferences.getInt("EXPCATEGORY_ID", 0);
+        _toolbar.setTitle(_preferences.getString("EXPCATEGORY_NAME", null));
+
+*/
+        List<ExpensesCategory> categories = _dbHandler.getExpensesCategories();
+        ExpensesCategoryAdapter adapter = new ExpensesCategoryAdapter(_c, categories, this);
+        _categoryList.setAdapter(adapter);
+        _categoryList.scrollToPosition(1);
+        _categoryList.setItemTransformer((item, position) -> {
+            Toast.makeText(_c, "" + item + " " + position, Toast.LENGTH_SHORT).show();
+          /*  final ExpensesCategory currentCategory = categories.get(position);
+            List<ExpensesItem> expenses = _dbHandler.getExpItemsByCategory(1);*/
         });
 
 
-        int expCategoryId = _preferences.getInt("EXPCATEGORY_ID", 0);
-        _toolbar.setTitle(_preferences.getString("EXPCATEGORY_NAME", null));
+        _categoryList.setItemTransformer(new ScaleTransformer.Builder()
+                .setMaxScale(1.05f)
+                .setMinScale(0.8f)
+                .setPivotX(Pivot.X.CENTER) // CENTER is a default one
+                .setPivotY(Pivot.Y.BOTTOM) // CENTER is a default one
+                .build());
+
+        _categoryList.addOnItemChangedListener(new DiscreteScrollView.OnItemChangedListener<RecyclerView.ViewHolder>() {
+            @Override
+            public void onCurrentItemChanged(@Nullable RecyclerView.ViewHolder viewHolder, int position) {
+                final ExpensesCategory currentCategory = categories.get(position);
+
+                loadExpenseAdapter(currentCategory.getId());
+            }
+        });
+
+        _addCategoryBtn.setOnClickListener(view12 -> {
+            new FragmentHelper(_c).replace(new NewCategoryFragment(), " NewCategoyFragment", R.id.fragment_placeholder);
+
+        });
 
 
-        List<ExpensesItem> expenses = _dbHandler.getExpItemsByCategory(expCategoryId);
-        ExpensesAdapter adapter = new ExpensesAdapter(_c, expenses);
-        _expensesList.setAdapter(adapter);
+        _addExpenseBtn.setOnClickListener(view1 -> new FragmentHelper(_c).replace(new NewFragment(), "NewExpenseFragment", R.id.fragment_placeholder));
+
+
 
         return view;
 
@@ -107,8 +145,7 @@ public class ExpensesItemFragment extends Fragment {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-                        new FragmentHelper(_c).replace(new ExpensesCategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
+                        new FragmentHelper(_c).replace(new MenuFragment(), " MenuFragment", R.id.fragment_placeholder);
 
                         return true;
                     }
@@ -132,5 +169,10 @@ public class ExpensesItemFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
+    }
+
+    public void loadExpenseAdapter(int id) {
+        List<ExpensesItem> expenses = _dbHandler.getExpItemsByCategory(id);
+        _expensesList.setAdapter(new ExpensesAdapter(_c, expenses));
     }
 }

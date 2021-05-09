@@ -2,11 +2,9 @@ package com.agnet.uza.fragments.products;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -30,18 +28,14 @@ import androidx.fragment.app.FragmentActivity;
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.application.mSingleton;
-import com.agnet.uza.dialogs.CustomDialogClass;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
-import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
-import com.agnet.uza.fragments.inventories.SelectCategoryFragment;
+import com.agnet.uza.fragments.inventories.products.InventoryFragment;
+import com.agnet.uza.fragments.inventories.categories.SelectCategoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.Validator;
-import com.agnet.uza.models.Category;
 import com.agnet.uza.models.Product;
 import com.agnet.uza.models.Response;
-import com.agnet.uza.models.Sku;
 import com.agnet.uza.models.Success;
 import com.agnet.uza.service.Endpoint;
 import com.android.volley.NetworkResponse;
@@ -49,10 +43,8 @@ import com.android.volley.Request;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 

@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -22,9 +21,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
-import com.agnet.uza.fragments.products.NewProductFragment;
+import com.agnet.uza.fragments.inventories.products.InventoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;

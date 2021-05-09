@@ -14,13 +14,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.DialogCancelSale;
 import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.google.android.material.bottomnavigation.BottomNavigationView;

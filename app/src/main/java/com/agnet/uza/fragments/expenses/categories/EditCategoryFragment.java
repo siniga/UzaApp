@@ -1,11 +1,10 @@
-package com.agnet.uza.fragments.expenses;
+package com.agnet.uza.fragments.expenses.categories;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -21,14 +19,13 @@ import androidx.fragment.app.FragmentActivity;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.expenses.expenses.ExpensesFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
-import com.agnet.uza.models.Category;
 import com.agnet.uza.models.ExpensesCategory;
 
 
-public class EditExpenseCategoryFragment extends Fragment implements View.OnClickListener {
+public class EditCategoryFragment extends Fragment implements View.OnClickListener {
 
 
     private FragmentActivity _c;
@@ -120,7 +117,7 @@ public class EditExpenseCategoryFragment extends Fragment implements View.OnClic
                 if (!_categoryName.getText().toString().isEmpty()) {
 
                     _dbHandler.updateExpenseCategory(new ExpensesCategory(_expCategoryId,name,""));
-                    new FragmentHelper(_c).replaceWithbackStack(new ExpensesCategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
+                    new FragmentHelper(_c).replaceWithbackStack(new ExpensesFragment(), "ExpensesFragment", R.id.fragment_placeholder);
 
                 } else {
                     Toast.makeText(_c, "Field should not be empty!", Toast.LENGTH_SHORT).show();
@@ -132,7 +129,7 @@ public class EditExpenseCategoryFragment extends Fragment implements View.OnClic
                 _dbHandler.deleteExpenseCategory(_expCategoryId);
                 _dbHandler.deleteExpenseItemByCategory(_expCategoryId);
 
-                new FragmentHelper(_c).replace(new ExpensesCategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
+                new FragmentHelper(_c).replace(new CategoryFragment(), "ExpensesCategoryFragment", R.id.fragment_placeholder);
                 break;
         }
     }

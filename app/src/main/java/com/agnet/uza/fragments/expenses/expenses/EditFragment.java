@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments.expenses;
+package com.agnet.uza.fragments.expenses.expenses;
 
 
 import android.annotation.SuppressLint;
@@ -16,6 +16,8 @@ import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
@@ -26,24 +28,25 @@ import com.agnet.uza.models.ExpensesItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
-public class NewExpenseFragment extends Fragment {
+public class EditFragment extends Fragment {
 
     private FragmentActivity _c;
     private Gson _gson;
-    private Toolbar _toolbar,_homeToolbar;
+    private Toolbar _toolbar, _homeToolbar;
     private BottomNavigationView _bottomNavigation;
-    private Button _saveExpenseBtn;
+    private Button _saveExpenseBtn, _deleteExpenseBtn;
     private EditText _name, _amount;
     private DatabaseHandler _dbHandler;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private TextView _nameHdr;
+    private int _categoryId;
 
     @SuppressLint("RestrictedApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_new_expenses, container, false);
+        View view = inflater.inflate(R.layout.fragment_edit_expenses, container, false);
         _c = getActivity();
 
         //initialization
@@ -56,41 +59,65 @@ public class NewExpenseFragment extends Fragment {
         _homeToolbar = _c.findViewById(R.id.home_toolbar);
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
-        _saveExpenseBtn = view.findViewById(R.id.save_expense_btn);
         _nameHdr = view.findViewById(R.id.name_hdr);
         _name = view.findViewById(R.id.name);
         _amount = view.findViewById(R.id.amount);
+        _saveExpenseBtn = view.findViewById(R.id.update_expense_btn);
+        _deleteExpenseBtn = view.findViewById(R.id.delete_expense_btn);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
         _toolbar.setVisibility(View.VISIBLE);
         _bottomNavigation.setVisibility(View.GONE);
 
+        int expenseId = _preferences.getInt("EXPENSE_ID", 0);
+        ExpensesItem expensesItem = _dbHandler.getExpItems(expenseId);
 
-        int expCategoryId = _preferences.getInt("EXPCATEGORY_ID", 0);
+        _name.setText(expensesItem.getName());
+        _amount.setText(expensesItem.getAmount());
+        _toolbar.setTitle("Edit " + expensesItem.getName());
 
+        if (_preferences.getInt("EXPCATEGORY_ID", 0) != 0) {
+            _categoryId = _preferences.getInt("EXPCATEGORY_ID", 0);
+        }
+
+        _deleteExpenseBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                _dbHandler.deleteExpense(expenseId);
+                _dbHandler.getExpItemsTotalAmt(expenseId);
+
+                getNewAmount();
+
+                new FragmentHelper(_c).replace(new ExpensesFragment(), "ExpensesItemFragment", R.id.fragment_placeholder);
+                Toast.makeText(_c, "Item Deleted!", Toast.LENGTH_LONG).show();
+            }
+        });
 
         _saveExpenseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(_name.getText().toString().isEmpty() || _amount.getText().toString().isEmpty()){
+                FragmentManager manager = getActivity().getSupportFragmentManager();
+                FragmentTransaction trans = manager.beginTransaction();
+                trans.remove(new EditFragment());
+                trans.commit();
+                manager.popBackStack();
+
+                if (_name.getText().toString().isEmpty() || _amount.getText().toString().isEmpty()) {
                     Toast.makeText(_c, "Both fields should not be empty!", Toast.LENGTH_LONG).show();
-                }else{
+                } else {
 
                     String name = _name.getText().toString();
                     String amount = _amount.getText().toString();
                     String date = DateHelper.getCurrentDate();
 
 
-                    _dbHandler.createExpenseItem(new ExpensesItem(0,name, amount,date), expCategoryId);
+                    _dbHandler.updateExpenseItem(new ExpensesItem(expenseId, name, amount, ""));
+                    getNewAmount();
 
-                    //update total amount on cateogry expenses table
-                    String categoryTotalAmnt = _dbHandler.getExpItemsTotalAmt(expCategoryId);
-                    _dbHandler.updateExpensesCategoryAmnt(categoryTotalAmnt, expCategoryId);
-
-//                    _nameHdr.setText(""+_dbHandler.getExpItemsTotalAmt(expCategoryId));
-                    new FragmentHelper(_c).replace(new ExpensesItemFragment(), "ExpensesItemFragment", R.id.fragment_placeholder);
+                    new FragmentHelper(_c).replace(new ExpensesFragment(), "ExpensesItemFragment", R.id.fragment_placeholder);
                 }
 
 
@@ -100,6 +127,10 @@ public class NewExpenseFragment extends Fragment {
 
     }
 
+    private void getNewAmount() {
+        String newTotalAmnt = _dbHandler.getExpItemsTotalAmt(_categoryId);
+        _dbHandler.updateExpensesCategoryAmnt(newTotalAmnt, _categoryId);
+    }
 
     @Override
     public void onResume() {

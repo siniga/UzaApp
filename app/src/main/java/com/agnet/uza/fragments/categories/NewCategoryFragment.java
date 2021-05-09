@@ -18,14 +18,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
 import com.agnet.uza.dialogs.ProductPhotoSelectorDialog;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
-import com.agnet.uza.fragments.inventories.ManageCategoryFragment;
+import com.agnet.uza.fragments.inventories.products.InventoryFragment;
 import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;

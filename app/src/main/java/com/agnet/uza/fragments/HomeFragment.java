@@ -35,7 +35,7 @@ import com.agnet.uza.fragments.auth.LoginFragment;
 import com.agnet.uza.fragments.categories.CategoryFragment;
 import com.agnet.uza.fragments.checkout.CartFragment;
 import com.agnet.uza.fragments.checkout.ReceiptFragment;
-import com.agnet.uza.fragments.inventories.InventoryFragment;
+import com.agnet.uza.fragments.inventories.products.InventoryFragment;
 import com.agnet.uza.fragments.products.NewProductFragment;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;

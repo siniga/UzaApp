@@ -1,4 +1,4 @@
-package com.agnet.uza.fragments.inventories;
+package com.agnet.uza.fragments.inventories.products;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
