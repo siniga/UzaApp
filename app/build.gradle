@@ -20,6 +20,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    sourceSets {
+        main {
+            res.srcDirs =
+                    [
+                            'src/main/res',
+                            'src/main/res/layouts/home',
+                            'src/main/res/layouts/checkout',
+                            'src/main/res/layouts/expenses',
+                            'src/main/res/layouts/extra',
+                            'src/main/res/layouts/inventory',
+                            'src/main/res/layouts/menu',
+                            'src/main/res/layouts/staff',
+                            'src/main/res/layouts/store',
+
+                    ]
+        }
+    }
 }
 
 dependencies {
@@ -27,7 +44,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.w.0-alpha01'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.2'
     implementation 'com.google.android.material:material:1.0.0-beta01'
-    implementation 'com.github.bumptech.glide:glide:4.0.0'
+   // implementation 'com.github.bumptech.glide:glide:4.0.0'
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.google.code.gson:gson:2.8.2'
 //    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
@@ -40,6 +57,8 @@ dependencies {
     implementation 'com.facebook.stetho:stetho:1.6.0'
     implementation 'com.cottacush:CurrencyEditText:0.0.3'
     implementation  'com.yarolegovich:discrete-scrollview:1.5.1'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
 
     //noinspection GradleCompatible
 /*    implementation 'com.google.android.gms:play-services-vision:15.0.2'

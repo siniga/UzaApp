@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.dialogs.DialogDeleteCartItem;
-import com.agnet.uza.fragments.checkout.CartFragment;
+import com.agnet.uza.pages.checkout.CartFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.models.Cart;
 

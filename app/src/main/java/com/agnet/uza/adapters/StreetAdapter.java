@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.HomeFragment;
+import com.agnet.uza.pages.HomeFragment;
 import com.agnet.uza.models.Address;
 
 import java.util.Collections;

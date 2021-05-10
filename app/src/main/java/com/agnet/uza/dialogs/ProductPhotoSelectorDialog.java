@@ -11,17 +11,17 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.products.NewProductFragment;
+import com.agnet.uza.pages.inventories.products.NewInvProductFragment;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 public class ProductPhotoSelectorDialog extends DialogFragment implements View.OnClickListener {
     private static final int picId = 123;
-    private NewProductFragment newProductFragment;
+    private NewInvProductFragment newProductFragment;
     private LinearLayout launchCamera;
 
-    public void setParentFragment(NewProductFragment newProductFragment) {
+    public void setParentFragment(NewInvProductFragment newProductFragment) {
         this.newProductFragment = newProductFragment;
     }
 
@@ -50,7 +50,7 @@ public class ProductPhotoSelectorDialog extends DialogFragment implements View.O
             Bitmap photo = (Bitmap) data.getExtras()
                     .get("data");
 
-            ((NewProductFragment) newProductFragment).displaySelectedImg(photo);
+            ((NewInvProductFragment) newProductFragment).displaySelectedImg(photo);
 
         }
 

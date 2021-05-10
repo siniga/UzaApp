@@ -11,10 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.TrackOrderFragment;
-import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.OrderStatusHelper;
-import com.agnet.uza.models.History;
 import com.agnet.uza.models.Order;
 
 import java.util.Collections;

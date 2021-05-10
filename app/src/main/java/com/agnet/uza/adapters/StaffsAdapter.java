@@ -13,8 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.fragments.staffs.EditStaffFragment;
-import com.agnet.uza.fragments.staffs.NewStaffFragment;
+import com.agnet.uza.pages.staffs.EditStaffFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.User;

@@ -3,12 +3,12 @@ package com.agnet.uza.models;
 public class ExpensesCategory {
 
     private int id;
-    private String name, amount;
+    private String name, imgUrl;
 
-    public ExpensesCategory(int id, String name, String amount){
+    public ExpensesCategory(int id, String name, String imgUrl){
         this.id = id;
         this.name = name;
-        this.amount = amount;
+        this.imgUrl = imgUrl;
     }
 
     public int getId() {
@@ -19,7 +19,7 @@ public class ExpensesCategory {
         return name;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getImgUrl() {
+        return imgUrl;
     }
 }

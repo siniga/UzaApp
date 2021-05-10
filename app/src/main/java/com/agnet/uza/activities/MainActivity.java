@@ -3,12 +3,12 @@ package com.agnet.uza.activities;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import com.agnet.uza.adapters.ProductAdapter;
-import com.agnet.uza.fragments.HomeFragment;
-import com.agnet.uza.fragments.auth.LoginFragment;
-import com.agnet.uza.fragments.MenuFragment;
-import com.agnet.uza.fragments.reports.ReportFragment;
-import com.agnet.uza.fragments.reports.TransactionFragment;
+import com.agnet.uza.adapters.inventories.products.ProductAdapter;
+import com.agnet.uza.pages.HomeFragment;
+import com.agnet.uza.pages.auth.LoginFragment;
+import com.agnet.uza.pages.MenuFragment;
+import com.agnet.uza.pages.reports.ReportFragment;
+import com.agnet.uza.pages.reports.TransactionFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.helpers.NetworkMonitor;

@@ -6,12 +6,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
-import com.agnet.uza.R;
 import com.agnet.uza.application.mSingleton;
-import com.agnet.uza.fragments.auth.BusinessRegistrationFragment;
 import com.agnet.uza.models.Response;
 import com.agnet.uza.models.Success;
 import com.agnet.uza.models.User;
