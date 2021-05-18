@@ -114,7 +114,7 @@ public class EditExpFragment extends Fragment {
                     String date = DateHelper.getCurrentDate();
 
 
-                    _dbHandler.updateExpenseItem(new ExpensesItem(expenseId, name, amount, ""));
+                    _dbHandler.updateExpenseItem(new ExpensesItem(expenseId, name, amount, "",0));
                     getNewAmount();
 
                     new FragmentHelper(_c).replace(new ExpensesFragment(), "ExpensesItemFragment", R.id.fragment_placeholder);

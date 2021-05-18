@@ -116,7 +116,7 @@ public class EditExpCategoryFragment extends Fragment implements View.OnClickLis
 
                 if (!_categoryName.getText().toString().isEmpty()) {
 
-                    _dbHandler.updateExpenseCategory(new ExpensesCategory(_expCategoryId,name,""));
+                    _dbHandler.updateExpenseCategory(new ExpensesCategory(_expCategoryId,name,"",0));
                     new FragmentHelper(_c).replaceWithbackStack(new ExpensesFragment(), "ExpensesFragment", R.id.fragment_placeholder);
 
                 } else {

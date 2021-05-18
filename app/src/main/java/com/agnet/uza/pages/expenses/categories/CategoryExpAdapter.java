@@ -89,7 +89,7 @@ public class CategoryExpAdapter extends RecyclerView.Adapter<CategoryExpAdapter.
 
 
         holder.mName.setText(currentExpense.getName());
-        char initial = currentExpense.getName().charAt(0);
+       // char initial = currentExpense.getName().charAt(0);
 
         holder.mWrapper.setOnClickListener(v -> {
 

@@ -1,18 +1,16 @@
-package com.agnet.uza.adapters.inventories.categories;
+package com.agnet.uza.pages.inventories.categories.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
@@ -27,7 +25,7 @@ import java.util.List;
 /**
  * Created by alicephares on 8/5/16.
  */
-public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapter.ViewHolder> {
+public class FilterCategoryAdapter extends RecyclerView.Adapter<FilterCategoryAdapter.ViewHolder> {
 
     private List<Category> categories = Collections.emptyList();
     private LayoutInflater inflator;
@@ -44,7 +42,7 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public HomeCategoryAdapter(Context c, List<Category> categories) {
+    public FilterCategoryAdapter(Context c, List<Category> categories) {
         this.categories = categories;
         this.inflator = LayoutInflater.from(c);
         this.c = c;
@@ -75,15 +73,19 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
         //get a position of a current saleItem
         final Category currentCategory = categories.get(position);
 
+        char init = currentCategory.getName().charAt(0);
+
         holder.mName.setText(currentCategory.getName());
+        holder.mInitial.setText(""+init);
 
 
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             _editor.putInt("CATEGORY_ID", currentCategory.getId());
+             _editor.putInt("CATEGORY_ID", currentCategory.getServerId());
              _editor.commit();
 
+                Log.d("PRODUCITIO", currentCategory.getServerId()+" "+currentCategory.getId()+" "+currentCategory.getName());
              new FragmentHelper(c).replace(new HomeFragment(), "HomeFragment", R.id.fragment_placeholder);
 
             }
@@ -92,22 +94,17 @@ public class HomeCategoryAdapter extends RecyclerView.Adapter<HomeCategoryAdapte
 
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public RelativeLayout mWrapper;
-        public TextView mName;
-        public ImageView mImg;
-        public LinearLayout mTransparentView;
-        public RadioButton mRadioSelected;
+        public CardView mWrapper;
+        public TextView mName, mInitial;
+
 
         public ViewHolder(Context context, View view) {
             super(view);
 
             mWrapper = view.findViewById(R.id.category_wrapper);
             mName = view.findViewById(R.id.category_name);
-            mImg = view.findViewById(R.id.category_img);
-            mTransparentView = view.findViewById(R.id.transparent_frontview);
-            mRadioSelected = view.findViewById(R.id.category_select);
+            mInitial = view.findViewById(R.id.initial);
         }
 
     }

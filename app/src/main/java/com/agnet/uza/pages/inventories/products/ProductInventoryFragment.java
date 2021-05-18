@@ -19,8 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.inventories.InventoryAdapter;
+import com.agnet.uza.pages.inventories.products.adapters.ProductInventoryAdapter;
 import com.agnet.uza.pages.HomeFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
@@ -36,7 +35,7 @@ public class ProductInventoryFragment extends Fragment {
     private RecyclerView _productList;
     private LinearLayoutManager _productLayoutManager;
     private List<Product> _products;
-    private InventoryAdapter _productAdapter;
+    private ProductInventoryAdapter _productAdapter;
     private SharedPreferences _preferences;
     private SharedPreferences.Editor _editor;
     private DatabaseHandler _dbHandler;
@@ -93,19 +92,10 @@ public class ProductInventoryFragment extends Fragment {
     }
 
     public void getroducts() {
-        _productAdapter = new InventoryAdapter(_c, _dbHandler.getProducts(), new HomeFragment(), 1);
+        _productAdapter = new ProductInventoryAdapter(_c, _dbHandler.getProducts(), new HomeFragment(), 1);
         _productList.setAdapter(_productAdapter);
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        //back arrows
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
-    }
 
 
 }

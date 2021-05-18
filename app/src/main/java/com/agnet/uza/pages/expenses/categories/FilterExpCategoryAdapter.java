@@ -85,13 +85,7 @@ public class FilterExpCategoryAdapter extends RecyclerView.Adapter<FilterExpCate
         final ExpensesCategory currentExpense = expenses.get(position);
 
         holder.mName.setText(currentExpense.getName());
-        char initial = currentExpense.getName().charAt(0);
 
-
-        Log.d("IMGURL", currentExpense.getImgUrl()+" "+currentExpense.getName());
-
-
-//       holder.mImg.setImageResource(id);
         Glide.with(c).load(displayImg(holder.mImg, currentExpense.getImgUrl()))
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .error(R.drawable.ic_error)
@@ -106,14 +100,6 @@ public class FilterExpCategoryAdapter extends RecyclerView.Adapter<FilterExpCate
                         return false;
                     }
                 }).into(holder.mImg);
-
-        //update expense list when position is 1 and display default data
-        if (position == 1) {
-            ((ExpensesFragment) fragment).loadExpenseAdapter(currentExpense.getId());
-        }
-
-
-
 
     }
 

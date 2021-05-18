@@ -75,9 +75,8 @@
             </LinearLayout>
 
             <View
-                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="2dp"
+                android:layout_height="1dp"
                 android:layout_alignParentBottom="true"
                 android:background="@color/colorGreyLight" />
         </RelativeLayout>
@@ -134,67 +133,11 @@
 
 
     <View
-
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/category_picker_wrapper"
         android:background="@color/light_grey" />
-
-    <RelativeLayout
-        android:background="@color/light_grey"
-        android:paddingLeft="18dp"
-        android:layout_below="@+id/divider"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-       >
-        <LinearLayout
-            android:gravity="center_vertical"
-            android:background="@color/light_grey"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:id="@+id/expenses_hdr"
-                android:layout_alignParentLeft="true"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="3dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:text="Matumizi ya"
-                />
-
-            <TextView
-                android:id="@+id/category_exp_hder"
-                android:textStyle="bold"
-                android:layout_toRightOf="@+id/expenses_hdr"
-                android:layout_alignParentLeft="true"
-                android:layout_below="@+id/divider"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/ic_add_black_24dp"
-                android:text="Aina"
-                />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageButton
-                android:id="@+id/add_new_expenses_btn"
-                android:backgroundTint="@color/light_grey"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/ic_baseline_add_blue_24"/>
-        </LinearLayout>
-
-    </RelativeLayout>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/expenses_list"
@@ -204,6 +147,53 @@
         android:layout_marginTop="20dp"
         android:padding="20dp" />
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_below="@id/expenses_list"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginTop="1dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/wrapper"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            >
+
+            <ImageButton
+                android:background="@drawable/round_corners_with_stroke_blue"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_add_blue_24"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_marginTop="2dp"
+                android:id="@+id/add_expense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ongeza matumizi ya bando"
+                android:textColor="@color/colorGreyMid"
+                android:textSize="16sp"
+                />
+
+
+        </LinearLayout>
+        <View
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey"/>
+
+    </RelativeLayout>
     <LinearLayout
         android:visibility="gone"
         android:layout_width="60dp"
@@ -224,5 +214,102 @@
 
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <RelativeLayout
+            android:id="@+id/expenses_main_divider"
+            android:background="@color/light_grey"
+            android:paddingLeft="18dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            >
+            <LinearLayout
+                android:gravity="center_vertical"
+                android:background="@color/light_grey"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/expenses_hdr"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="3dp"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:text="Matumizi ya"
+                    />
+
+                <TextView
+                    android:id="@+id/category_exp_hder"
+                    android:textStyle="bold"
+                    android:layout_toRightOf="@+id/expenses_hdr"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/divider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:src="@drawable/ic_add_black_24dp"
+                    android:text="Aina"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:id="@+id/add_new_expenses_btn"
+                    android:backgroundTint="@color/light_grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_baseline_add_blue_24"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+        <LinearLayout
+            android:layout_below="@+id/expenses_main_divider"
+            android:background="@color/white"
+            android:id="@+id/empty_items_msg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+
+            <ImageButton
+                android:background="@drawable/round_corners_with_stroke_blue"
+                android:id="@+id/create_expense_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_add_blue_24"
+                android:textColor="@color/white" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Hauna matumizi"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Bonyeza + kuanza kujaza matumizi"
+                android:textSize="16sp" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>

@@ -1,4 +1,4 @@
-  package com.agnet.uza.adapters.inventories.products;
+  package com.agnet.uza.pages.inventories.products.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -173,8 +173,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
                 holder.mStcok.setText("" + stock[0]);
 
-                ((HomeFragment) fragment).addQntyCount();
-                ((HomeFragment) fragment).addAmount();
+              /*  ((HomeFragment) fragment).addQntyCount();
+                ((HomeFragment) fragment).addAmount();*/
 
             }
         });

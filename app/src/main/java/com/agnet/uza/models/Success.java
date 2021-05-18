@@ -29,6 +29,9 @@ public class Success {
 
     private Product product;
 
+    @SerializedName("expenses")
+    private ExpensesItem expense;
+
     @SerializedName("address")
     private Address address;
 
@@ -38,7 +41,7 @@ public class Success {
 
     public Success(List streets, List products, List outlets, List categories, List skus, List<History> orders,
                    List<Partner> partners, List<User> users, User user, String token, Business business,
-                   Address address, Product product, Category category, Sku  sku) {
+                   Address address, Product product, Category category, Sku  sku, ExpensesItem expense) {
 
         this.addresses = streets;
         this.products = products;
@@ -55,6 +58,7 @@ public class Success {
         this.product =  product;
         this.category = category;
         this.sku =  sku;
+        this.expense = expense;
     }
 
     public User getUser() {
@@ -115,5 +119,9 @@ public class Success {
 
     public Sku getSku() {
         return sku;
+    }
+
+    public ExpensesItem getExpense() {
+        return expense;
     }
 }

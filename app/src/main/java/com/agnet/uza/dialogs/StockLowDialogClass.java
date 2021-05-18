@@ -17,6 +17,7 @@ public class StockLowDialogClass extends Dialog {
     public Button continueBtn;
     private TextView nameTxt;
     private String stockName;
+    private Button addStockBtn;
 
     public StockLowDialogClass(Activity a) {
         super(a);
@@ -35,15 +36,14 @@ public class StockLowDialogClass extends Dialog {
         setContentView(R.layout.dialog_low_stock_msg);
 
         nameTxt = findViewById(R.id.out_stock_msg);
-        continueBtn = findViewById(R.id.btn_yes);
+        continueBtn = findViewById(R.id.btn_add_stock);
+        addStockBtn = findViewById(R.id.btn_yes);
 
         nameTxt.setText(stockName);
-        continueBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                d.dismiss();
+        continueBtn.setOnClickListener(view -> d.dismiss());
 
-            }
+        addStockBtn.setOnClickListener(view -> {
+
         });
 
 

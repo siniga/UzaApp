@@ -1,15 +1,20 @@
 package com.agnet.uza.models;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ExpensesItem {
 
     private int id;
     private String name, amount, date;
+    @SerializedName("expense_category_id")
+    private int categoryId;
 
-    public ExpensesItem(int id, String name, String amount, String date){
+    public ExpensesItem(int id, String name, String amount, String date, int categoryId){
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.date = date;
+        this.categoryId = categoryId;
     }
 
     public int getId() {
@@ -26,5 +31,9 @@ public class ExpensesItem {
 
     public String getDate() {
         return date;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
     }
 }

@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.inventories.products.TopProductAdapter;
+import com.agnet.uza.pages.inventories.products.adapters.ReportsProductAdapter;
 import com.agnet.uza.helpers.ReportTimeFilterHelper;
 import com.agnet.uza.models.TopProduct;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -154,7 +154,7 @@ public class ReportFragment extends Fragment {
         products.add(new TopProduct(1,20,"Whitedent","24500","1%"));
 
 
-        TopProductAdapter productAdapter = new TopProductAdapter(_c,products);
+        ReportsProductAdapter productAdapter = new ReportsProductAdapter(_c,products);
         _topProductsList.setAdapter(productAdapter);
 
     }

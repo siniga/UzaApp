@@ -18,10 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.inventories.categories.ManageCategoryAdapter;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
+import com.agnet.uza.pages.inventories.categories.adapters.CategoryListAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -72,7 +72,7 @@ public class CategoryInvFragment extends Fragment implements View.OnClickListene
         _categoryList.setLayoutManager(_categoryLayoutManager);
 
         List<Category> categories = _dbHandler.getCategories();
-        ManageCategoryAdapter adapter = new ManageCategoryAdapter(_c, categories);
+        CategoryListAdapter adapter = new CategoryListAdapter(_c, categories);
         _categoryList.setAdapter(adapter);
 
         _newCategoryBtn.setOnClickListener(this);

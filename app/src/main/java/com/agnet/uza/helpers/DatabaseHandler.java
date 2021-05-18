@@ -31,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 47;
+    private static final int DATABASE_VERSION = 51;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -48,7 +48,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCT_UNIT = "product_units";
     private static final String TABLE_PRODUCT_SKU = "product_skus";
     private static final String TABLE_EXPENSES_CATEGORY = "expenses_categories";
-    private static final String TABLE_EXPENSES_BUSINESS_CATEGORY = "expenses_busines_categories";
+    private static final String TABLE_BUSINESS_EXPENSE_CATEGORY = "business_expenses_categories";
     private static final String TABLE_EXPENSES_ITEM = "expense_items";
     private static final String TABLE_ORDER = "orders";
     private static final String TABLE_CART = "carts";
@@ -180,16 +180,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_UNIT_ID + " INTEGER,"
                 + KEY_PRODUCT_ID + " INTEGER" + ")";
 
+        String CREATE_BUSINESS_EXPENSE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_BUSINESS_EXPENSE_CATEGORY + "("
+                + KEY_ID + " INTEGER PRIMARY KEY,"
+                + KEY_BUSINESS_ID + " INTEGER,"
+                + KEY_CATEGORY_ID + " INTEGER " + ")";
+
         String CREATE_EXPENSES_CATEGORY_TABLE = "CREATE TABLE " + TABLE_EXPENSES_CATEGORY + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
                 + KEY_NAME + " TEXT,"
-                + KEY_IMAGE + " TEXT " + ")";
-
-        String CREATE_EXPENSES_BUSINESS_CATEGORY_TABLE = "CREATE TABLE " + TABLE_EXPENSES_BUSINESS_CATEGORY + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_AMOUNT + " TEXT,"
+                + KEY_IMAGE + " TEXT,"
                 + KEY_BUSINESS_ID + " INTEGER,"
-                + KEY_CATEGORY_ID + " INTEGER " + ")";
+                + KEY_CATEGORY_SERVER_ID + " INTEGER " + ")";
 
         String CREATE_EXPENSES_ITEM_TABLE = "CREATE TABLE " + TABLE_EXPENSES_ITEM + "("
                 + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -222,8 +223,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_UNIT_TABLE);
         db.execSQL(CREATE_PRODUCT_SKU_TABLE);
         db.execSQL(CREATE_PRODUCT_UNIT_TABLE);
+        db.execSQL(CREATE_BUSINESS_EXPENSE_CATEGORY_TABLE);
         db.execSQL(CREATE_EXPENSES_CATEGORY_TABLE);
-        db.execSQL(CREATE_EXPENSES_BUSINESS_CATEGORY_TABLE);
         db.execSQL(CREATE_EXPENSES_ITEM_TABLE);
         db.execSQL(CREATE_ORDER_TABLE);
         db.execSQL(CREATE_CART_TABLE);
@@ -244,8 +245,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_UNIT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_UNIT);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRODUCT_SKU);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_BUSINESS_EXPENSE_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES_CATEGORY);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES_BUSINESS_CATEGORY);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_EXPENSES_ITEM);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ORDER);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_CART);
@@ -729,7 +730,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         "",
-                        0,
+                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_SERVER_ID)),
                         0
                 );
 
@@ -915,7 +916,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         Double.parseDouble(cursor.getString(cursor.getColumnIndex(KEY_PRICE))),
                         cursor.getString(cursor.getColumnIndex(KEY_COST)),
-                        cursor.getString(cursor.getColumnIndex(KEY_BARCODE)),
+                        "",
                         cursor.getInt(cursor.getColumnIndex(KEY_DISCOUNT)),
                         cursor.getInt(cursor.getColumnIndex(KEY_STOCK)),
                         cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
@@ -1063,6 +1064,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, category.getName());
         values.put(KEY_IMAGE, category.getImgUrl());
+        values.put(KEY_CATEGORY_SERVER_ID, category.getServerId());
 
         db.insert(TABLE_EXPENSES_CATEGORY, null, values);
 
@@ -1073,7 +1075,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_NAME, expensesCategory.getName());
+        values.put(KEY_CATEGORY_SERVER_ID, expensesCategory.getServerId());
 
         db.update(TABLE_EXPENSES_CATEGORY, values, "id = ?", new String[]{String.valueOf(expensesCategory.getId())});
 
@@ -1105,7 +1107,39 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 ExpensesCategory category = new ExpensesCategory(
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
-                        cursor.getString(cursor.getColumnIndex(KEY_IMAGE))
+                        cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_SERVER_ID))
+
+
+                );
+
+                categories.add(category);
+
+            } while (cursor.moveToNext());
+        }
+
+        database.close();
+
+        return categories;
+    }
+
+
+    public List<ExpensesCategory> getBusinessExpenseCategories(int bId) {
+        List<ExpensesCategory> categories = new ArrayList<>();
+
+        String selectQuery = "SELECT DISTINCT  expenses_categories.id, expenses_categories.name, expenses_categories.image, expenses_categories.category_server_id FROM expenses_categories JOIN business_expenses_categories " +
+                " on expenses_categories.category_server_id = business_expenses_categories.category_id " +
+                "WHERE business_expenses_categories.business_id = " + bId + " ORDER BY expenses_categories.id DESC";
+        SQLiteDatabase database = this.getWritableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                ExpensesCategory category = new ExpensesCategory(
+                        cursor.getInt(cursor.getColumnIndex(KEY_ID)),
+                        cursor.getString(cursor.getColumnIndex(KEY_NAME)),
+                        cursor.getString(cursor.getColumnIndex(KEY_IMAGE)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_CATEGORY_SERVER_ID))
 
 
                 );
@@ -1131,16 +1165,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin business expenses category crude
      ********************************************/
-    public void createBusinessExpensesCategory(ExpensesCategory category) {
+    public void createBusinessExpensesCategory(int businessId, int categoryId) {
         SQLiteDatabase db = this.getWritableDatabase();
-/*
 
         ContentValues values = new ContentValues();
-        values.put(KEY_BUSINESS_ID, category.getName());
-        values.put(KEY_CATEGORY_ID, category.getAmount());
+        values.put(KEY_BUSINESS_ID, businessId);
+        values.put(KEY_CATEGORY_ID, categoryId);
 
-        db.insert(TABLE_EXPENSES_BUSINESS_CATEGORY, null, values);
-*/
+        db.insert(TABLE_BUSINESS_EXPENSE_CATEGORY, null, values);
 
         db.close(); // Closing database connection
     }
@@ -1148,14 +1180,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /*******************************************
      Begin expense items crude
      ********************************************/
-    public void createExpenseItem(ExpensesItem item, int expCategoryId) {
+    public void createExpenseItem(ExpensesItem item) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());
         values.put(KEY_AMOUNT, item.getAmount());
         values.put(KEY_DATE, item.getDate());
-        values.put(KEY_EXPENSES_CATEGORY_ID, expCategoryId);
+        values.put(KEY_EXPENSES_CATEGORY_ID, item.getCategoryId());
 
         db.insert(TABLE_EXPENSES_ITEM, null, values);
 
@@ -1188,7 +1220,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getString(cursor.getColumnIndex(KEY_AMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(KEY_DATE))
+                        cursor.getString(cursor.getColumnIndex(KEY_DATE)),
+                      0
                 );
 
                 items.add(item);
@@ -1216,7 +1249,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getInt(cursor.getColumnIndex(KEY_ID)),
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getString(cursor.getColumnIndex(KEY_AMOUNT)),
-                        cursor.getString(cursor.getColumnIndex(KEY_DATE))
+                        cursor.getString(cursor.getColumnIndex(KEY_DATE)),
+                        0
                 );
 
 

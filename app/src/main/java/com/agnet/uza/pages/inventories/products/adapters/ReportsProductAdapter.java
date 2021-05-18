@@ -1,4 +1,4 @@
-package com.agnet.uza.adapters.inventories.products;
+package com.agnet.uza.pages.inventories.products.adapters;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -25,7 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * Created by alicephares on 8/5/16.
  */
-public class TopProductAdapter extends RecyclerView.Adapter<TopProductAdapter.ViewHolder> {
+public class ReportsProductAdapter extends RecyclerView.Adapter<ReportsProductAdapter.ViewHolder> {
 
     private List<TopProduct> products = Collections.emptyList();
     private LayoutInflater inflator;
@@ -42,7 +42,7 @@ public class TopProductAdapter extends RecyclerView.Adapter<TopProductAdapter.Vi
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TopProductAdapter(Context c, List<TopProduct> products) {
+    public ReportsProductAdapter(Context c, List<TopProduct> products) {
         this.products = products;
         this.inflator = LayoutInflater.from(c);
         this.c = c;

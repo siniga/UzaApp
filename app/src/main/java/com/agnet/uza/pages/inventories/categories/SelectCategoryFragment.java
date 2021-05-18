@@ -14,12 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.inventories.categories.CategoryAdapter;
 import com.agnet.uza.pages.checkout.PaymentFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
+import com.agnet.uza.pages.inventories.categories.adapters.SelectCategoryAdapter;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -64,7 +63,7 @@ public class SelectCategoryFragment extends Fragment   implements View.OnClickLi
 
 
         List<Category> categories = _dbHandler.getCategories();
-        CategoryAdapter adapter = new CategoryAdapter(_c, categories);
+        SelectCategoryAdapter adapter = new SelectCategoryAdapter(_c, categories);
         _categoryList.setAdapter(adapter);
         return view;
 

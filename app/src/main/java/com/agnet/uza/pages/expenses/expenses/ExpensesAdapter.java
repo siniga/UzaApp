@@ -1,4 +1,4 @@
-package com.agnet.uza.adapters.expenses.expenses;
+package com.agnet.uza.pages.expenses.expenses;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
-import com.agnet.uza.pages.expenses.expenses.EditExpFragment;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
 import com.agnet.uza.models.ExpensesItem;

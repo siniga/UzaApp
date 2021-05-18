@@ -689,5 +689,4 @@ public class NewInvProductFragment extends Fragment implements AdapterView.OnIte
 
     }
 
-
 }

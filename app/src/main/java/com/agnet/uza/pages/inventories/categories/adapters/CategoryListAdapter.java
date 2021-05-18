@@ -1,8 +1,7 @@
-package com.agnet.uza.adapters.inventories.categories;
+package com.agnet.uza.pages.inventories.categories.adapters;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,22 +12,22 @@ import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.agnet.uza.R;
-import com.agnet.uza.pages.inventories.products.EditInvProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
 import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Category;
+import com.agnet.uza.pages.inventories.categories.EditCategoryFragment;
 
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
  * Created by alicephares on 8/5/16.
  */
-public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
+public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.ViewHolder> {
 
     private List<Category> categories = Collections.emptyList();
     private LayoutInflater inflator;
@@ -44,7 +43,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public CategoryAdapter(Context c, List<Category> categories) {
+    public CategoryListAdapter(Context c, List<Category> categories) {
         this.categories = categories;
         this.inflator = LayoutInflater.from(c);
         this.c = c;
@@ -59,7 +58,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
         // create a new view
-        View v = inflator.inflate(R.layout.card_category, parent, false);
+        View v = inflator.inflate(R.layout.card_manage_category, parent, false);
         // set the view's size, margins, padding and layout parameters
 
         ViewHolder vh = new ViewHolder(c, v);
@@ -75,78 +74,18 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         final Category currentCategory = categories.get(position);
 
         holder.mName.setText(currentCategory.getName());
-       /* holder.mWrapper.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-
-                new FragmentHelper(c).replaceWithbackStack(new ProductsFragment(), "ProductsFragment", R.id.fragment_placeholder);
-
-            }
-        });*/
-
-        //since only one radio button is allowed to be selected,
-        // this condition un-checks previous selections
-        holder.mRadioSelected.setChecked(lastSelectedPosition == position);
         holder.mWrapper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lastSelectedPosition = position;
-                notifyDataSetChanged();
 
-                int productId = _preferences.getInt("SELECTED_PRODUCT_ID", 0);
+                _editor.putInt("NEW_CATEGORY_FLAG",1);
+                _editor.putInt("SELECTED_CATEGORY_ID",currentCategory.getId());
+                _editor.putString("SELECTED_CATEGORY_NAME", currentCategory.getName());
+                _editor.commit();
 
-                _dbHandler.updateProductCategoryId(productId, currentCategory.getServerId());
-                new FragmentHelper(c).replace(new EditInvProductFragment(), "EditProductFragment", R.id.fragment_placeholder);
-
+                new FragmentHelper(c).replaceWithbackStack(new EditCategoryFragment(),"EditCategoryFragment",R.id.fragment_placeholder);
             }
         });
-
-
-       /* int id = c.getResources().getIdentifier(currentCategory.getImgUrl(), "drawable",
-                c.getPackageName());
-        Drawable drawable = c.getResources().getDrawable(id, null);
-
-        holder.mImg.setBackground(drawable);*/
-
-    /*    try {
-            Glide.with(c)
-                    .load(new URL(currentCategory.getImgUrl()))
-                    .into(holder.mImg);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-*/
-        /*Endpoint.setStorageUrl(currentCategory.getImgUrl());
-        String url = Endpoint.getStorageUrl();
-
-        try {
-            Glide.with(c)
-                    .load(new URL(currentCategory.getImgUrl()))
-                    .into(holder.mImg);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-*/
-        if (index == -1) {
-            index = position;
-
-        }
-
-       /* Random rnd = new Random();
-        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-        holder.mTransparentView.setBackgroundColor(color);*/
-/*
-        if (index == position) {
-
-         *//*   ((ProductsFragment) fragment).getProductsByCategory(currentCategory.getServerId());*//*
-
-//            holder.mName.setBackgroundResource(c.getResources().getIdentifier("round_corners_with_stroke_primary", "drawable", c.getPackageName()));
-//            holder.mName.setTextColor(Color.parseColor("#008577"));
-        } else {
-//            holder.mName.setBackgroundResource(c.getResources().getIdentifier("round_corners_with_stroke_grey", "drawable", c.getPackageName()));
-//            holder.mName.setTextColor(Color.parseColor("#666666"));
-        }*/
 
     }
 

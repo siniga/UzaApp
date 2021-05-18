@@ -61,9 +61,7 @@ public class NewExpCategoryFragment extends Fragment   implements View.OnClickLi
         _saveExpensesBtn.setOnClickListener(this);
 
         return view;
-
     }
-
 
     @Override
     public void onResume() {
@@ -84,7 +82,7 @@ public class NewExpCategoryFragment extends Fragment   implements View.OnClickLi
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.save_expenses_btn:
-                _dbHandler.createExpensesCategory(new ExpensesCategory(0, _name.getText().toString(),""));
+                _dbHandler.createExpensesCategory(new ExpensesCategory(0, _name.getText().toString(),"",0));
                 new FragmentHelper(_c).replace(new CategoryExpFragment() ,"ExpCategoryFragmen", R.id.fragment_placeholder);
                 break;
             default:

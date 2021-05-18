@@ -1,39 +1,40 @@
-package com.agnet.uza.adapters.inventories.products;
+package com.agnet.uza.pages.inventories.products.adapters;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.agnet.uza.R;
+import com.agnet.uza.dialogs.CustomDialogDeleteProduct;
 import com.agnet.uza.pages.HomeFragment;
+import com.agnet.uza.pages.inventories.products.EditInvProductFragment;
 import com.agnet.uza.helpers.DatabaseHandler;
+import com.agnet.uza.helpers.FragmentHelper;
 import com.agnet.uza.models.Product;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.RequiresApi;
-import androidx.recyclerview.widget.RecyclerView;
-
 /**
  * Created by alicephares on 8/5/16.
  */
-public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAdapter.ViewHolder> {
+public class ProductInventoryAdapter extends RecyclerView.Adapter<ProductInventoryAdapter.ViewHolder> {
 
     private List<Product> products = Collections.emptyList();
     private LayoutInflater inflator;
@@ -47,14 +48,16 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
     private AlertDialog _alertDialog;
     private HomeFragment fragment;
     private DatabaseHandler _dbHandler;
+    private int productListType = 0;
 
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public PopularProductAdapter(Context c, List<Product> products, HomeFragment fragment) {
+    public ProductInventoryAdapter(Context c, List<Product> products, HomeFragment fragment, int productListType) {
         this.products = products;
         this.inflator = LayoutInflater.from(c);
         this.c = c;
         this.fragment = fragment;
+        this.productListType = productListType;
 
         _preferences = c.getSharedPreferences("SharedData", Context.MODE_PRIVATE);
         _editor = _preferences.edit();
@@ -63,21 +66,20 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
 
     }
 
+
     // Create new views (invoked by the layout manager)
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent,
                                          int viewType) {
-        // create a new view
-        View v = inflator.inflate(R.layout.card_popular_product, parent, false);
-        // set the view's size, margins, padding and layout parameters
+        View view = null;
+        view = inflator.inflate(R.layout.card_inventory_products, parent, false);
 
-        ViewHolder vh = new ViewHolder(c, v);
-        return vh;
+
+        return new ViewHolder(c, view);
     }
 
 
     // Replace the contents of a view (invoked by the layout manager)
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         //get a position of a current saleItem
@@ -88,26 +90,58 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
         double formatedPrice = currentProduct.getPrice();
 
         holder.mName.setText(currentProduct.getName());
-        holder.mPrice.setText("TZS: " +formatter.format(formatedPrice));
+        holder.mPrice.setText("TZS: " + formatter.format(formatedPrice));
+        holder.mStock.setText("" + currentProduct.getStock());
+        holder.mDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                CustomDialogDeleteProduct dialog = new CustomDialogDeleteProduct((Activity) c, currentProduct.getId());
+                dialog.show();
+                dialog.setCancelable(false);
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialogInterface) {
+                        products.remove(position);
+                        notifyItemRemoved(position);
+                        notifyItemRangeChanged(position,products.size());
+                        Toast.makeText(c, "Product Deleted!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
 
-        try {
-            Glide.with(c)
-                    .load(new URL(currentProduct.getImgUrl()))
-                    .into(holder.mImg);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
+        holder.mWrapper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                _editor.putInt("INVENTORY_VIEW_FLAG", 1);
+                _editor.putInt("SELECTED_PRODUCT_ID", currentProduct.getId());
+                _editor.commit();
+
+                new FragmentHelper(c).replace(new EditInvProductFragment(), "EditProductFragment", R.id.fragment_placeholder);
+
+            }
+        });
+
+        displayImg(currentProduct.getImgUrl(), holder.mImg);
 
     }
 
+    private void displayImg(String imgUrl, ImageView imgView) {
+        RequestOptions requestOptions = new RequestOptions();
+        requestOptions.placeholder(R.drawable.ic_product);
+//        requestOptions.error(R.drawable.ic_error);
+
+        Glide.with(c)
+                .load(imgUrl)
+                .apply(requestOptions)
+                .into(imgView);
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        public LinearLayout mWrapper, mQntyviewWrapper;
-        public TextView mName, mPrice,mSku;
+        public LinearLayout mWrapper, mDelete;
+        public TextView mName, mPrice, mSku, mStock;
         public EditText mQnty;
         public ImageView mImg;
-        public ImageButton mBtnAddToCart;
-        public Button mQntyViewRemove, mQntyViewAdd;
-
 
         public ViewHolder(Context context, View view) {
             super(view);
@@ -115,13 +149,10 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
             mWrapper = view.findViewById(R.id.shop_wrapper);
             mName = view.findViewById(R.id.name);
             mPrice = view.findViewById(R.id.price);
-           // mBtnAddToCart = view.findViewById(R.id.add_to_cart_btn);
-           // mQntyViewAdd = view.findViewById(R.id.quantity_view_add);
-            //mQntyViewRemove = view.findViewById(R.id.quantity_view_remove);
-            //mQntyviewWrapper = view.findViewById(R.id.qnty_view_wrapper);
-            //mQnty = view.findViewById(R.id.quantity);
             mImg = view.findViewById(R.id.product_img);
             mSku = view.findViewById(R.id.sku);
+            mStock = view.findViewById(R.id.stock);
+            mDelete = view.findViewById(R.id.delete_product);
         }
 
     }
@@ -144,5 +175,6 @@ public class PopularProductAdapter extends RecyclerView.Adapter<PopularProductAd
 
         return drawableResourceId;
     }
+
 
 }

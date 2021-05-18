@@ -3,7 +3,7 @@ package com.agnet.uza.activities;
 import android.content.IntentFilter;
 import android.os.Bundle;
 
-import com.agnet.uza.adapters.inventories.products.ProductAdapter;
+import com.agnet.uza.pages.inventories.products.adapters.ProductAdapter;
 import com.agnet.uza.pages.HomeFragment;
 import com.agnet.uza.pages.auth.LoginFragment;
 import com.agnet.uza.pages.MenuFragment;

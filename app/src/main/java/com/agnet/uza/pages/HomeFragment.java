@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,13 +31,11 @@ import android.widget.Toast;
 
 import com.agnet.uza.R;
 import com.agnet.uza.activities.MainActivity;
-import com.agnet.uza.adapters.inventories.products.ProductAdapter;
+import com.agnet.uza.pages.inventories.products.adapters.ProductAdapter;
 import com.agnet.uza.dialogs.StockLowDialogClass;
-import com.agnet.uza.models.ExpensesCategory;
 import com.agnet.uza.pages.auth.LoginFragment;
 import com.agnet.uza.pages.inventories.categories.CategoryFilterFragment;
 import com.agnet.uza.pages.checkout.CartFragment;
-import com.agnet.uza.pages.inventories.InventoryFragment;
 import com.agnet.uza.pages.inventories.products.NewInvProductFragment;
 import com.agnet.uza.helpers.AndroidDatabaseManager;
 import com.agnet.uza.helpers.DatabaseHandler;
@@ -133,7 +132,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _errorMsg = view.findViewById(R.id.error_msg);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _categoryBtn = view.findViewById(R.id.category_btn);
-      //  _viewLoginPg = view.findViewById(R.id.view_user_login);
+        //  _viewLoginPg = view.findViewById(R.id.view_user_login);
         _loggedInName = view.findViewById(R.id.logged_in_name);
         //  _viewCartBtn = view.findViewById(R.id.view_cart_btn);
         _totalAmount = view.findViewById(R.id.total_amount);
@@ -155,7 +154,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _openInventoryBtn = view.findViewById(R.id.open_product_inventory_btn);
         _emptyItemsMsg = view.findViewById(R.id.empty_items_msg);
 
-
         //set items
         _homeToolbar.setVisibility(View.VISIBLE);
         _toolbar.setVisibility(View.GONE);
@@ -176,17 +174,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         _searchBtn.setOnClickListener(this);
         _openInventoryBtn.setOnClickListener(this);
 
-        //if expenses category table is empty add categories
-        //by default users should be presented with a list of expense categories when they want to add expenses into their business
-        if (_dbHandler.getExpensesCategories().size() == 0) {
-            for (ExpensesCategory category : preloadCategories()) {
-                _dbHandler.createExpensesCategory(new ExpensesCategory(category.getId(),category.getName(),category.getImgUrl()));
-            }
-        }
-
         //method calls
         ((MainActivity) _c).setHomeIconBottomNav();
         _loggedInName.setText(_dbHandler.getUserName());
+
 
         _scannerBtn.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -206,6 +197,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        setUpFragmentData();
+
+        return view;
+
+    }
+
+    private void setUpFragmentData() {
         try {
             if (_preferences.getInt("CAMERA_FLAG", 0) == 1) {
                 new FragmentHelper(_c).replaceWithbackStack(new NewInvProductFragment(), "NewProductFragment", R.id.fragment_placeholder);
@@ -215,7 +213,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
 
             if (!_dbHandler.isTableEmpty("carts")) {
-
                 _totalAmount.setText("TZS:" + _currencyformatter.format(_dbHandler.getCartTotalAmt()));
                 _cartQnty.setText("" + _dbHandler.getCartTotalQnty());
 
@@ -225,7 +222,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
 
             if (_preferences.getInt("CATEGORY_ID", 0) != 0) {
-
                 _categoryId = _preferences.getInt("CATEGORY_ID", 0);
                 _products = _dbHandler.getProductsByCategory(_categoryId);
 
@@ -233,15 +229,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 _products = _dbHandler.getProducts();
             }
+            Log.d("PRODUCITIO",""+ _categoryId);
+
+            getProducts();
 
         } catch (NullPointerException e) {
             e.getMessage();
         }
-
-        getProducts();
-
-        return view;
-
     }
 
     @SuppressLint("RestrictedApi")
@@ -269,7 +263,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.cart_qnty:
                 if (_dbHandler.isCartEmpty()) {
                     Toast.makeText(_c, "Kikapu hakina bidhaa!", Toast.LENGTH_LONG).show();
-                  break;
+                    break;
                 }
                 new FragmentHelper(_c).replaceWithbackStack(new CartFragment(), "CartFragment", R.id.fragment_placeholder);
                 break;
@@ -492,13 +486,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    public void addQntyCount() {
-
-    }
-
-    public void addAmount() {
-
-    }
 
     public void launchStockLowDialog(String name) {
         StockLowDialogClass dialog = new StockLowDialogClass(_c);
@@ -511,27 +498,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //                _saveProduct.setClickable(true);
             }
         });
-    }
-
-
-    public List<ExpensesCategory> preloadCategories() {
-        List<ExpensesCategory> localCategoryList = new ArrayList<>();
-        localCategoryList.add(new ExpensesCategory(1, "Vinywaji", "ic_beverages"));
-        localCategoryList.add(new ExpensesCategory(2, "Chakula", "ic_food"));
-        localCategoryList.add(new ExpensesCategory(3, "Dawasco", "ic_water"));
-        localCategoryList.add(new ExpensesCategory(4, "Tanesco", "ic_electricity"));
-        localCategoryList.add(new ExpensesCategory(5, "Vocha", "ic_voucher"));
-        localCategoryList.add(new ExpensesCategory(6, "Gari", "ic_car"));
-        localCategoryList.add(new ExpensesCategory(7, "King'amuzi", "ic_cable_tv"));
-        localCategoryList.add(new ExpensesCategory(8, "Bando", "ic_phone"));
-        localCategoryList.add(new ExpensesCategory(9, "Kodi ya nyumba", "ic_rental"));
-        localCategoryList.add(new ExpensesCategory(10, "Usafiri", "ic_transportation"));
-        localCategoryList.add(new ExpensesCategory(11, "Parking", "ic_parking"));
-        localCategoryList.add(new ExpensesCategory(12, "Gym", "ic_gym"));
-        localCategoryList.add(new ExpensesCategory(13, "Mavazi", "ic_cloth"));
-
-        return localCategoryList;
-
     }
 
 }
