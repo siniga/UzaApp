@@ -117,9 +117,6 @@
                  />
         </LinearLayout>
 
-
-
-
         <com.yarolegovich.discretescrollview.DiscreteScrollView
             android:id="@+id/category_picker"
             android:layout_width="match_parent"
@@ -128,8 +125,8 @@
             android:padding="20dp"
             app:dsv_orientation="horizontal" />
 
-
     </RelativeLayout>
+
 
 
     <View
@@ -232,6 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
                 <TextView
+                    android:visibility="gone"
                     android:id="@+id/expenses_hdr"
                     android:layout_alignParentLeft="true"
                     android:layout_width="wrap_content"
@@ -255,6 +253,18 @@
                     android:src="@drawable/ic_add_black_24dp"
                     android:text="Aina"
                     />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="="/>
+
+                <TextView
+                    android:id="@+id/total_amnt"
+                    android:layout_marginLeft="@dimen/padding_10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"/>
 
             </LinearLayout>
 

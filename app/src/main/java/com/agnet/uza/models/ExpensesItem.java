@@ -9,12 +9,16 @@ public class ExpensesItem {
     @SerializedName("expense_category_id")
     private int categoryId;
 
-    public ExpensesItem(int id, String name, String amount, String date, int categoryId){
+    @SerializedName("server_id")
+    private int serverId;
+
+    public ExpensesItem(int id, String name, String amount, String date, int serverId, int categoryId){
         this.id = id;
         this.name = name;
         this.amount = amount;
         this.date = date;
         this.categoryId = categoryId;
+        this.serverId = serverId;
     }
 
     public int getId() {
@@ -35,5 +39,9 @@ public class ExpensesItem {
 
     public int getCategoryId() {
         return categoryId;
+    }
+
+    public int getServerId() {
+        return serverId;
     }
 }

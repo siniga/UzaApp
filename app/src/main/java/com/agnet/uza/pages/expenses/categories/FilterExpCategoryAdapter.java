@@ -123,8 +123,6 @@ public class FilterExpCategoryAdapter extends RecyclerView.Adapter<FilterExpCate
             mImg = view.findViewById(R.id.circle_img);
             mAmount = view.findViewById(R.id.amount);
 //
-
-
         }
 
         public void bind(final Category item, final OnItemClickListener listener) {

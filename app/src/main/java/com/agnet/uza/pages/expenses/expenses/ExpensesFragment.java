@@ -55,14 +55,14 @@ public class ExpensesFragment extends Fragment {
     private SharedPreferences.Editor _editor;
     private DiscreteScrollView _categoryList;
     private DecimalFormat _currencyformatter;
-    private TextView _amnt, _categoryExpHdrText;
+    private TextView _amnt, _categoryExpHdrText, _totalAmnt;
     private ImageButton _addExpenseBtn;
     private LinearLayout _emptyItemMsg;
     private ImageButton _createExpenseBtn;
     private int _businessId;
     private RelativeLayout _categoryPickerWrapper;
 
-    @SuppressLint("RestrictedApi")
+    @SuppressLint({"RestrictedApi", "SetTextI18n"})
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -88,6 +88,7 @@ public class ExpensesFragment extends Fragment {
         _addCategoryBtn = view.findViewById(R.id.add_new_category_btn);
         _emptyItemMsg = view.findViewById(R.id.empty_items_msg);
         _createExpenseBtn = view.findViewById(R.id.create_expense_btn);
+        _totalAmnt = view.findViewById(R.id.total_amnt);
 
         //set items
         _homeToolbar.setVisibility(View.GONE);
@@ -119,12 +120,12 @@ public class ExpensesFragment extends Fragment {
         });
 
         //show/hide layout based on whether there is data in expense categories or not
-        if(categories.size() > 0){
+        if (categories.size() > 0) {
             int initItem = categories.get(0).getServerId();
             loadExpenseAdapter(initItem);
             _emptyItemMsg.setVisibility(View.GONE);
             _categoryPickerWrapper.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             _emptyItemMsg.setVisibility(View.VISIBLE);
             _categoryPickerWrapper.setVisibility(View.GONE);
         }
@@ -140,25 +141,24 @@ public class ExpensesFragment extends Fragment {
         _categoryList.addOnItemChangedListener((viewHolder, position) -> {
             final ExpensesCategory currentCategory = categories.get(position);
 
-
             loadExpenseAdapter(currentCategory.getServerId());
-            _amnt = viewHolder.itemView.findViewById(R.id.amount);
 
             _editor.putInt("EXP_CATEGORY_ID", currentCategory.getId());
             _editor.putString("EXP_CATEGORY_NAME", currentCategory.getName());
             _editor.putInt("EXP_CATEGORY_POSITION", position);
             _editor.commit();
 
-            //_categoryExpHdrText.setText(currentCategory.getName());
-/*
-            try{
-                String categoryTotalAmt = _dbHandler.getExpensesTotalAmtByCategory(currentCategory.getId());
-                if(!categoryTotalAmt.isEmpty()){
-                    _amnt.setText(categoryTotalAmt);
-                }
-            }catch (NullPointerException e) {
+            _categoryExpHdrText.setText(currentCategory.getName());
 
-            }*/
+            try {
+                String categoryTotalAmt = _dbHandler.getExpensesTotalAmtByCategory(currentCategory.getServerId());
+
+                if (!categoryTotalAmt.isEmpty()) {
+                    _totalAmnt.setText("TZS:"+ _currencyformatter.format(Double.parseDouble(categoryTotalAmt)));
+                }
+            } catch (NullPointerException e) {
+
+            }
 
         });
 

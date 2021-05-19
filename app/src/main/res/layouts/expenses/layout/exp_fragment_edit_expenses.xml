@@ -1,56 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cart_bottom_sheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#d8d8d8"
-    android:elevation="@dimen/padding_10"
     android:orientation="vertical"
-    android:padding="15dp"
  >
 
-    <RelativeLayout
-        android:paddingLeft="15dp"
-        android:id="@+id/btns_wrapper"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:background="@color/white"
+        android:id="@+id/toolbar_wrapper"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@color/white">
+        android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="26dp"
-            android:layout_height="26dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_expenses" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:elevation="24dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="30dp"
-            android:text="Edit a staff here"
-            android:textSize="16sp" />
+            <LinearLayout
+                android:id="@+id/toolbar_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_keyboard_arrow_left_black_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="Rudi nyuma"
+                    android:textColor="#5D6060"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_alignParentBottom="true"
+                android:background="@color/colorGreyLight" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorGreyLight" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_below="@id/toolbar_wrapper"
+        android:id="@+id/btns_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:padding="5dp">
+
+        <Button
+            android:id="@+id/delete_expense_btn"
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_grey_clear_24"
+            android:text="Futa Taarifa"
+            android:textColor="@color/midd_grey" />
 
         <Button
             android:id="@+id/update_expense_btn"
-            android:layout_width="100dp"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@color/white"
-            android:drawableRight="@drawable/ic_done_green_24dp"
-            android:elevation="2dp"
-            android:text="Update" />
-
-
-    </RelativeLayout>
+            android:layout_width="1dp"
+            android:layout_height="60dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:drawableRight="@drawable/ic_baseline_done_green_24"
+            android:text="Hifadhi"
+            android:textColor="@color/midd_grey" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
-        android:layout_marginTop="25dp"
+        android:layout_below="@+id/btns_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -58,71 +99,96 @@
             android:layout_marginTop="0dp"
             android:background="@drawable/round_corners"
             android:gravity="center"
-            android:minHeight="400dp"
+            android:paddingBottom="30dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+
 
             <TextView
+                android:id="@+id/name_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Edit Expense"
-                android:textColor="@color/colorPrimary"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Jina la matumizi"
+                android:textColor="@android:color/black"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/name_hdr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Name"
-                android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
             <EditText
+                android:freezesText="true"
                 android:id="@+id/name"
                 android:layout_width="match_parent"
-                android:layout_height="55dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Name"
-                android:padding="10dp" />
+                android:hint="Ingiza jina la biashara hapa"
+                android:paddingLeft="10dp" />
 
             <TextView
+                android:id="@+id/amnt_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="Amount"
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Kiasi cha matumizi"
                 android:textColor="@android:color/black"
-                android:textSize="12sp" />
-
+                android:textSize="16sp"
+                android:textStyle="bold" />
             <EditText
+                android:layout_marginTop="10dp"
                 android:inputType="number"
                 android:id="@+id/amount"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/round_corners_with_stroke_grey_light"
-                android:hint="Amount spent"
+                android:hint="Kiasi ulichotumia"
                 android:padding="10dp" />
 
-
-            <LinearLayout
+            <TextView
+                android:id="@+id/category_header"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp">
+                android:layout_below="@+id/phone_input"
+                android:layout_marginTop="25dp"
+                android:text="Aina ya matumizi"
+                android:textColor="@android:color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-                <Button
-                    android:id="@+id/delete_expense_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:backgroundTint="@color/white"
-                    android:drawableRight="@drawable/ic_delete"
-                    android:text="Delete Expense"
-                    android:textColor="@color/midd_grey" />
-            </LinearLayout>
+            <Button
+                android:layout_marginTop="10dp"
+                android:textSize="18sp"
+                android:gravity="center_vertical"
+                android:id="@+id/select_category"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:background="@drawable/round_corners_with_stroke_grey_light"
+                android:hint="Chagua aina ya matumizi"
+                android:padding="10dp" />
+
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
 
+    <LinearLayout
+        android:id="@+id/transparent_loader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_light_transparent"
+        android:orientation="horizontal"
+        android:visibility="gone" />
 
-</LinearLayout>
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:minWidth="100dp"
+        android:minHeight="100dp"
+        android:theme="@style/AppTheme.WhiteAccent"
+        android:visibility="gone" />
+
+</RelativeLayout>

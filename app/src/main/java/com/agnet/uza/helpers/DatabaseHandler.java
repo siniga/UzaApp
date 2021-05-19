@@ -31,7 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private Context c;
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 51;
+    private static final int DATABASE_VERSION = 55;
 
     // Database Name
     private static final String DATABASE_NAME = "uza";
@@ -95,7 +95,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     //expense
     private static final String KEY_AMOUNT = "amount";
-    private static final String KEY_EXPENSES_CATEGORY_ID = "expenses_categories_id";
+    private static final String KEY_EXPENSES_CATEGORY_ID = "expense_category_id";
+    private static final String KEY_EXPENSES_SERVER_ID = "expense_server_id";
     private static final String KEY_DATE = "date";
 
     //orders
@@ -197,6 +198,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_NAME + " TEXT,"
                 + KEY_AMOUNT + " TEXT,"
                 + KEY_DATE + " TEXT,"
+                + KEY_EXPENSES_SERVER_ID + " INTEGER,"
                 + KEY_EXPENSES_CATEGORY_ID + " INTEGER " + ")";
 
         String CREATE_ORDER_TABLE = "CREATE TABLE " + TABLE_ORDER + "("
@@ -1187,6 +1189,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, item.getName());
         values.put(KEY_AMOUNT, item.getAmount());
         values.put(KEY_DATE, item.getDate());
+        values.put(KEY_EXPENSES_SERVER_ID, item.getServerId());
         values.put(KEY_EXPENSES_CATEGORY_ID, item.getCategoryId());
 
         db.insert(TABLE_EXPENSES_ITEM, null, values);
@@ -1201,8 +1204,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, expensesItem.getName());
         values.put(KEY_AMOUNT, expensesItem.getAmount());
 
-
-        db.update(TABLE_EXPENSES_ITEM, values, "id = ?", new String[]{String.valueOf(expensesItem.getId())});
+        db.update(TABLE_EXPENSES_ITEM, values, KEY_EXPENSES_SERVER_ID+" = ?", new String[]{String.valueOf(expensesItem.getId())});
 
         db.close(); // Closing database connection
     }
@@ -1221,7 +1223,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getString(cursor.getColumnIndex(KEY_AMOUNT)),
                         cursor.getString(cursor.getColumnIndex(KEY_DATE)),
-                      0
+                        cursor.getInt(cursor.getColumnIndex(KEY_EXPENSES_SERVER_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_EXPENSES_CATEGORY_ID))
                 );
 
                 items.add(item);
@@ -1250,7 +1253,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         cursor.getString(cursor.getColumnIndex(KEY_NAME)),
                         cursor.getString(cursor.getColumnIndex(KEY_AMOUNT)),
                         cursor.getString(cursor.getColumnIndex(KEY_DATE)),
-                        0
+                        cursor.getInt(cursor.getColumnIndex(KEY_EXPENSES_SERVER_ID)),
+                        cursor.getInt(cursor.getColumnIndex(KEY_EXPENSES_CATEGORY_ID))
                 );
 
 
@@ -1292,7 +1296,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public int deleteExpenseItemByCategory(int categoryId) {
         SQLiteDatabase database = this.getWritableDatabase();
-        database.delete(TABLE_EXPENSES_ITEM, "expenses_categories_id=?", new String[]{String.valueOf(categoryId)});
+        database.delete(TABLE_EXPENSES_ITEM, "expense_category_id =?", new String[]{String.valueOf(categoryId)});
 
         return 1;
     }

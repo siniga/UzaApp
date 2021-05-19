@@ -87,7 +87,6 @@ public class NewExpFragment extends Fragment {
         _toolbar = _c.findViewById(R.id.toolbar);
         _bottomNavigation = _c.findViewById(R.id.bottom_navigation);
         _saveExpenseBtn = view.findViewById(R.id.save_expense_btn);
-        _nameHdr = view.findViewById(R.id.name_hdr);
         _name = view.findViewById(R.id.name);
         _amount = view.findViewById(R.id.amount);
         _progressBar = view.findViewById(R.id.progress_bar);
@@ -139,7 +138,7 @@ public class NewExpFragment extends Fragment {
                 Toast.makeText(_c, "Chagua aina ya matumizi", Toast.LENGTH_SHORT).show();
             } else {
 
-                saveExpenses(new ExpensesItem(0, name, amount, date,0), _category);
+                saveExpenses(new ExpensesItem(0, name, amount, date,0,0), _category);
                 //update total amount on cateogry expenses table
 
                 //      _nameHdr.setText(""+_dbHandler.getExpItemsTotalAmt(_expCategoryId));
@@ -155,19 +154,16 @@ public class NewExpFragment extends Fragment {
 
         });
 
-        _selectCategoryBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String persistanNameInput = _name.getText().toString();
-                String persistanAmountInput = _amount.getText().toString();
+        _selectCategoryBtn.setOnClickListener(view12 -> {
+            String persistanNameInput = _name.getText().toString();
+            String persistanAmountInput = _amount.getText().toString();
 
-                _editor.putString("PERSISTENT_NAME", persistanNameInput);
-                _editor.putString("PERSISTENT_AMOUNT", persistanAmountInput);
-                _editor.commit();
+            _editor.putString("PERSISTENT_NAME", persistanNameInput);
+            _editor.putString("PERSISTENT_AMOUNT", persistanAmountInput);
+            _editor.commit();
 
-                new FragmentHelper(_c).replace(new CategoryExpFragment(), "CategoryExpFragment", R.id.fragment_placeholder);
+            new FragmentHelper(_c).replace(new CategoryExpFragment(), "CategoryExpFragment", R.id.fragment_placeholder);
 
-            }
         });
         return view;
 
@@ -221,10 +217,10 @@ public class NewExpFragment extends Fragment {
                     if (res.getCode() == 201) {
                         Success success = res.getSuccess();
                         ExpensesItem expenseItem = success.getExpense();
-                        //Log.d("RESPONSE_",_gson.toJson(success.getExpense()));
+                        Log.d("RESPONSE_SESSION",_gson.toJson(expenseItem.getServerId()));
 
                        _dbHandler.updateExpenseCategory(new ExpensesCategory(_expCategoryId, "","",expenseItem.getCategoryId()));
-                       _dbHandler.createExpenseItem(new ExpensesItem(0, expenseItem.getName(), expenseItem.getAmount(), expenseItem.getDate(),expenseItem.getCategoryId()));
+                       _dbHandler.createExpenseItem(new ExpensesItem(0, expenseItem.getName(), expenseItem.getAmount(), expenseItem.getDate(),expenseItem.getServerId(),expenseItem.getCategoryId()));
 
                        _dbHandler.createBusinessExpensesCategory(_businessId, expenseItem.getCategoryId());
                         new FragmentHelper(_c).replace(new ExpensesFragment(), "ExpensesFragment", R.id.fragment_placeholder);
